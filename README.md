@@ -1,71 +1,28 @@
-# Template: Workshop Reader
-
-This repository is a template for workshop readers for the UC Davis DataLab.
-This template uses **bookdown** to knit the reader. You can also optionally use
-**renv** to manage packages and Git Large File Storage to manage large files
-(instructions included).
-
-To get started, create a new repo on GitHub from this template
-([instructions][gh]), then `git clone` your new repo.
-
-[gh]: https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template
-
-Once you've cloned the repo, here's a checklist of things to do to prepare the
-repo:
-
-1. **renv** (optional): To set up **renv**, open R at the top level of the repo
-   and run:
-
-    ```r
-    renv::init()
-    ```
-
-    Restart R. Then, to install the **bookdown** toolchain to the project
-    package library, run:
-
-    ```r
-    install.packages("bookdown")
-    renv::snapshot()
-    ```
-
-    You can skip this step if you're not going to use **renv**.
-
-2. `index.Rmd`: Replace the all-caps text with your workshop details.
-    + Title (in 2 places, 1 of them in the `output:` HTML block)
-    + Author's name
-    + Repo name (in 4 places, 2 of them in the `output:` HTML block)
-    + Description, learning goals, & prerequisites
-
-3. `README.md`: Replace the all-caps text with your workshop details.
-    + Title
-    + Quarter & year
-    + Author's name & email
-    + Reader URL
-    + Event URL
-    + Description, learning goals, & prerequisites
-
-4. GitHub: In the repo's About section, add the reader URL and appropriate
-   tags.
-
-5. GitHub: In the repo's Settings page, enable GitHub pages. Set the branch to
-   `master` and the directory to `docs/`.
-
-6. `README.md`: Remove these template instructions, which end at the `#
-   Workshop:` header below
-
-7. `git add` all changed files, then `git commit` and `git push`.
-
-
-# Workshop: YOUR WORKSHOP TITLE
+# Workshop: Model validation for applied data science
 
 _[UC Davis DataLab](https://datalab.ucdavis.edu/)_  
-_Spring 2021_  
-_Instructor: YOUR NAME <<YOUR_EMAIL@ucdavis.edu>>_  
+_Fall 2021_  
+_Instructor: Wesley Brooks <<wbrooks@ucdavis.edu>>_  
 
-* [Reader](https://ucdavisdatalab.github.io/YOUR_REPOSITORY/)
+* [Reader](https://ucdavisdatalab.github.io/workshop-health-ml/)
 * [Event Page](https://datalab.ucdavis.edu/eventscalendar/YOUR_EVENT/)
 
-YOUR DESCRIPTION, LEARNING GOALS, PREREQUISITES, ETC
+### Description
+In this workshop, you will learn the basics of creating a predictive model for health data. We will demonstrate categorical prediction with logistic regression and numerical predictions with a regression tree approach. We will calculate measurements of accuracy that are applicable to the different types of models, and use cross-validation to find the model parameters that generate the best predictions. Finally, we will interpret the results for insights about the real-world process being modeled.
+
+### Excerpt
+At this interactive, hands-on workshop, we will create and assess machine learning models for health data.
+
+### Learning Objectives
+- Select features for a predictive model
+- Fit a logistic regression model
+- Fit a regression tree model
+- Use cross-validation to tune model parameters
+- Estimate the accuracy of predictions for future data
+- Interpret model parameters
+
+### Prerequisites
+Prior experience with R required in order to full participate in this interactive, hands-on workshop.
 
 
 ## Contributing
