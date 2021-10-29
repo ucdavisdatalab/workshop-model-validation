@@ -4,7 +4,7 @@ author: Wesley Brooks
 date: "`r Sys.Date()`"
 
 github-repo: ucdavisdatalab/workshop-health-ml
-url: "https://ucdavisdatalab.github.io/workshop-health-ml/"
+url: "https://ucdavisdatalab.github.io/workshop_model_validation/"
 
 site: "bookdown::bookdown_site"
 knit: "bookdown::render_book"
@@ -19,8 +19,8 @@ output:
           <li><a href="./" style="font-size: 18px">Model validation for applied data science</a></li>
         collapse: section
       sharing: no
-      view: https://github.com/ucdavisdatalab/workshop-health-ml/blob/master/%s
-      edit: https://github.com/ucdavisdatalab/workshop-health-ml/edit/master/%s
+      view: https://github.com/ucdavisdatalab/workshop_model_validation/blob/master/%s
+      edit: https://github.com/ucdavisdatalab/workshop_model_validation/edit/master/%s
 ---
 
 # Overview {-}

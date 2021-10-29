@@ -1,0 +1,3 @@
+# Bias-variance tradeoff
+The tradeoff between bias and variance is a fundamental concept in machine learning. 
+

@@ -1,0 +1,66 @@
+# Basic information
+
+## What is a model?
+
+
+## What is model validation?
+In most basic terms, model validation is to answer the question, "is this model good?" That can have different meanings in different contexts.
+
+Validation focuses on ensuring that the model description is accurate to its performance. Another way to think of it is checking model assumptions. 
+
+
+# Essential concepts
+
+## Fitting vs. prediction
+
+
+## In-sample vs out-of-sample
+
+
+## Fitted vs. predicted values
+
+```{r residual-types, echo=FALSE }
+data(cars)
+
+# indicate the training points
+indx = cars$speed >=15 & cars$speed <=17
+
+# fit a spline with too much wiggliness to the points
+xx = seq( min(cars$speed), max(cars$speed), length.out=200 )
+spl = smooth.spline(cars$speed[!indx], cars$dist[!indx], spar=0.02)
+
+# fit a second-order polynomial to the points
+lm1 = lm( dist ~ 0 + poly(speed, 2), data=cars )
+
+# plot the training points and the smoothing spline
+plot( cars[!indx, ], bty='n' )
+```
+
+
+```{r residual-types, echo=FALSE }
+# plot the training points and the smoothing spline
+plot( cars[!indx, ], bty='n' )
+lines( predict(spl, xx) )
+lines( x=xx, y=mean(cars$dist[!indx]) + predict(lm1, data.frame(speed = xx)) )
+
+# add the held-out points to the plot, highlighting the predictive residuals
+points( cars[indx, ], col='red')
+```
+
+# Model types
+
+We are going to use a couple of example models throughout this workshop. First, a logistic regression model and second, a random forest regression model.
+
+
+
+## Logistic regression
+Logistic regression is a method of estimating 
+
+
+
+
+# Import data
+
+Let's import the data for our examples. 
+
+

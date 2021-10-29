@@ -1,0 +1,53 @@
+# Data splitting systems
+
+In order to assess the validity of the model, you typically must test the model on data that was 
+
+## Train/test split
+
+
+## Cross-validation
+Cross validation is a kind of repeated training/testing split, which is iterated until all of the data has been used for testing. 
+
+```{r three-fold-cv, echo=FALSE}
+# import the speed-vs-stopping-distance data
+data(cars)
+
+# standard plotting parameters
+ylim = range( cars$dist )
+xx = seq( min(cars$speed), max(cars$speed), length.out=200 )
+
+# randomly create three folds
+fold = sample(c("black", "purple", "darkorange"), size=nrow(cars), replace=TRUE)
+plot( cars, col=fold, bty='n', pch=16, ylim=ylim )
+
+# plot a held-out model and the predictions
+cv3fm1 = lm( dist ~ poly(speed, 2), data=cars[fold != "purple", ])
+layout( matrix(1:2, 1, 2) )
+plot(cars[ fold != 'purple', ], bty='n', col=fold[ fold != 'purple'], pch=16, ylim=ylim )
+lines( x=xx, y=predict(cv3fm1, data.frame(speed=xx)))
+
+plot( cars[fold == 'purple', ], bty='n', col=fold[ fold == 'purple'], pch=16, ylim=ylim )
+lines( x=xx, y=predict(cv3fm1, data.frame(speed=xx)), lty=2)
+
+
+# plot a held-out model and the predictions
+cv3fm2 = lm( dist ~ poly(speed, 2), data=cars[fold != "orange", ])
+layout( matrix(1:2, 1, 2) )
+plot(cars[ fold != 'orange', ], bty='n', col=fold[ fold != 'orange'], pch=16, ylim=ylim )
+lines( x=xx, y=predict(cv3fm2, data.frame(speed=xx)))
+
+plot( cars[fold == 'orange', ], bty='n', col=fold[ fold == 'orange'], pch=16, ylim=ylim )
+lines( x=xx, y=predict(cv3fm2, data.frame(speed=xx)), lty=2)
+
+
+# plot a held-out model and the predictions
+cv3fm3 = lm( dist ~ poly(speed, 2), data=cars[fold != "black", ])
+layout( matrix(1:2, 1, 2) )
+plot(cars[ fold != 'black', ], bty='n', col=fold[ fold != 'black'], pch=16, ylim=ylim )
+lines( x=xx, y=predict(cv3fm3, data.frame(speed=xx)))
+
+plot( cars[fold == 'black', ], bty='n', col=fold[ fold == 'black'], pch=16, ylim=ylim )
+lines( x=xx, y=predict(cv3fm3, data.frame(speed=xx)), lty=2)
+```
+
+The simplest way to 
