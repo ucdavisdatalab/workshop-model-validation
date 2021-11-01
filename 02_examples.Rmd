@@ -1,0 +1,36 @@
+# Working examples
+
+
+## Import data
+Let's import the data for our examples. 
+
+
+### COVID-19 admissions
+
+Import the data about COVID-19 admissions:
+
+```{r import-covid}
+# import uses the readr package
+library( "readr" )
+
+# import the covid data
+covid = read_csv( "data/covid.csv" )
+```
+
+
+
+
+### Import survival data
+
+The survival data comes from the German Breast Cancer Study Group, so we will call it the `gbsg` data set. After importing the data, we need to re-code the time-to-recurrence + censoring variables to a 0-1 binary variable that encodes five-year recurrence-free survival.
+
+```{r import-gbsg}
+# read in the gbsg data
+gbsg = read_csv( "data/gbsg.csv" )
+
+# have we observed five years of recurrence-free survival?
+gbsg$fys = with(gbsg, ifelse( rfstime > 365*5, 1, ifelse(status == 0, NA, 0)))
+```
+
+
+

@@ -6,18 +6,28 @@
 ## What is model validation?
 In most basic terms, model validation is to answer the question, "is this model good?" That can have different meanings in different contexts.
 
-Validation focuses on ensuring that the model description is accurate to its performance. Another way to think of it is checking model assumptions. 
+Validation focuses on ensuring that the model description is accurate to its performance. Another way to think of it is checking model assumptions. So, what kind of assumptions are we talking about?
 
+
+### Typical modeling assumptions
+There are two broad types of assumptions that underlie most statistical models
+
+- The expectation of the response variable is a function of the input variables. $\mathbb{E}(Y) = f(X)$.
+- The response variable has some distribution, like $Y$ is Normal, or binomial, or Poisson.
+
+Validating these assumptions also requires that the function $f(\cdot)$ and the response distribution can be learned from the data.
 
 # Essential concepts
+So, how can we test (validate) these assumptions? A key problem is that they can't be tested from within a fitted model. The way statistical estimation works is that you assume the form of a model, and then find the parameters that best match the data and the assumption. Testing requires applying the model to new data in order to see if the predictions match the truth.
+
+
+
+## In-sample vs. out-of-sample
+In-sample and out-of-sample describe data relative to some model. The data are in-sample to the model if the data were used in training that model, and are out-of-sample otherwise.
+
 
 ## Fitting vs. prediction
-
-
-## In-sample vs out-of-sample
-
-
-## Fitted vs. predicted values
+That leads to the key difference between fitting and prediction: fitting is done with in-sample data, and prediction is done with out-of-sample data. 
 
 ```{r residual-types, echo=FALSE }
 data(cars)
@@ -34,10 +44,11 @@ lm1 = lm( dist ~ 0 + poly(speed, 2), data=cars )
 
 # plot the training points and the smoothing spline
 plot( cars[!indx, ], bty='n' )
+lines( xx, mean(cars$dist) + predict(lm1, list(speed=xx)), lty=2 )
 ```
 
 
-```{r residual-types, echo=FALSE }
+```{r echo=FALSE }
 # plot the training points and the smoothing spline
 plot( cars[!indx, ], bty='n' )
 lines( predict(spl, xx) )
@@ -54,13 +65,22 @@ We are going to use a couple of example models throughout this workshop. First, 
 
 
 ## Logistic regression
-Logistic regression is a method of estimating 
+Logistic regression is a method of estimating the probability of an event occurring. An event is a discrete occurrence that either happens or does not. For example, a subject surviving for at least five years after enrollment in a clinical trial is one example of an event - it either happens or does not.
+
+Logistic regression assumes that each event has a binomial distribution where the probabolity of occurrence is $p$, and 
+$$p = \exp{X \beta} / ( 1 + \exp{X \beta} ).$$
+
+As hinted above, validating a logistic regression model would involve checking that the observations are independent from a binomial distribution, and that the probability of each event is as above.
+
+
+## Random forest regression
+Random forest regression models are an entirely different class of model. There is no linear function like the $X \beta$ of logistic regression (or, indeed, linear regression). Instead, the $f( X )$ part of the model is constructed from an ensemble of regression trees. Each regression tree is a collection of discrete branches that ultimately lead to conclusions at the end of the chain. Consider the stopping distance example again. One regression tree might include logic like, IF speed > 8 AND speed <= 12 THEN stoping distance is 20 feet. As a forest is made of many trees, a random forest model is made of many regression trees, each of which uses a random portion of the total training data.
+
+In fact, the GBM models I'll use here include some additional "gradient boosting" logic that takes them beyond a basic random forest model, but that I'm going to mostly ignore for our purposes today.
+
+The response variable for the random forest model is the number of new COVID-19 admissions on a given day. I'm treating this count as if it follows a Poisson distribution. Thus, the assumptions that must be validated for this model are the relationship $\mathbb{E}(Y) = f( X )$, and the independence and Poisson distribution of the counts.
 
 
 
-
-# Import data
-
-Let's import the data for our examples. 
 
 

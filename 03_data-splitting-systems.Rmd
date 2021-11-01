@@ -1,12 +1,11 @@
 # Data splitting systems
+To train and validate a model requires that we have in-sample and out-of-sample data, but typically we have just "the data". There are a couple of approaches to separating that data in in-sample and out-of-sample sets: training/validation splits or cross-validation.
 
-In order to assess the validity of the model, you typically must test the model on data that was 
-
-## Train/test split
-
+## Train/validation split
+One solution is to reserve some data for validation, and use what is left for training the model. The split can be random or not - for instance, you may hold back the most recent year of data for validation, or you may randomly sample some proportion (e.g., 30%) of the observations to reserve for validation.
 
 ## Cross-validation
-Cross validation is a kind of repeated training/testing split, which is iterated until all of the data has been used for testing. 
+Cross validation is a kind of repeated training/validation split, which is iterated until all of the data has been used for testing. Each training/validation split may be random or may take data that are grouped according to some meaningful value (often that means resolving one year's data at a time as validation data).
 
 ```{r three-fold-cv, echo=FALSE}
 # import the speed-vs-stopping-distance data
@@ -31,13 +30,13 @@ lines( x=xx, y=predict(cv3fm1, data.frame(speed=xx)), lty=2)
 
 
 # plot a held-out model and the predictions
-cv3fm2 = lm( dist ~ poly(speed, 2), data=cars[fold != "orange", ])
+cv3fm2 = lm( dist ~ poly(speed, 2), data=cars[fold != "darkorange", ])
 layout( matrix(1:2, 1, 2) )
-plot(cars[ fold != 'orange', ], bty='n', col=fold[ fold != 'orange'], pch=16, ylim=ylim )
+plot(cars[ fold != 'darkorange', ], bty='n', col=fold[ fold != 'darkorange'], pch=16, ylim=ylim )
 lines( x=xx, y=predict(cv3fm2, data.frame(speed=xx)))
 
-plot( cars[fold == 'orange', ], bty='n', col=fold[ fold == 'orange'], pch=16, ylim=ylim )
-lines( x=xx, y=predict(cv3fm2, data.frame(speed=xx)), lty=2)
+plot( cars[fold == 'darkorange', ], bty='n', col=fold[ fold == 'darkorange'], pch=16, ylim=ylim )
+lines( x=xx, y=predict(cv3fm2, data.frame(speed=xx)), lty=3)
 
 
 # plot a held-out model and the predictions
@@ -47,7 +46,13 @@ plot(cars[ fold != 'black', ], bty='n', col=fold[ fold != 'black'], pch=16, ylim
 lines( x=xx, y=predict(cv3fm3, data.frame(speed=xx)))
 
 plot( cars[fold == 'black', ], bty='n', col=fold[ fold == 'black'], pch=16, ylim=ylim )
-lines( x=xx, y=predict(cv3fm3, data.frame(speed=xx)), lty=2)
+lines( x=xx, y=predict(cv3fm3, data.frame(speed=xx)), lty=4)
 ```
 
-The simplest way to 
+### Combining the two
+There are times when cross-validation and training/testing validation should be used together. For instance, when cross-validation is used to select model parameters for the best predictive performance, there should also be a validation set that was never used in the cross-validation. That's so that there are independent data to validate the selection that was based on the CV.
+
+
+
+
+
