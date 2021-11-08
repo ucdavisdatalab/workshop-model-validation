@@ -5,6 +5,7 @@
 ```{r load-libraries, echo=FALSE, warning=FALSE}
 library( "dplyr" )
 library( "lubridate" )
+library( "readr" )
 ```
 
 ## What is model validation?
@@ -78,7 +79,8 @@ If we try to fit a linear trend to these data, the few observations with extreme
 
 ```{r transformed-gbsg-data}
 # plot the square-root transformes er, pgr, and nodes variables, with rfstime:
-with( gbsg, plot( list(sqrt(er), sqrt(pgr), sqrt(nodes), rfstime)))
+with( gbsg, plot( data.frame(sqrt(er), sqrt(pgr), sqrt(nodes), rfstime)))
+
 ```
 
 Note how the outliers have been brought back toward the mass of data, and the detail at the low end has been expanded. A bit of work on the front end can avoid really difficult problems in the analysis and validation later.
@@ -91,7 +93,7 @@ The third data set that we'll use for illustration is a time series of daily hos
 covid = read_csv( "data/covid.csv" )
 
 # add the date column to the covid data
-covid$date = mdy( covid$SOURCE_DATA_DATE )
+# covid$date = mdy( covid$SOURCE_DATA_DATE )
 
 # make day of the week a factor
 covid$DAY_OF_THE_WEEK = factor( covid$DAY_OF_THE_WEEK )

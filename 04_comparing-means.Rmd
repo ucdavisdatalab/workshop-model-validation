@@ -1,3 +1,33 @@
+```{r load-libraries, echo=FALSE, warning=FALSE,include=FALSE}
+library("readr")
+library( "lubridate" )
+library( "dplyr" )
+library( "gbm" )
+
+
+# import the gbsg data
+gbsg = read_csv( "data/gbsg.csv" )
+
+# make a factor of the grade
+gbsg$grade = factor( gbsg$grade )
+
+# generate the variable `fys`, to indicate five year recurrence-free survival:
+gbsg$fys = with(gbsg, ifelse( rfstime > 365*5, 1, ifelse(status == 0, NA, 0)))
+
+
+
+# import the covid dataset
+covid = read_csv( "data/covid.csv" )
+
+# add the date column to the covid data
+# covid$date = mdy( covid$SOURCE_DATA_DATE )
+
+# make day of the week a factor
+# covid$DAY_OF_THE_WEEK = factor( covid$DAY_OF_THE_WEEK )
+
+
+```
+
 # Validating the model's functional form
 We can validate the model's functional form by making predictions and comparing them to the truth. If the estimated mean function is valid, then the observed should be in line with predictions. Of course, there will stil be some error, but the predictions should be accurate on average.
 

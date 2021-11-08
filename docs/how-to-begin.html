@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 How to begin? | Model validation for applied data science</title>
+  <meta name="description" content="2 How to begin? | Model validation for applied data science" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 How to begin? | Model validation for applied data science" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://ucdavisdatalab.github.io/workshop_model_validation/" />
+  
+  
+  <meta name="github-repo" content="ucdavisdatalab/workshop-health-ml" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 How to begin? | Model validation for applied data science" />
+  
+  
+  
+
+<meta name="author" content="Wesley Brooks" />
+
+
+<meta name="date" content="2021-11-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="basic-information.html"/>
+<link rel="next" href="essential-concepts.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://datalab.ucdavis.edu/">
+  <img src="https://datalab.ucdavis.edu/wp-content/uploads/2019/07/datalab-logo-full-color-rgb-1.png" style="height: 100%; width: 100%; object-fit: contain" />
+</a></li>
+<li><a href="./" style="font-size: 18px">Model validation for applied data science</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a></li>
+<li class="chapter" data-level="1" data-path="basic-information.html"><a href="basic-information.html"><i class="fa fa-check"></i><b>1</b> Basic information</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="basic-information.html"><a href="basic-information.html#what-is-a-model"><i class="fa fa-check"></i><b>1.1</b> What is a model?</a></li>
+<li class="chapter" data-level="1.2" data-path="basic-information.html"><a href="basic-information.html#what-is-model-validation"><i class="fa fa-check"></i><b>1.2</b> What is model validation?</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="basic-information.html"><a href="basic-information.html#typical-modeling-assumptions"><i class="fa fa-check"></i><b>1.2.1</b> Typical modeling assumptions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="how-to-begin.html"><a href="how-to-begin.html"><i class="fa fa-check"></i><b>2</b> How to begin?</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="how-to-begin.html"><a href="how-to-begin.html#examples"><i class="fa fa-check"></i><b>2.1</b> Examples</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="how-to-begin.html"><a href="how-to-begin.html#stopping-distance"><i class="fa fa-check"></i><b>2.1.1</b> Stopping distance</a></li>
+<li class="chapter" data-level="2.1.2" data-path="how-to-begin.html"><a href="how-to-begin.html#breast-cancer-survival"><i class="fa fa-check"></i><b>2.1.2</b> Breast cancer survival</a></li>
+<li class="chapter" data-level="2.1.3" data-path="how-to-begin.html"><a href="how-to-begin.html#covid-19-hospital-admissions"><i class="fa fa-check"></i><b>2.1.3</b> COVID-19 hospital admissions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="essential-concepts.html"><a href="essential-concepts.html"><i class="fa fa-check"></i><b>3</b> Essential concepts</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="essential-concepts.html"><a href="essential-concepts.html#in-sample-vs.-out-of-sample"><i class="fa fa-check"></i><b>3.1</b> In-sample vs. out-of-sample</a></li>
+<li class="chapter" data-level="3.2" data-path="essential-concepts.html"><a href="essential-concepts.html#fitting-vs.-prediction"><i class="fa fa-check"></i><b>3.2</b> Fitting vs. prediction</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="model-types.html"><a href="model-types.html"><i class="fa fa-check"></i><b>4</b> Model types</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="model-types.html"><a href="model-types.html#logistic-regression"><i class="fa fa-check"></i><b>4.1</b> Logistic regression</a></li>
+<li class="chapter" data-level="4.2" data-path="model-types.html"><a href="model-types.html#random-forest-regression"><i class="fa fa-check"></i><b>4.2</b> Random forest regression</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html"><i class="fa fa-check"></i><b>5</b> Data splitting systems</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#trainvalidation-split"><i class="fa fa-check"></i><b>5.1</b> Train/validation split</a></li>
+<li class="chapter" data-level="5.2" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#cross-validation"><i class="fa fa-check"></i><b>5.2</b> Cross-validation</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#combining-the-two"><i class="fa fa-check"></i><b>5.2.1</b> Combining the two</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html"><i class="fa fa-check"></i><b>6</b> Validating the model’s functional form</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#posit-a-model"><i class="fa fa-check"></i><b>6.1</b> Posit a model</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#model-form"><i class="fa fa-check"></i><b>6.1.1</b> Model form</a></li>
+<li class="chapter" data-level="6.1.2" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#model-distribution"><i class="fa fa-check"></i><b>6.1.2</b> Model distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#validate-the-assumptions"><i class="fa fa-check"></i><b>6.2</b> Validate the assumptions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html"><i class="fa fa-check"></i><b>7</b> Validating the model’s distributional form</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#posit-a-distribution"><i class="fa fa-check"></i><b>7.1</b> Posit a distribution</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Model validation for applied data science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="how-to-begin" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> How to begin?</h1>
+<p>Validation begins when you first look at your data. This is when you can begin to ask questions like,
+- “Are there limits to the range of the response variable?”
+- “What is the distribution of the response variable?”
+- “Based on my prior knowledge, am I able to anticipate the structure of the model?”</p>
+<p>If you have answers to these, then you are well on your way to creating a great model.</p>
+<div id="examples" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Examples</h2>
+<p>Let’s load the data for a few examples of the data we’ll be looking at today.</p>
+<div id="stopping-distance" class="section level3" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Stopping distance</h3>
+<p>This data set has fifty measurements of stopping distance for cars travelling at different speeds. Here’s a plot of the data:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="how-to-begin.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the data</span></span>
+<span id="cb6-2"><a href="how-to-begin.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>( cars )</span>
+<span id="cb6-3"><a href="how-to-begin.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="how-to-begin.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the cars data</span></span>
+<span id="cb6-5"><a href="how-to-begin.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( cars, <span class="at">bty=</span><span class="st">&#39;n&#39;</span> )</span></code></pre></div>
+<p><img src="01_basics_files/figure-html/import-plot-cars-1.png" width="672" /></p>
+<p>We have some relevant prior knowledge: speed and distance are both positive, zero speed implies zero stopping distance, and kinetic energy is proportional to the square of speed. Both speed and distance are continuous quantities, and the vertical spread of the points tends to get wider as the speed increases.</p>
+</div>
+<div id="breast-cancer-survival" class="section level3" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Breast cancer survival</h3>
+<p>We will also use the built-in data set <code>gbsg</code> for an analysis of which factors affected the five-year survival of women in the German Breast Cancer Study Group (GBSG). Let’s import the data and generate the five year survival variable:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="how-to-begin.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the gbsg data</span></span>
+<span id="cb7-2"><a href="how-to-begin.html#cb7-2" aria-hidden="true" tabindex="-1"></a>gbsg <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="st">&quot;data/gbsg.csv&quot;</span> )</span></code></pre></div>
+<pre><code>## Rows: 686 Columns: 11</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl (11): pid, age, meno, size, grade, nodes, pgr, er, hormon, rfstime, status</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="how-to-begin.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a factor of the grade</span></span>
+<span id="cb11-2"><a href="how-to-begin.html#cb11-2" aria-hidden="true" tabindex="-1"></a>gbsg<span class="sc">$</span>grade <span class="ot">=</span> <span class="fu">factor</span>( gbsg<span class="sc">$</span>grade )</span>
+<span id="cb11-3"><a href="how-to-begin.html#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="how-to-begin.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># generate the variable `fys`, to indicate five year recurrence-free survival:</span></span>
+<span id="cb11-5"><a href="how-to-begin.html#cb11-5" aria-hidden="true" tabindex="-1"></a>gbsg<span class="sc">$</span>fys <span class="ot">=</span> <span class="fu">with</span>(gbsg, <span class="fu">ifelse</span>( rfstime <span class="sc">&gt;</span> <span class="dv">365</span><span class="sc">*</span><span class="dv">5</span>, <span class="dv">1</span>, <span class="fu">ifelse</span>(status <span class="sc">==</span> <span class="dv">0</span>, <span class="cn">NA</span>, <span class="dv">0</span>)))</span>
+<span id="cb11-6"><a href="how-to-begin.html#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="how-to-begin.html#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the data</span></span>
+<span id="cb11-8"><a href="how-to-begin.html#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( gbsg )</span></code></pre></div>
+<p><img src="01_basics_files/figure-html/import-gbsg-1.png" width="672" /></p>
+<p>The five year recurrence-free survival outcome is binary, so anticipate using a generalized linear model with binomial response (logistic regression, for example). The pair plot of all the data has some interesting features in the <code>er</code>, <code>pgr</code>, and <code>nodes</code> variables. Let’s take a closer look at those, specifically.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="how-to-begin.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a plot of the `er`, `pgr`, and `nodes` variables, with `rfstime`.</span></span>
+<span id="cb12-2"><a href="how-to-begin.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( gbsg[, <span class="fu">c</span>(<span class="st">&quot;er&quot;</span>, <span class="st">&quot;pgr&quot;</span>, <span class="st">&quot;nodes&quot;</span>, <span class="st">&quot;rfstime&quot;</span>)])</span></code></pre></div>
+<p><img src="01_basics_files/figure-html/gbsg-pairs-1.png" width="672" /></p>
+<p>It looks like <code>er</code>, <code>pgr</code>, and <code>nodes</code> are all non-negative, with patterns that cluster near zero and have progressively fewer data points at greater values. These variables are, respectively, the concentrations of estrogen receptors, the concentration of progesterone receptors, and the number of positive lymph nodes. (Subjects in the study were women with at least one positive lymph node biopsy, so none had zero positive nodes.)</p>
+<p>If we try to fit a linear trend to these data, the few observations with extremely high concentrations of receptors or many positive nodes will be influential outliers, while any meaningful detail near zero will be lost. In order to avoid those pitfalls, a <code>log()</code> or <code>sqrt()</code> transformation may be appropriate. Here, I’ll use a <code>log()</code> transformation on <code>nodes</code>, and a <code>sqrt()</code> transformation for the other two variables, in order to avoid problems trying to calculate <code>log(0)</code> for those women who had no progesterone or estrogen receptors.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="how-to-begin.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the square-root transformes er, pgr, and nodes variables, with rfstime:</span></span>
+<span id="cb13-2"><a href="how-to-begin.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>( gbsg, <span class="fu">plot</span>( <span class="fu">data.frame</span>(<span class="fu">sqrt</span>(er), <span class="fu">sqrt</span>(pgr), <span class="fu">sqrt</span>(nodes), rfstime)))</span></code></pre></div>
+<p><img src="01_basics_files/figure-html/transformed-gbsg-data-1.png" width="672" /></p>
+<p>Note how the outliers have been brought back toward the mass of data, and the detail at the low end has been expanded. A bit of work on the front end can avoid really difficult problems in the analysis and validation later.</p>
+</div>
+<div id="covid-19-hospital-admissions" class="section level3" number="2.1.3">
+<h3><span class="header-section-number">2.1.3</span> COVID-19 hospital admissions</h3>
+<p>The third data set that we’ll use for illustration is a time series of daily hospital admissions for COVID-19. I like to begin with a pair plot of all the data, but here we have 81 columns, which is too many to fit on a pair plot. Instead, we’ll look at the time series.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="how-to-begin.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the covid dataset</span></span>
+<span id="cb14-2"><a href="how-to-begin.html#cb14-2" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="st">&quot;data/covid.csv&quot;</span> )</span></code></pre></div>
+<pre><code>## Rows: 518 Columns: 67</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl  (66): DAY_OF_THE_WEEK, HOSPITAL_CENSUS_M, INDX_UCDH_TEST_PT_CNT, INDX_U...
+## date  (1): date</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="how-to-begin.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add the date column to the covid data</span></span>
+<span id="cb18-2"><a href="how-to-begin.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># covid$date = mdy( covid$SOURCE_DATA_DATE )</span></span>
+<span id="cb18-3"><a href="how-to-begin.html#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="how-to-begin.html#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make day of the week a factor</span></span>
+<span id="cb18-5"><a href="how-to-begin.html#cb18-5" aria-hidden="true" tabindex="-1"></a>covid<span class="sc">$</span>DAY_OF_THE_WEEK <span class="ot">=</span> <span class="fu">factor</span>( covid<span class="sc">$</span>DAY_OF_THE_WEEK )</span>
+<span id="cb18-6"><a href="how-to-begin.html#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="how-to-begin.html#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the admissions time series</span></span>
+<span id="cb18-8"><a href="how-to-begin.html#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>( covid, <span class="fu">plot</span>(date, COVID_NEW_ADM_CNT, <span class="at">type=</span><span class="st">&#39;l&#39;</span>) )</span></code></pre></div>
+<p><img src="01_basics_files/figure-html/import-covid-1.png" width="672" /></p>
+<p>The count of daily admissions is a nonnegative integer. It appears that there is a lot more variability in the admissions count when the recent rate of admissions is near its peaks than when it is near zero. There isn’t a theoretical maximum for daily admissions (though of course there would be a practical maximum, if the hospital became overwhelmed). And we can reasonably assume that each admission was an independent decision. To a statistician, those facts all point toward trying to assume that the counts follow a Poisson distribution.</p>
+<p>There is another type of independence to consider here: is the number of daily admissions independent from the number of admissions the day before? That kind of independence doesn’t mean you pretend that there’s no information in the most recent counts - instead, it means that the short-term fluctuations are as likely to be above the trend as below it. Without that independence, we would say that the data are autocorrelated. And we can test for autocorrelation:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="how-to-begin.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the autocorelation function of the diff-1 covid admissions</span></span>
+<span id="cb19-2"><a href="how-to-begin.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>( <span class="fu">diff</span>(covid<span class="sc">$</span>COVID_NEW_ADM_CNT, <span class="dv">1</span>) )</span></code></pre></div>
+<p><img src="01_basics_files/figure-html/test-autocorrelation-1.png" width="672" /></p>
+<p>The salient feature of this plot is that the second line points downward, and crosses the dashed blue line. There is apparently a tendency for the count to decrease the day after it increases, and vice versa. This may or may not be due to some trend in the covariates - we’ll check again after accounting for the explanatory variables.</p>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="basic-information.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="essential-concepts.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/ucdavisdatalab/workshop_model_validation/edit/master/01_basics.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/ucdavisdatalab/workshop_model_validation/blob/master/01_basics.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
