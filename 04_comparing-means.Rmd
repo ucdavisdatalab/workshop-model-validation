@@ -1,4 +1,4 @@
-```{r load-libraries, echo=FALSE, warning=FALSE,include=FALSE}
+```{r load-libraries, echo=FALSE, warning=FALSE, include=FALSE}
 library("readr")
 library( "lubridate" )
 library( "dplyr" )
@@ -50,11 +50,11 @@ Knowing the allowable range of the response will help you to decide what distrib
 ## Validate the assumptions
 Having posited a model, we may check whether the model generates fits and predictions that agree with the assumptions. Let's do this for our examples.
 
-```{r mean-validation-cars}
+```{r mean-validation-cars, cache=TRUE}
 nfold = 5
 folds = sample( 1:nfold, size=nrow(cars), replace=TRUE )
 
-preds = list( 'a' = numeric(nrow(cars)), 'b' = numeric(nrow(cars)), 'c' = numeric(nrow(cars)), 'd' = numeric(nrow(cars)) )
+preds = list( 'a' = numeric(nrow(cars)), 'b' = numeric(nrow(cars)), 'c' = numeric(nrow(cars)), 'd' = numeric(nrow(cars)), 'e' = numeric(nrow(cars)), 'f'= numeric(nrow(cars)))
 
 for ( i in 1:nfold ) {
   # Estimate a model for the stopping distance data
@@ -62,12 +62,17 @@ for ( i in 1:nfold ) {
   lm2 = lm( dist ~ I(speed^2), data=cars[ folds!= i, ] )
   lm3 = lm( dist ~ I(speed^3), data=cars[ folds!= i, ] )
   lm4 = lm( dist ~ I(speed^2) + 0, data=cars[ folds!= i, ] )
+  
+  lm5 = lm( dist ~ I(speed^2) + speed, data=cars[ folds!= i, ] )
+  lm6 = lm( dist ~ I(speed^2) + speed+0, data=cars[ folds!= i, ] )
     
   
   preds[['a']][ folds == i ] = predict( lm1, cars[ folds==i, ] )
   preds[['b']][ folds == i ] = predict( lm2, cars[ folds==i, ] )
   preds[['c']][ folds == i ] = predict( lm3, cars[ folds==i, ] )
   preds[['d']][ folds == i ] = predict( lm4, cars[ folds==i, ] )
+  preds[['e']][ folds == i ] = predict( lm5, cars[ folds==i, ] )
+  preds[['f']][ folds == i ] = predict( lm6, cars[ folds==i, ] )
 }
 
 # calculate the mean squared error of the models
@@ -75,10 +80,12 @@ var( preds[['a']] - cars$dist )
 var( preds[['b']] - cars$dist )
 var( preds[['c']] - cars$dist )
 var( preds[['d']] - cars$dist )
+var( preds[['e']] - cars$dist )
+var( preds[['f']] - cars$dist )
 ```
 
 
-```{r mean-validation-gbsg}
+```{r mean-validation-gbsg, cache=TRUE}
 nfold = 5
 folds = sample( 1:nfold, size=nrow(gbsg), replace=TRUE )
 
@@ -112,7 +119,7 @@ Recall that one of our first validation tasks for the COVID-19 admissions data w
 
 Here, we use walkforward six-fold cross-validation to assess whether the fitted model generates predictions that are on average accurate to the observed future values.
 
-```{r mean-validation-covid}
+```{r mean-validation-covid, cache=TRUE}
 set.seed(20211108)
 
 covid$D1_admissions = lead(covid$COVID_NEW_ADM_CNT, 1)

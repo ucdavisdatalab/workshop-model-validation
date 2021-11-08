@@ -187,6 +187,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html"><i class="fa fa-check"></i><b>7</b> Validating the model’s distributional form</a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#posit-a-distribution"><i class="fa fa-check"></i><b>7.1</b> Posit a distribution</a></li>
+<li class="chapter" data-level="7.2" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#validate-your-choice"><i class="fa fa-check"></i><b>7.2</b> Validate your choice</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#stopping-distance-1"><i class="fa fa-check"></i><b>7.2.1</b> Stopping distance</a></li>
+</ul></li>
 </ul></li>
 </ul>
 
@@ -211,11 +215,65 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="posit-a-distribution" class="section level2" number="7.1">
 <h2><span class="header-section-number">7.1</span> Posit a distribution</h2>
 <p>Recall that we already did this for the examples. This work proceeds by intuition gained through experience, but is often not particularly difficult. We already talked about the allowable range of the responses, and how to interpret those for the mean.</p>
-<ul>
-<li>Unbounded continuous data? Try a normal distribution.</li>
-<li>Continuous data, but</li>
-</ul>
+</div>
+<div id="validate-your-choice" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Validate your choice</h2>
+<p>Compare the difference between the predicted and observed values to what you assume you would see, based on the posited distribution. Let’s look at the examples.</p>
+<div id="stopping-distance-1" class="section level3" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> Stopping distance</h3>
+<p>I’ve said that the stopping distance example should use a normal distribution, so let’s look now to see how well the model matches that distribution. Now we can look at the in-sample error distribution as well as the out-of-sample error distribution, since unlike the mean, the linear assumption doesn’t enforce the response distribution.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="validating-the-models-distributional-form.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># estimate a model for stopping distance</span></span>
+<span id="cb44-2"><a href="validating-the-models-distributional-form.html#cb44-2" aria-hidden="true" tabindex="-1"></a>stop <span class="ot">=</span> <span class="fu">lm</span>( dist <span class="sc">~</span> speed <span class="sc">+</span> <span class="fu">I</span>(speed<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="dv">0</span>, <span class="at">data=</span>cars )</span>
+<span id="cb44-3"><a href="validating-the-models-distributional-form.html#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="validating-the-models-distributional-form.html#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the four diagnostic plots on a 2x2 grid:</span></span>
+<span id="cb44-5"><a href="validating-the-models-distributional-form.html#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(<span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb44-6"><a href="validating-the-models-distributional-form.html#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(stop)</span></code></pre></div>
+<p><img src="05_comparing-variance_files/figure-html/cars-diagnostic-plots-1.png" width="672" /></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="validating-the-models-distributional-form.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the best fit line and confidence/predictive intervals</span></span>
+<span id="cb45-2"><a href="validating-the-models-distributional-form.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="do">## to begin, define the inputs for the annotations</span></span>
+<span id="cb45-3"><a href="validating-the-models-distributional-form.html#cb45-3" aria-hidden="true" tabindex="-1"></a>xx <span class="ot">=</span> <span class="fu">data.frame</span>( <span class="at">speed=</span><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="at">length.out=</span><span class="dv">200</span>) )</span>
+<span id="cb45-4"><a href="validating-the-models-distributional-form.html#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="validating-the-models-distributional-form.html#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="do">## now plot the data points</span></span>
+<span id="cb45-6"><a href="validating-the-models-distributional-form.html#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb45-7"><a href="validating-the-models-distributional-form.html#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-8"><a href="validating-the-models-distributional-form.html#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="do">## add the best-fit line</span></span>
+<span id="cb45-9"><a href="validating-the-models-distributional-form.html#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx))</span>
+<span id="cb45-10"><a href="validating-the-models-distributional-form.html#cb45-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-11"><a href="validating-the-models-distributional-form.html#cb45-11" aria-hidden="true" tabindex="-1"></a><span class="do">## add lines to show the confidence interval for the best-fit line</span></span>
+<span id="cb45-12"><a href="validating-the-models-distributional-form.html#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx, <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)[, <span class="dv">2</span>], <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
+<span id="cb45-13"><a href="validating-the-models-distributional-form.html#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx, <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)[, <span class="dv">3</span>], <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
+<span id="cb45-14"><a href="validating-the-models-distributional-form.html#cb45-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-15"><a href="validating-the-models-distributional-form.html#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="do">## add lines to show a prediction interval for new data points</span></span>
+<span id="cb45-16"><a href="validating-the-models-distributional-form.html#cb45-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx, <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)[, <span class="dv">2</span>], <span class="at">lty=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&#39;darkorange&#39;</span>)</span>
+<span id="cb45-17"><a href="validating-the-models-distributional-form.html#cb45-17" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx, <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)[, <span class="dv">3</span>], <span class="at">lty=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&#39;darkorange&#39;</span>)</span></code></pre></div>
+<p><img src="05_comparing-variance_files/figure-html/cars-intervals-1.png" width="672" /></p>
+<p>The plot reveals obvious problems: the prediction intervals include negative distances, and it doesn’t account for the pattern where the stopping distances are more variable at greater speeds. So, the distribution assumed by the model doesn’t match the distribution of the data.</p>
+<p>One way of addressing these problems is to implement a transformation that will make the relationship linear. Either a log or a square root transformation would work here, and the square root fits better with the model form that we’ve assumed. So let’s implement it:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="validating-the-models-distributional-form.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take the square root of both sides of the model formula</span></span>
+<span id="cb46-2"><a href="validating-the-models-distributional-form.html#cb46-2" aria-hidden="true" tabindex="-1"></a>stop_xfrm <span class="ot">=</span> <span class="fu">lm</span>( <span class="fu">sqrt</span>(dist) <span class="sc">~</span> <span class="fu">sqrt</span>(speed) <span class="sc">+</span> speed <span class="sc">+</span> <span class="dv">0</span>, <span class="at">data=</span>cars )</span>
+<span id="cb46-3"><a href="validating-the-models-distributional-form.html#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="validating-the-models-distributional-form.html#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the diagnostic plots on a 2x2 grid</span></span>
+<span id="cb46-5"><a href="validating-the-models-distributional-form.html#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>( <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb46-6"><a href="validating-the-models-distributional-form.html#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(stop_xfrm)</span></code></pre></div>
+<p><img src="05_comparing-variance_files/figure-html/cars-diagnostic-plots-transformed-1.png" width="672" /></p>
+<p>The Q-Q plot is greatly improved over the first version, which says that the residuals more closely match the assumption of normality.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="validating-the-models-distributional-form.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the dat points</span></span>
+<span id="cb47-2"><a href="validating-the-models-distributional-form.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb47-3"><a href="validating-the-models-distributional-form.html#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="validating-the-models-distributional-form.html#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="do">## add the best-fit line</span></span>
+<span id="cb47-5"><a href="validating-the-models-distributional-form.html#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop_xfrm, xx)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb47-6"><a href="validating-the-models-distributional-form.html#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-7"><a href="validating-the-models-distributional-form.html#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="do">## add lines to show the confidence interval for the best-fit line</span></span>
+<span id="cb47-8"><a href="validating-the-models-distributional-form.html#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop_xfrm, xx, <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)[, <span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
+<span id="cb47-9"><a href="validating-the-models-distributional-form.html#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop_xfrm, xx, <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)[, <span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
+<span id="cb47-10"><a href="validating-the-models-distributional-form.html#cb47-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-11"><a href="validating-the-models-distributional-form.html#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="do">## add lines to show a prediction interval for new data points</span></span>
+<span id="cb47-12"><a href="validating-the-models-distributional-form.html#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop_xfrm, xx, <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)[, <span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&#39;darkorange&#39;</span>)</span>
+<span id="cb47-13"><a href="validating-the-models-distributional-form.html#cb47-13" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop_xfrm, xx, <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)[, <span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&#39;darkorange&#39;</span>)</span></code></pre></div>
+<p><img src="05_comparing-variance_files/figure-html/cars-intervals-transformed-1.png" width="672" /></p>
+<p>The happy result is a model where the mean predictions are about the same as before, but the predictive interval is a better match to the data.</p>
 
+</div>
 </div>
 </div>
             </section>

@@ -25,3 +25,5 @@ validate-the-assumptions
 covid-19-admissions-example
 validating-the-models-distributional-form
 posit-a-distribution
+validate-your-choice
+stopping-distance-1

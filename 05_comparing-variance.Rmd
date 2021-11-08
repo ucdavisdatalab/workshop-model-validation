@@ -5,7 +5,74 @@ Assuming a form of distribution for the data is not only about allowing the mode
 ## Posit a distribution
 Recall that we already did this for the examples. This work proceeds by intuition gained through experience, but is often not particularly difficult. We already talked about the allowable range of the responses, and how to interpret those for the mean. 
 
+## Validate your choice
+Compare the difference between the predicted and observed values to what you assume you would see, based on the posited distribution. Let's look at the examples.
 
-- Unbounded continuous data? Try a normal distribution.
-- Continuous data, but 
+### Stopping distance
+I've said that the stopping distance example should use a normal distribution, so let's look now to see how well the model matches that distribution. Now we can look at the in-sample error distribution as well as the out-of-sample error distribution, since unlike the mean, the linear assumption doesn't enforce the response distribution.
+
+```{r cars-diagnostic-plots}
+# estimate a model for stopping distance
+stop = lm( dist ~ speed + I(speed^2) + 0, data=cars )
+
+# plot the four diagnostic plots on a 2x2 grid:
+layout(matrix(1:4, 2, 2))
+plot(stop)
+```
+
+```{r cars-intervals}
+# plot the best fit line and confidence/predictive intervals
+## to begin, define the inputs for the annotations
+xx = data.frame( speed=seq(0, 25, length.out=200) )
+
+## now plot the data points
+plot(cars)
+
+## add the best-fit line
+lines(xx$speed, predict(stop, xx))
+
+## add lines to show the confidence interval for the best-fit line
+lines(xx$speed, predict(stop, xx, interval="confidence")[, 2], lty=2, col='red')
+lines(xx$speed, predict(stop, xx, interval="confidence")[, 3], lty=2, col='red')
+
+## add lines to show a prediction interval for new data points
+lines(xx$speed, predict(stop, xx, interval="prediction")[, 2], lty=3, col='darkorange')
+lines(xx$speed, predict(stop, xx, interval="prediction")[, 3], lty=3, col='darkorange')
+```
+
+The plot reveals obvious problems: the prediction intervals include negative distances, and it doesn't account for the pattern where the stopping distances are more variable at greater speeds. So, the distribution assumed by the model doesn't match the distribution of the data. 
+
+One way of addressing these problems is to implement a transformation that will make the relationship linear. Either a log or a square root transformation would work here, and the square root fits better with the model form that we've assumed. So let's implement it:
+
+```{r cars-diagnostic-plots-transformed}
+# take the square root of both sides of the model formula
+stop_xfrm = lm( sqrt(dist) ~ sqrt(speed) + speed + 0, data=cars )
+
+# plot the diagnostic plots on a 2x2 grid
+layout( matrix(1:4, 2, 2))
+plot(stop_xfrm)
+```
+
+The Q-Q plot is greatly improved over the first version, which says that the residuals more closely match the assumption of normality.
+
+
+```{r cars-intervals-transformed}
+# plot the dat points
+plot(cars)
+
+## add the best-fit line
+lines(xx$speed, predict(stop_xfrm, xx)^2)
+
+## add lines to show the confidence interval for the best-fit line
+lines(xx$speed, predict(stop_xfrm, xx, interval="confidence")[, 2]^2, lty=2, col='red')
+lines(xx$speed, predict(stop_xfrm, xx, interval="confidence")[, 3]^2, lty=2, col='red')
+
+## add lines to show a prediction interval for new data points
+lines(xx$speed, predict(stop_xfrm, xx, interval="prediction")[, 2]^2, lty=3, col='darkorange')
+lines(xx$speed, predict(stop_xfrm, xx, interval="prediction")[, 3]^2, lty=3, col='darkorange')
+```
+
+The happy result is a model where the mean predictions are about the same as before, but the predictive interval is a better match to the data.
+
+
 
