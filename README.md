@@ -4,7 +4,7 @@ _[UC Davis DataLab](https://datalab.ucdavis.edu/)_
 _Fall 2021_  
 _Instructor: Wesley Brooks <<wbrooks@ucdavis.edu>>_  
 
-* [Reader](https://ucdavisdatalab.github.io/workshop-health-ml/)
+* [Reader](https://ucdavisdatalab.github.io/workshop_model_validation/)
 * [Event Page](https://datalab.ucdavis.edu/eventscalendar/YOUR_EVENT/)
 
 ### Description
