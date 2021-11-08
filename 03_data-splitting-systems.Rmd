@@ -4,6 +4,8 @@ To train and validate a model requires that we have in-sample and out-of-sample 
 ## Train/validation split
 One solution is to reserve some data for validation, and use what is left for training the model. The split can be random or not - for instance, you may hold back the most recent year of data for validation, or you may randomly sample some proportion (e.g., 30%) of the observations to reserve for validation.
 
+
+
 ## Cross-validation
 Cross validation is a kind of repeated training/validation split, which is iterated until all of the data has been used for testing. Each training/validation split may be random or may take data that are grouped according to some meaningful value (often that means resolving one year's data at a time as validation data).
 
@@ -47,6 +49,7 @@ lines( x=xx, y=predict(cv3fm3, data.frame(speed=xx)))
 
 plot( cars[fold == 'black', ], bty='n', col=fold[ fold == 'black'], pch=16, ylim=ylim )
 lines( x=xx, y=predict(cv3fm3, data.frame(speed=xx)), lty=4)
+
 ```
 
 ### Combining the two

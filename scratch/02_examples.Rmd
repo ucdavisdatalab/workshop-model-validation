@@ -17,6 +17,7 @@ library( "readr" )
 covid = read_csv( "data/covid.csv" )
 ```
 
+The COVID-19 admissions example has data for the number of people who were admitted to a hospital for COVID-19, as well as several covariates. 
 
 
 
@@ -32,5 +33,6 @@ gbsg = read_csv( "data/gbsg.csv" )
 gbsg$fys = with(gbsg, ifelse( rfstime > 365*5, 1, ifelse(status == 0, NA, 0)))
 ```
 
+Our goal with this data will be to estimate what effect the covariates have on five year recurrence-free survival.
 
 

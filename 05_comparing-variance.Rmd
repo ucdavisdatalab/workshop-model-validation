@@ -1,2 +1,11 @@
 # Validating the model's distributional form
-tktktk
+
+Assuming a form of distribution for the data is not only about allowing the model estimation software to run. It it also necessary before we can create confidence intervals for our predictions. First we will posit a particular distribution for the responses, and then we will validate it. The validation step means that we will reject the posited distribution if it doesn't agree with the observed data.
+
+## Posit a distribution
+Recall that we already did this for the examples. This work proceeds by intuition gained through experience, but is often not particularly difficult. We already talked about the allowable range of the responses, and how to interpret those for the mean. 
+
+
+- Unbounded continuous data? Try a normal distribution.
+- Continuous data, but 
+
