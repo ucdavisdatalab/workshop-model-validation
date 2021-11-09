@@ -1,8 +1,12 @@
 # Validating the model's distributional form
 
 ```{r load-outputs, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+library( "readr")
+
 load("output/pred_gbsg.rda")
 load("output/gbsg.rda")
+covid = read_csv( "data/covid.csv" )
+covid$DAY_OF_THE_WEEK = factor(covid$DAY_OF_THE_WEEK)
 ```
 
 Assuming a form of distribution for the data is not only about allowing the model estimation software to run. It it also necessary before we can create confidence intervals for our predictions. First we will posit a particular distribution for the responses, and then we will validate it. The validation step means that we will reject the posited distribution if it doesn't agree with the observed data.

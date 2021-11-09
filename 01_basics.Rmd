@@ -92,12 +92,6 @@ The third data set that we'll use for illustration is a time series of daily hos
 # import the covid dataset
 covid = read_csv( "data/covid.csv" )
 
-# add the date column to the covid data
-# covid$date = mdy( covid$SOURCE_DATA_DATE )
-
-# make day of the week a factor
-covid$DAY_OF_THE_WEEK = factor( covid$DAY_OF_THE_WEEK )
-
 # plot the admissions time series
 with( covid, plot(date, COVID_NEW_ADM_CNT, type='l') )
 ```
@@ -177,6 +171,9 @@ In fact, the GBM models I'll use here include some additional "gradient boosting
 The response variable for the random forest model is the number of new COVID-19 admissions on a given day. I'm treating this count as if it follows a Poisson distribution. Thus, the assumptions that must be validated for this model are the relationship $\mathbb{E}(Y) = f( X )$, and the independence and Poisson distribution of the counts.
 
 
+```{r ch1-save, include=FALSE, warning=FALSE, echo=FALSE, message=FALSE}
+save( gbsg, file="output/gbsg.rda" )
+```
 
 
 
