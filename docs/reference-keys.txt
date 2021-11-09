@@ -27,3 +27,5 @@ validating-the-models-distributional-form
 posit-a-distribution
 validate-your-choice
 stopping-distance-1
+breast-cancer-example
+covid-admissions-example

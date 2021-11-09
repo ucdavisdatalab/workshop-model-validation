@@ -24,7 +24,7 @@
 <meta name="author" content="Wesley Brooks" />
 
 
-<meta name="date" content="2021-11-08" />
+<meta name="date" content="2021-11-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -190,6 +190,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#validate-your-choice"><i class="fa fa-check"></i><b>7.2</b> Validate your choice</a>
 <ul>
 <li class="chapter" data-level="7.2.1" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#stopping-distance-1"><i class="fa fa-check"></i><b>7.2.1</b> Stopping distance</a></li>
+<li class="chapter" data-level="7.2.2" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#breast-cancer-example"><i class="fa fa-check"></i><b>7.2.2</b> Breast cancer example</a></li>
+<li class="chapter" data-level="7.2.3" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#covid-admissions-example"><i class="fa fa-check"></i><b>7.2.3</b> COVID admissions example</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -222,19 +224,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="stopping-distance" class="section level3" number="2.1.1">
 <h3><span class="header-section-number">2.1.1</span> Stopping distance</h3>
 <p>This data set has fifty measurements of stopping distance for cars travelling at different speeds. Here’s a plot of the data:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="how-to-begin.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the data</span></span>
-<span id="cb6-2"><a href="how-to-begin.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>( cars )</span>
-<span id="cb6-3"><a href="how-to-begin.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="how-to-begin.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the cars data</span></span>
-<span id="cb6-5"><a href="how-to-begin.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( cars, <span class="at">bty=</span><span class="st">&#39;n&#39;</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="how-to-begin.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the data</span></span>
+<span id="cb1-2"><a href="how-to-begin.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>( cars )</span>
+<span id="cb1-3"><a href="how-to-begin.html#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="how-to-begin.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the cars data</span></span>
+<span id="cb1-5"><a href="how-to-begin.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( cars, <span class="at">bty=</span><span class="st">&#39;n&#39;</span> )</span></code></pre></div>
 <p><img src="01_basics_files/figure-html/import-plot-cars-1.png" width="672" /></p>
 <p>We have some relevant prior knowledge: speed and distance are both positive, zero speed implies zero stopping distance, and kinetic energy is proportional to the square of speed. Both speed and distance are continuous quantities, and the vertical spread of the points tends to get wider as the speed increases.</p>
 </div>
 <div id="breast-cancer-survival" class="section level3" number="2.1.2">
 <h3><span class="header-section-number">2.1.2</span> Breast cancer survival</h3>
 <p>We will also use the built-in data set <code>gbsg</code> for an analysis of which factors affected the five-year survival of women in the German Breast Cancer Study Group (GBSG). Let’s import the data and generate the five year survival variable:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="how-to-begin.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the gbsg data</span></span>
-<span id="cb7-2"><a href="how-to-begin.html#cb7-2" aria-hidden="true" tabindex="-1"></a>gbsg <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="st">&quot;data/gbsg.csv&quot;</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="how-to-begin.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the gbsg data</span></span>
+<span id="cb2-2"><a href="how-to-begin.html#cb2-2" aria-hidden="true" tabindex="-1"></a>gbsg <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="st">&quot;data/gbsg.csv&quot;</span> )</span></code></pre></div>
 <pre><code>## Rows: 686 Columns: 11</code></pre>
 <pre><code>## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -242,31 +244,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="how-to-begin.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a factor of the grade</span></span>
-<span id="cb11-2"><a href="how-to-begin.html#cb11-2" aria-hidden="true" tabindex="-1"></a>gbsg<span class="sc">$</span>grade <span class="ot">=</span> <span class="fu">factor</span>( gbsg<span class="sc">$</span>grade )</span>
-<span id="cb11-3"><a href="how-to-begin.html#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="how-to-begin.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># generate the variable `fys`, to indicate five year recurrence-free survival:</span></span>
-<span id="cb11-5"><a href="how-to-begin.html#cb11-5" aria-hidden="true" tabindex="-1"></a>gbsg<span class="sc">$</span>fys <span class="ot">=</span> <span class="fu">with</span>(gbsg, <span class="fu">ifelse</span>( rfstime <span class="sc">&gt;</span> <span class="dv">365</span><span class="sc">*</span><span class="dv">5</span>, <span class="dv">1</span>, <span class="fu">ifelse</span>(status <span class="sc">==</span> <span class="dv">0</span>, <span class="cn">NA</span>, <span class="dv">0</span>)))</span>
-<span id="cb11-6"><a href="how-to-begin.html#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="how-to-begin.html#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the data</span></span>
-<span id="cb11-8"><a href="how-to-begin.html#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( gbsg )</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="how-to-begin.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a factor of the grade</span></span>
+<span id="cb6-2"><a href="how-to-begin.html#cb6-2" aria-hidden="true" tabindex="-1"></a>gbsg<span class="sc">$</span>grade <span class="ot">=</span> <span class="fu">factor</span>( gbsg<span class="sc">$</span>grade )</span>
+<span id="cb6-3"><a href="how-to-begin.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="how-to-begin.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># generate the variable `fys`, to indicate five year recurrence-free survival:</span></span>
+<span id="cb6-5"><a href="how-to-begin.html#cb6-5" aria-hidden="true" tabindex="-1"></a>gbsg<span class="sc">$</span>fys <span class="ot">=</span> <span class="fu">with</span>(gbsg, <span class="fu">ifelse</span>( rfstime <span class="sc">&gt;</span> <span class="dv">365</span><span class="sc">*</span><span class="dv">5</span>, <span class="dv">1</span>, <span class="fu">ifelse</span>(status <span class="sc">==</span> <span class="dv">0</span>, <span class="cn">NA</span>, <span class="dv">0</span>)))</span>
+<span id="cb6-6"><a href="how-to-begin.html#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="how-to-begin.html#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the data</span></span>
+<span id="cb6-8"><a href="how-to-begin.html#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( gbsg )</span></code></pre></div>
 <p><img src="01_basics_files/figure-html/import-gbsg-1.png" width="672" /></p>
 <p>The five year recurrence-free survival outcome is binary, so anticipate using a generalized linear model with binomial response (logistic regression, for example). The pair plot of all the data has some interesting features in the <code>er</code>, <code>pgr</code>, and <code>nodes</code> variables. Let’s take a closer look at those, specifically.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="how-to-begin.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a plot of the `er`, `pgr`, and `nodes` variables, with `rfstime`.</span></span>
-<span id="cb12-2"><a href="how-to-begin.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( gbsg[, <span class="fu">c</span>(<span class="st">&quot;er&quot;</span>, <span class="st">&quot;pgr&quot;</span>, <span class="st">&quot;nodes&quot;</span>, <span class="st">&quot;rfstime&quot;</span>)])</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="how-to-begin.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a plot of the `er`, `pgr`, and `nodes` variables, with `rfstime`.</span></span>
+<span id="cb7-2"><a href="how-to-begin.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( gbsg[, <span class="fu">c</span>(<span class="st">&quot;er&quot;</span>, <span class="st">&quot;pgr&quot;</span>, <span class="st">&quot;nodes&quot;</span>, <span class="st">&quot;rfstime&quot;</span>)])</span></code></pre></div>
 <p><img src="01_basics_files/figure-html/gbsg-pairs-1.png" width="672" /></p>
 <p>It looks like <code>er</code>, <code>pgr</code>, and <code>nodes</code> are all non-negative, with patterns that cluster near zero and have progressively fewer data points at greater values. These variables are, respectively, the concentrations of estrogen receptors, the concentration of progesterone receptors, and the number of positive lymph nodes. (Subjects in the study were women with at least one positive lymph node biopsy, so none had zero positive nodes.)</p>
 <p>If we try to fit a linear trend to these data, the few observations with extremely high concentrations of receptors or many positive nodes will be influential outliers, while any meaningful detail near zero will be lost. In order to avoid those pitfalls, a <code>log()</code> or <code>sqrt()</code> transformation may be appropriate. Here, I’ll use a <code>log()</code> transformation on <code>nodes</code>, and a <code>sqrt()</code> transformation for the other two variables, in order to avoid problems trying to calculate <code>log(0)</code> for those women who had no progesterone or estrogen receptors.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="how-to-begin.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the square-root transformes er, pgr, and nodes variables, with rfstime:</span></span>
-<span id="cb13-2"><a href="how-to-begin.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>( gbsg, <span class="fu">plot</span>( <span class="fu">data.frame</span>(<span class="fu">sqrt</span>(er), <span class="fu">sqrt</span>(pgr), <span class="fu">sqrt</span>(nodes), rfstime)))</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="how-to-begin.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the square-root transformes er, pgr, and nodes variables, with rfstime:</span></span>
+<span id="cb8-2"><a href="how-to-begin.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>( gbsg, <span class="fu">plot</span>( <span class="fu">data.frame</span>(<span class="fu">sqrt</span>(er), <span class="fu">sqrt</span>(pgr), <span class="fu">sqrt</span>(nodes), rfstime)))</span></code></pre></div>
 <p><img src="01_basics_files/figure-html/transformed-gbsg-data-1.png" width="672" /></p>
 <p>Note how the outliers have been brought back toward the mass of data, and the detail at the low end has been expanded. A bit of work on the front end can avoid really difficult problems in the analysis and validation later.</p>
 </div>
 <div id="covid-19-hospital-admissions" class="section level3" number="2.1.3">
 <h3><span class="header-section-number">2.1.3</span> COVID-19 hospital admissions</h3>
 <p>The third data set that we’ll use for illustration is a time series of daily hospital admissions for COVID-19. I like to begin with a pair plot of all the data, but here we have 81 columns, which is too many to fit on a pair plot. Instead, we’ll look at the time series.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="how-to-begin.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the covid dataset</span></span>
-<span id="cb14-2"><a href="how-to-begin.html#cb14-2" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="st">&quot;data/covid.csv&quot;</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="how-to-begin.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the covid dataset</span></span>
+<span id="cb9-2"><a href="how-to-begin.html#cb9-2" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="st">&quot;data/covid.csv&quot;</span> )</span></code></pre></div>
 <pre><code>## Rows: 518 Columns: 67</code></pre>
 <pre><code>## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -275,19 +277,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="how-to-begin.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add the date column to the covid data</span></span>
-<span id="cb18-2"><a href="how-to-begin.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># covid$date = mdy( covid$SOURCE_DATA_DATE )</span></span>
-<span id="cb18-3"><a href="how-to-begin.html#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="how-to-begin.html#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make day of the week a factor</span></span>
-<span id="cb18-5"><a href="how-to-begin.html#cb18-5" aria-hidden="true" tabindex="-1"></a>covid<span class="sc">$</span>DAY_OF_THE_WEEK <span class="ot">=</span> <span class="fu">factor</span>( covid<span class="sc">$</span>DAY_OF_THE_WEEK )</span>
-<span id="cb18-6"><a href="how-to-begin.html#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="how-to-begin.html#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the admissions time series</span></span>
-<span id="cb18-8"><a href="how-to-begin.html#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>( covid, <span class="fu">plot</span>(date, COVID_NEW_ADM_CNT, <span class="at">type=</span><span class="st">&#39;l&#39;</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="how-to-begin.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add the date column to the covid data</span></span>
+<span id="cb13-2"><a href="how-to-begin.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># covid$date = mdy( covid$SOURCE_DATA_DATE )</span></span>
+<span id="cb13-3"><a href="how-to-begin.html#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="how-to-begin.html#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make day of the week a factor</span></span>
+<span id="cb13-5"><a href="how-to-begin.html#cb13-5" aria-hidden="true" tabindex="-1"></a>covid<span class="sc">$</span>DAY_OF_THE_WEEK <span class="ot">=</span> <span class="fu">factor</span>( covid<span class="sc">$</span>DAY_OF_THE_WEEK )</span>
+<span id="cb13-6"><a href="how-to-begin.html#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="how-to-begin.html#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the admissions time series</span></span>
+<span id="cb13-8"><a href="how-to-begin.html#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>( covid, <span class="fu">plot</span>(date, COVID_NEW_ADM_CNT, <span class="at">type=</span><span class="st">&#39;l&#39;</span>) )</span></code></pre></div>
 <p><img src="01_basics_files/figure-html/import-covid-1.png" width="672" /></p>
 <p>The count of daily admissions is a nonnegative integer. It appears that there is a lot more variability in the admissions count when the recent rate of admissions is near its peaks than when it is near zero. There isn’t a theoretical maximum for daily admissions (though of course there would be a practical maximum, if the hospital became overwhelmed). And we can reasonably assume that each admission was an independent decision. To a statistician, those facts all point toward trying to assume that the counts follow a Poisson distribution.</p>
 <p>There is another type of independence to consider here: is the number of daily admissions independent from the number of admissions the day before? That kind of independence doesn’t mean you pretend that there’s no information in the most recent counts - instead, it means that the short-term fluctuations are as likely to be above the trend as below it. Without that independence, we would say that the data are autocorrelated. And we can test for autocorrelation:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="how-to-begin.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the autocorelation function of the diff-1 covid admissions</span></span>
-<span id="cb19-2"><a href="how-to-begin.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>( <span class="fu">diff</span>(covid<span class="sc">$</span>COVID_NEW_ADM_CNT, <span class="dv">1</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="how-to-begin.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the autocorelation function of the diff-1 covid admissions</span></span>
+<span id="cb14-2"><a href="how-to-begin.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>( <span class="fu">diff</span>(covid<span class="sc">$</span>COVID_NEW_ADM_CNT, <span class="dv">1</span>) )</span></code></pre></div>
 <p><img src="01_basics_files/figure-html/test-autocorrelation-1.png" width="672" /></p>
 <p>The salient feature of this plot is that the second line points downward, and crosses the dashed blue line. There is apparently a tendency for the count to decrease the day after it increases, and vice versa. This may or may not be due to some trend in the covariates - we’ll check again after accounting for the explanatory variables.</p>
 </div>

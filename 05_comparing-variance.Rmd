@@ -1,5 +1,10 @@
 # Validating the model's distributional form
 
+```{r load-outputs, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+load("output/pred_gbsg.rda")
+load("output/gbsg.rda")
+```
+
 Assuming a form of distribution for the data is not only about allowing the model estimation software to run. It it also necessary before we can create confidence intervals for our predictions. First we will posit a particular distribution for the responses, and then we will validate it. The validation step means that we will reject the posited distribution if it doesn't agree with the observed data.
 
 ## Posit a distribution
@@ -73,6 +78,58 @@ lines(xx$speed, predict(stop_xfrm, xx, interval="prediction")[, 3]^2, lty=3, col
 ```
 
 The happy result is a model where the mean predictions are about the same as before, but the predictive interval is a better match to the data.
+
+
+### Breast cancer example
+
+We used logistic regression to create a model for five year survival among women in the German Breast Cancer Study Group. To validate the assumption of a binomial distribution with a logistic link, we will bin predictions into groups that have similar predicted probability of survival, and then check that the observed frequency of survival in each bin follows the assumed binomial distribution.
+
+```{r binomial-cv}
+# divide the predictions into twenty bins (nineteen breakpoints)
+q_gbsg = quantile( pred_gbsg, seq(0.05, 0.95, length.out=19) )
+
+# add 0 and 1 as the extremes of the probabilities
+q_gbsg = c(0, q_gbsg, 1)
+
+# create some variables to hold the observed, expected five-year survival
+p_gbsg = numeric(20)
+fys_gbsg = numeric(20)
+tot_gbsg = numeric(20) 
+
+# calculate expected and observed five-year survival in each bin
+for (i in 1:20) {
+  # identify which predictions are within this interval
+  indx = pred_gbsg > q_gbsg[[i]] & pred_gbsg <= q_gbsg[[i+1]]
+  
+  # calculate the mean probability within this interval
+  p_gbsg[[i]] = mean(pred_gbsg[ indx ], na.rm=TRUE)
+  
+  # calculate the number of subects in this interval who survived five years
+  fys_gbsg[[i]] = sum( gbsg$fys[ indx ], na.rm=TRUE )
+  
+  # calculate the number of subjects in this interval
+  tot_gbsg[[i]] = sum( !is.na(gbsg$fys)[ indx ] )
+}
+
+# Now, calculate whether the observed five-year survival matches the predictions
+bins = sapply( 1:20, function(k) pbinom( fys_gbsg[[k]], tot_gbsg[[k]], p_gbsg[[k]] ) )
+
+# histogram of the bin probabilities
+hist( bins, breaks=10 )
+```
+
+The histogram shows that the likelihoods of the observed data are clustered near the extremes (0 and 1). If the observations match the assumed binomial distribution, then we would expect likelihoods to be uniformly distributed between zero and one (no clustering). So this model for the five year survival probability should not pass validation - it needs more work.
+
+
+### COVID admissions example
+Since each day's prediction is assumed to come from a Poisson distribution, that assumption defines an expected range for the observed data. The `qpois()`, `dpois()`, `ppois()` family of functions is used for this purpose.
+
+Here, we will validate the assumed Poisson distribution by calculating the frequency that the observed data is within the predicted 80% confidence interval. If the nominal coverage is correct, the frequency should be about 80%.
+
+```{r covid-poisson-coverage}
+# 
+
+```
 
 
 

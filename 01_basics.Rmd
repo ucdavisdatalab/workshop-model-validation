@@ -2,7 +2,7 @@
 
 ## What is a model?
 
-```{r load-libraries, echo=FALSE, warning=FALSE}
+```{r load-libraries, echo=FALSE, warning=FALSE, message=FALSE}
 library( "dplyr" )
 library( "lubridate" )
 library( "readr" )

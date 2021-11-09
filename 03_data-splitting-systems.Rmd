@@ -9,7 +9,7 @@ One solution is to reserve some data for validation, and use what is left for tr
 ## Cross-validation
 Cross validation is a kind of repeated training/validation split, which is iterated until all of the data has been used for testing. Each training/validation split may be random or may take data that are grouped according to some meaningful value (often that means resolving one year's data at a time as validation data).
 
-```{r three-fold-cv, echo=FALSE}
+```{r three-fold-cv, echo=FALSE, cache=TRUE}
 # import the speed-vs-stopping-distance data
 data(cars)
 

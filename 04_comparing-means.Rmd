@@ -87,29 +87,20 @@ var( preds[['f']] - cars$dist )
 
 ```{r mean-validation-gbsg, cache=TRUE}
 nfold = 5
-folds = sample( 1:nfold, size=nrow(gbsg), replace=TRUE )
+fold = sample( 1:nfold, size=nrow(gbsg), replace=TRUE )
 
-preds = list( 'a' = numeric(nrow(gbsg)), 'b' = numeric(nrow(gbsg)), 'c' = numeric(nrow(gbsg)), 'd' = numeric(nrow(gbsg)) )
+pred_gbsg = numeric( nrow(gbsg) )
 
 for ( i in 1:nfold ) {
   # Estimate a model for the stopping distance data
-  glm1 = glm( fys ~ age + meno + size + grade + log(nodes) + sqrt(pgr) + sqrt(er) + hormon, data=gbsg[ folds!= i, ], family='binomial' )
-  # glm2 = glm( fys ~ I(speed^2), data=gbsg[ folds!= i, ], family='binomial' )
-  # glm3 = glm( fys ~ I(speed^3), data=gbsg[ folds!= i, ], family='binomial' )
-  # glm4 = glm( fys ~ I(speed^2) + 0, data=gbsg[ folds!= i, ], family='binomial' )
-    
+  glm1 = glm( fys ~ age + meno + size + grade + log(nodes) + sqrt(pgr) + sqrt(er) + hormon, data=gbsg[ fold != i, ], family='binomial' )
   
-  preds[['a']][ folds == i ] = predict( glm1, gbsg[ folds==i, ], type='response' )
-  # preds[['b']][ folds == i ] = predict( glm2, gbsg[ folds==i, ], type='response' )
-  # preds[['c']][ folds == i ] = predict( glm3, gbsg[ folds==i, ], type='response' )
-  # preds[['d']][ folds == i ] = predict( glm4, gbsg[ folds==i, ], type='response' )
+  # get predictions for the left-out CV fold
+  pred_gbsg[ fold == i ] = predict( glm1, gbsg[ fold == i, ], type='response' )
 }
 
 # calculate the mean squared error of the models
-var( (preds[['a']] - gbsg$fys) / sqrt(preds[['a']] * (1-preds[['a']])), na.rm=TRUE )
-# var( preds[['b']] - gbsg$fys )
-# var( preds[['c']] - gbsg$fys )
-# var( preds[['d']] - gbsg$fys )
+var( (pred_gbsg - gbsg$fys) / sqrt(pred_gbsg * (1-pred_gbsg)), na.rm=TRUE )
 ```
 
 
@@ -163,6 +154,9 @@ abline(a=0, b=1)
 The predictions are clearly somewhat muted relative to the actual future admissions, but they do capture the trend and when we look at the admissions from the perspective of the assumed Poisson distribution, we will see that the wider errors toward the right of the plot are expected.
 
 
-
+```{r save-output, echo=FALSE, include=FALSE, message=FALSE, warning=FALSE}
+save( pred_gbsg, file="output/pred_gbsg.rda")
+save( gbsg, file="output/gbsg.rda")
+```
 
 
