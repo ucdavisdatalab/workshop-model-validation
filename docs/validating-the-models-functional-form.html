@@ -290,116 +290,122 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## [1] 1.171875</code></pre>
 <div id="covid-19-admissions-example" class="section level4" number="6.2.0.1">
 <h4><span class="header-section-number">6.2.0.1</span> COVID-19 admissions example</h4>
-<p>Recall that one of our first validation tasks for the COVID-19 admissions data was to check whether the time series was autocorrelated. We concluded that there was not an important amount of autocorrelation, and so we will use modeling methods that treat the data as independent. Despite that, when the data are a time series, it is good practice to do cross-validation by a walkforward approach. That means that the folds should be contiguous time blocks of data, and each iteration of the cross-valdation should be trained only on past data, and used to predict future data.</p>
-<p>Here, we use walkforward six-fold cross-validation to assess whether the fitted model generates predictions that are on average accurate to the observed future values.</p>
+<p>Recall that one of our first validation tasks for the COVID-19 admissions data was to check whether the time series was autocorrelated. We concluded that there was not an important amount of autocorrelation, and so we will use modeling methods that treat the data as independent.</p>
+<p>Despite that, when the data are a time series, it is good practice for validation splits to respect the time ordering of the observations. After all, you need to be concerned about independence of the predictors as well as the response, and it is simply more realistic to validate the model with a known past and unknown future. That means setting a split date, then training over past data and predicting future observations.</p>
+<p>You can still use cross-validation for time-series data - it is called walkforward validation, where each fold is a contiguous temporal block. Here, though, we use a single train/test split: train a model using all data prior to July, 2021 and then use it to predict COVID admissions since then.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="validating-the-models-functional-form.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20211108</span>)</span>
 <span id="cb29-2"><a href="validating-the-models-functional-form.html#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="validating-the-models-functional-form.html#cb29-3" aria-hidden="true" tabindex="-1"></a>covid<span class="sc">$</span>D1_admissions <span class="ot">=</span> <span class="fu">lead</span>(covid<span class="sc">$</span>COVID_NEW_ADM_CNT, <span class="dv">1</span>)</span>
-<span id="cb29-4"><a href="validating-the-models-functional-form.html#cb29-4" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">=</span> covid[ <span class="fu">rowSums</span>( <span class="fu">is.na</span>(covid)) <span class="sc">==</span> <span class="dv">0</span>, ]</span>
+<span id="cb29-3"><a href="validating-the-models-functional-form.html#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create a variable for the one-day ahead admissions:</span></span>
+<span id="cb29-4"><a href="validating-the-models-functional-form.html#cb29-4" aria-hidden="true" tabindex="-1"></a>covid<span class="sc">$</span>D1_admissions <span class="ot">=</span> <span class="fu">lead</span>(covid<span class="sc">$</span>COVID_NEW_ADM_CNT, <span class="dv">1</span>)</span>
 <span id="cb29-5"><a href="validating-the-models-functional-form.html#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-6"><a href="validating-the-models-functional-form.html#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># how many CV folds</span></span>
-<span id="cb29-7"><a href="validating-the-models-functional-form.html#cb29-7" aria-hidden="true" tabindex="-1"></a>nfold <span class="ot">=</span> <span class="dv">5</span></span>
+<span id="cb29-6"><a href="validating-the-models-functional-form.html#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># remove any rows that have NA values</span></span>
+<span id="cb29-7"><a href="validating-the-models-functional-form.html#cb29-7" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">=</span> covid[ <span class="fu">rowSums</span>( <span class="fu">is.na</span>(covid)) <span class="sc">==</span> <span class="dv">0</span>, ]</span>
 <span id="cb29-8"><a href="validating-the-models-functional-form.html#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-9"><a href="validating-the-models-functional-form.html#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># create walkforward CV folds</span></span>
-<span id="cb29-10"><a href="validating-the-models-functional-form.html#cb29-10" aria-hidden="true" tabindex="-1"></a>fold <span class="ot">=</span> <span class="fu">rep</span>( <span class="dv">0</span><span class="sc">:</span>nfold, <span class="at">each=</span><span class="fu">nrow</span>(covid) <span class="sc">%/%</span> (nfold<span class="sc">+</span><span class="dv">1</span>) )</span>
-<span id="cb29-11"><a href="validating-the-models-functional-form.html#cb29-11" aria-hidden="true" tabindex="-1"></a>fold <span class="ot">=</span> <span class="fu">c</span>( <span class="fu">rep</span>( <span class="dv">0</span>, <span class="fu">nrow</span>(covid)<span class="sc">-</span><span class="fu">length</span>(fold) ), fold )</span>
+<span id="cb29-9"><a href="validating-the-models-functional-form.html#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># establish the split date and use it to define a training set:</span></span>
+<span id="cb29-10"><a href="validating-the-models-functional-form.html#cb29-10" aria-hidden="true" tabindex="-1"></a>split <span class="ot">=</span> <span class="st">&quot;2021-07-01&quot;</span></span>
+<span id="cb29-11"><a href="validating-the-models-functional-form.html#cb29-11" aria-hidden="true" tabindex="-1"></a>train <span class="ot">=</span> covid<span class="sc">$</span>date <span class="sc">&lt;</span> split</span>
 <span id="cb29-12"><a href="validating-the-models-functional-form.html#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-13"><a href="validating-the-models-functional-form.html#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare an object to hold the predictions</span></span>
-<span id="cb29-14"><a href="validating-the-models-functional-form.html#cb29-14" aria-hidden="true" tabindex="-1"></a>pred_covid <span class="ot">=</span> <span class="fu">rep</span>( <span class="cn">NA</span>, <span class="fu">nrow</span>(covid) )</span>
-<span id="cb29-15"><a href="validating-the-models-functional-form.html#cb29-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-16"><a href="validating-the-models-functional-form.html#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="co"># decide which variables to use in the models (involves seeing he future, but we&#39;ll ignore that for now.)</span></span>
-<span id="cb29-17"><a href="validating-the-models-functional-form.html#cb29-17" aria-hidden="true" tabindex="-1"></a>screen <span class="ot">=</span> <span class="fu">gbm</span>( D1_admissions <span class="sc">~</span> ., <span class="at">data=</span>covid[, <span class="sc">-</span><span class="dv">1</span>], <span class="at">n.trees=</span><span class="dv">3000</span>, <span class="at">distribution=</span><span class="st">&quot;poisson&quot;</span>, <span class="at">interaction.depth=</span><span class="dv">5</span>, <span class="at">n.minobsinnode=</span><span class="dv">3</span>, <span class="at">shrinkage=</span><span class="fl">0.0025</span>, <span class="at">cv.folds=</span><span class="dv">5</span> )</span>
-<span id="cb29-18"><a href="validating-the-models-functional-form.html#cb29-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-19"><a href="validating-the-models-functional-form.html#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="co"># show the most influential variables for predicting COVID admissions:</span></span>
-<span id="cb29-20"><a href="validating-the-models-functional-form.html#cb29-20" aria-hidden="true" tabindex="-1"></a>my_summary <span class="ot">=</span> <span class="fu">summary</span>(screen, <span class="at">plotit=</span><span class="cn">FALSE</span>,</span>
-<span id="cb29-21"><a href="validating-the-models-functional-form.html#cb29-21" aria-hidden="true" tabindex="-1"></a>                     <span class="at">n.trees =</span> <span class="fu">gbm.perf</span>(screen, <span class="at">plot.it=</span><span class="cn">FALSE</span>) )</span>
-<span id="cb29-22"><a href="validating-the-models-functional-form.html#cb29-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(my_summary)</span></code></pre></div>
+<span id="cb29-13"><a href="validating-the-models-functional-form.html#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co"># use CV on the training data to decide which variables to use in the models</span></span>
+<span id="cb29-14"><a href="validating-the-models-functional-form.html#cb29-14" aria-hidden="true" tabindex="-1"></a>screen <span class="ot">=</span> <span class="fu">gbm</span>( D1_admissions <span class="sc">~</span> .,</span>
+<span id="cb29-15"><a href="validating-the-models-functional-form.html#cb29-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">data=</span>covid[ train, <span class="sc">-</span><span class="dv">1</span>],</span>
+<span id="cb29-16"><a href="validating-the-models-functional-form.html#cb29-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">n.trees=</span><span class="dv">3000</span>,</span>
+<span id="cb29-17"><a href="validating-the-models-functional-form.html#cb29-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">distribution=</span><span class="st">&quot;poisson&quot;</span>,</span>
+<span id="cb29-18"><a href="validating-the-models-functional-form.html#cb29-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">interaction.depth=</span><span class="dv">5</span>,</span>
+<span id="cb29-19"><a href="validating-the-models-functional-form.html#cb29-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">n.minobsinnode=</span><span class="dv">3</span>,</span>
+<span id="cb29-20"><a href="validating-the-models-functional-form.html#cb29-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">shrinkage=</span><span class="fl">0.0025</span>,</span>
+<span id="cb29-21"><a href="validating-the-models-functional-form.html#cb29-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">cv.folds=</span><span class="dv">5</span> )</span>
+<span id="cb29-22"><a href="validating-the-models-functional-form.html#cb29-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-23"><a href="validating-the-models-functional-form.html#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="co"># show the most influential variables for predicting COVID admissions:</span></span>
+<span id="cb29-24"><a href="validating-the-models-functional-form.html#cb29-24" aria-hidden="true" tabindex="-1"></a>my_summary <span class="ot">=</span> <span class="fu">summary</span>(screen,</span>
+<span id="cb29-25"><a href="validating-the-models-functional-form.html#cb29-25" aria-hidden="true" tabindex="-1"></a>                     <span class="at">plotit=</span><span class="cn">FALSE</span>,</span>
+<span id="cb29-26"><a href="validating-the-models-functional-form.html#cb29-26" aria-hidden="true" tabindex="-1"></a>                     <span class="at">n.trees =</span> <span class="fu">gbm.perf</span>(screen, <span class="at">plot.it=</span><span class="cn">FALSE</span>) )</span>
+<span id="cb29-27"><a href="validating-the-models-functional-form.html#cb29-27" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(my_summary)</span></code></pre></div>
 <pre><code>##                                                       var     rel.inf
-## POSITIVITY_RATE_MEAN                 POSITIVITY_RATE_MEAN 41.00708037
-## COVID_NEW_ADM_MEAN                     COVID_NEW_ADM_MEAN  6.00215927
-## COVID_MED_SURG_CNT_M                 COVID_MED_SURG_CNT_M  5.44167419
-## COVID_MED_SURG_HFNC_CNT_M       COVID_MED_SURG_HFNC_CNT_M  3.03134613
-## INDX_UCDH_POSITIVITY_RATE       INDX_UCDH_POSITIVITY_RATE  2.94821916
-## INDX_UCDH_POS_PT_CNT                 INDX_UCDH_POS_PT_CNT  1.92643458
-## COVID_PT_CNT_MIDNIGHT_MEAN     COVID_PT_CNT_MIDNIGHT_MEAN  1.87470413
-## OUTREACH_POSITIVITY_MEAN         OUTREACH_POSITIVITY_MEAN  1.78996797
-## COVID_ICU_NO_VENT_PCT_M           COVID_ICU_NO_VENT_PCT_M  1.76517980
-## COVID_ICU_VENT_PCT_M                 COVID_ICU_VENT_PCT_M  1.73977636
-## COVID_DISCHARGE_STD                   COVID_DISCHARGE_STD  1.67557740
-## OUTREACH_POSITIVITY_RATE         OUTREACH_POSITIVITY_RATE  1.56751081
-## COVID_POS_PT_CNT_EVER               COVID_POS_PT_CNT_EVER  1.51512351
-## OUTREACH_POSITIVITY_SLOPE       OUTREACH_POSITIVITY_SLOPE  1.46903785
-## TESTED_PT_CNT_MEAN                     TESTED_PT_CNT_MEAN  1.39559653
-## COVID_ICU_NO_VENT_CNT_M           COVID_ICU_NO_VENT_CNT_M  1.27206452
-## DAY_OF_THE_WEEK                           DAY_OF_THE_WEEK  1.25554930
-## TESTED_PT_CNT_SLOPE                   TESTED_PT_CNT_SLOPE  1.18700854
-## COVID_MED_SURG_NO_HFNC_CNT_M COVID_MED_SURG_NO_HFNC_CNT_M  1.18412658
-## COVID_DISCHARGE_PCT_STD           COVID_DISCHARGE_PCT_STD  1.01711584
-## COVID_MALE_CNT_M                         COVID_MALE_CNT_M  0.97325207
-## COVID_NEW_ADM_STD                       COVID_NEW_ADM_STD  0.73370753
-## COVID_ACTIVE_DNR_CNT_M             COVID_ACTIVE_DNR_CNT_M  0.71134286
-## COVID_MED_SURG_HFNC_PCT_M       COVID_MED_SURG_HFNC_PCT_M  0.70383171
-## COVID_PT_CNT_M                             COVID_PT_CNT_M  0.70352001
-## OUTREACH_TEST_CNT_SLOPE           OUTREACH_TEST_CNT_SLOPE  0.68790552
-## COVID_MED_SURG_NO_HFNC_PCT_M COVID_MED_SURG_NO_HFNC_PCT_M  0.66552213
-## COVID_DISCHARGE_MEAN                 COVID_DISCHARGE_MEAN  0.64117881
-## TESTED_PT_CNT_STD                       TESTED_PT_CNT_STD  0.64050864
-## POSITIVITY_RATE_SLOPE               POSITIVITY_RATE_SLOPE  0.63575259
-## COVID_ICU_VENT_CNT_M                 COVID_ICU_VENT_CNT_M  0.59044177
-## OUTREACH_POSITIVITY_STD           OUTREACH_POSITIVITY_STD  0.55791331
-## COVID_ICU_CNT_M                           COVID_ICU_CNT_M  0.55076528
-## COVID_ACTIVE_DNR_PCT_M             COVID_ACTIVE_DNR_PCT_M  0.54559652
-## OUTREACH_POS_TEST_CNT               OUTREACH_POS_TEST_CNT  0.52254675
-## COVID_NEW_ADM_CNT                       COVID_NEW_ADM_CNT  0.50644940
-## POSITIVITY_RATE_STD                   POSITIVITY_RATE_STD  0.50127717
-## COVID_AVG_AGE_M                           COVID_AVG_AGE_M  0.48029123
-## INDX_POS_PT_ALL_ADM_PCT           INDX_POS_PT_ALL_ADM_PCT  0.47622863
-## HOSPITAL_CENSUS_M                       HOSPITAL_CENSUS_M  0.45513684
-## INDX_POS_PT_IN_HOUSE_D6_CNT   INDX_POS_PT_IN_HOUSE_D6_CNT  0.45503692
-## COVID_DISCHARGE_PCT                   COVID_DISCHARGE_PCT  0.42444013
-## INDX_UCDH_TEST_PT_CNT               INDX_UCDH_TEST_PT_CNT  0.42152374
-## COVID_PT_CNT_MIDNIGHT_SLOPE   COVID_PT_CNT_MIDNIGHT_SLOPE  0.40964762
-## COVID_PT_CNT_MIDNIGHT_STD       COVID_PT_CNT_MIDNIGHT_STD  0.36289387
-## COVID_DISCHARGE_PCT_MEAN         COVID_DISCHARGE_PCT_MEAN  0.33948407
-## DISCH_MED_SURG_NO_HFNC_CNT     DISCH_MED_SURG_NO_HFNC_CNT  0.30276213
-## COVID_DISCHARGE_SLOPE               COVID_DISCHARGE_SLOPE  0.30166661
-## COVID_MALE_PCT_M                         COVID_MALE_PCT_M  0.29984249
-## COVID_DISCHARGE_PCT_SLOPE       COVID_DISCHARGE_PCT_SLOPE  0.29980942
-## OUTREACH_TEST_CNT_MEAN             OUTREACH_TEST_CNT_MEAN  0.28337521
-## INDX_POS_PT_NEW_ADM_PCT           INDX_POS_PT_NEW_ADM_PCT  0.27683582
-## INDX_POS_PT_NEW_ADM_CNT           INDX_POS_PT_NEW_ADM_CNT  0.27577045
-## INDX_POS_PT_ALL_ADM_CNT           INDX_POS_PT_ALL_ADM_CNT  0.25877914
-## COVID_NEW_ADM_SLOPE                   COVID_NEW_ADM_SLOPE  0.24528436
-## INDX_POS_PT_IN_HOUSE_D6_PCT   INDX_POS_PT_IN_HOUSE_D6_PCT  0.22139881
-## OUTREACH_TEST_CNT_STD               OUTREACH_TEST_CNT_STD  0.21192635
-## COVID_DISCHARGE_CNT                   COVID_DISCHARGE_CNT  0.20365596
-## COVID_RULE_OUT_PT_CNT_M           COVID_RULE_OUT_PT_CNT_M  0.20206633
-## OUTREACH_TEST_CNT                       OUTREACH_TEST_CNT  0.18567404
-## DISCH_MED_SURG_HFNC_CNT           DISCH_MED_SURG_HFNC_CNT  0.17858472
-## INDX_POS_PT_IN_HOUSE_D7_PCT   INDX_POS_PT_IN_HOUSE_D7_PCT  0.14587398
-## COVID_NEW_ADM_FLAG                     COVID_NEW_ADM_FLAG  0.14389386
-## DISCH_ICU_NO_VENT_CNT               DISCH_ICU_NO_VENT_CNT  0.09019380
-## DISCH_ICU_VENT_CNT                     DISCH_ICU_VENT_CNT  0.06279283
-## INDX_POS_PT_IN_HOUSE_D7_CNT   INDX_POS_PT_IN_HOUSE_D7_CNT  0.04836574</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="validating-the-models-functional-form.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the top ten variables from the screening model</span></span>
-<span id="cb31-2"><a href="validating-the-models-functional-form.html#cb31-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;D1_admissions ~ &quot;</span>, <span class="fu">paste</span>( my_summary<span class="sc">$</span>var[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">collapse=</span><span class="st">&quot; + &quot;</span>))</span>
+## POSITIVITY_RATE_MEAN                 POSITIVITY_RATE_MEAN 21.15992984
+## COVID_MED_SURG_NO_HFNC_CNT_M COVID_MED_SURG_NO_HFNC_CNT_M 14.83983283
+## COVID_ACTIVE_DNR_CNT_M             COVID_ACTIVE_DNR_CNT_M  6.80277776
+## COVID_PT_CNT_MIDNIGHT_MEAN     COVID_PT_CNT_MIDNIGHT_MEAN  4.60795378
+## DAY_OF_THE_WEEK                           DAY_OF_THE_WEEK  3.85556257
+## COVID_NEW_ADM_MEAN                     COVID_NEW_ADM_MEAN  3.84604649
+## INDX_UCDH_POSITIVITY_RATE       INDX_UCDH_POSITIVITY_RATE  3.76074110
+## INDX_UCDH_POS_PT_CNT                 INDX_UCDH_POS_PT_CNT  3.61568817
+## COVID_MED_SURG_CNT_M                 COVID_MED_SURG_CNT_M  3.02052191
+## COVID_MALE_CNT_M                         COVID_MALE_CNT_M  2.98958324
+## OUTREACH_POSITIVITY_MEAN         OUTREACH_POSITIVITY_MEAN  2.62827320
+## OUTREACH_POSITIVITY_RATE         OUTREACH_POSITIVITY_RATE  1.93222982
+## COVID_DISCHARGE_STD                   COVID_DISCHARGE_STD  1.75397412
+## COVID_ICU_VENT_PCT_M                 COVID_ICU_VENT_PCT_M  1.53349524
+## COVID_ICU_NO_VENT_PCT_M           COVID_ICU_NO_VENT_PCT_M  1.40921236
+## COVID_PT_CNT_M                             COVID_PT_CNT_M  1.06311554
+## TESTED_PT_CNT_MEAN                     TESTED_PT_CNT_MEAN  1.02452494
+## COVID_PT_CNT_MIDNIGHT_STD       COVID_PT_CNT_MIDNIGHT_STD  0.97379651
+## COVID_ICU_NO_VENT_CNT_M           COVID_ICU_NO_VENT_CNT_M  0.96460797
+## COVID_POS_PT_CNT_EVER               COVID_POS_PT_CNT_EVER  0.94551837
+## COVID_AVG_AGE_M                           COVID_AVG_AGE_M  0.89209631
+## COVID_DISCHARGE_PCT_STD           COVID_DISCHARGE_PCT_STD  0.86543726
+## OUTREACH_POSITIVITY_SLOPE       OUTREACH_POSITIVITY_SLOPE  0.81215037
+## COVID_NEW_ADM_CNT                       COVID_NEW_ADM_CNT  0.80256067
+## COVID_MED_SURG_HFNC_CNT_M       COVID_MED_SURG_HFNC_CNT_M  0.75407158
+## OUTREACH_POSITIVITY_STD           OUTREACH_POSITIVITY_STD  0.69702188
+## INDX_UCDH_TEST_PT_CNT               INDX_UCDH_TEST_PT_CNT  0.64150845
+## TESTED_PT_CNT_SLOPE                   TESTED_PT_CNT_SLOPE  0.63897940
+## COVID_ACTIVE_DNR_PCT_M             COVID_ACTIVE_DNR_PCT_M  0.60346285
+## COVID_PT_CNT_MIDNIGHT_SLOPE   COVID_PT_CNT_MIDNIGHT_SLOPE  0.54075889
+## COVID_NEW_ADM_STD                       COVID_NEW_ADM_STD  0.50110912
+## OUTREACH_TEST_CNT_MEAN             OUTREACH_TEST_CNT_MEAN  0.46501740
+## OUTREACH_POS_TEST_CNT               OUTREACH_POS_TEST_CNT  0.43046780
+## POSITIVITY_RATE_SLOPE               POSITIVITY_RATE_SLOPE  0.42406516
+## HOSPITAL_CENSUS_M                       HOSPITAL_CENSUS_M  0.41996645
+## COVID_MED_SURG_HFNC_PCT_M       COVID_MED_SURG_HFNC_PCT_M  0.39540548
+## COVID_ICU_CNT_M                           COVID_ICU_CNT_M  0.38065354
+## COVID_MED_SURG_NO_HFNC_PCT_M COVID_MED_SURG_NO_HFNC_PCT_M  0.38051158
+## COVID_DISCHARGE_PCT_SLOPE       COVID_DISCHARGE_PCT_SLOPE  0.37000680
+## COVID_ICU_VENT_CNT_M                 COVID_ICU_VENT_CNT_M  0.36308152
+## COVID_MALE_PCT_M                         COVID_MALE_PCT_M  0.35621454
+## COVID_DISCHARGE_MEAN                 COVID_DISCHARGE_MEAN  0.35605100
+## OUTREACH_TEST_CNT_SLOPE           OUTREACH_TEST_CNT_SLOPE  0.34700125
+## COVID_DISCHARGE_PCT_MEAN         COVID_DISCHARGE_PCT_MEAN  0.34611494
+## INDX_POS_PT_ALL_ADM_PCT           INDX_POS_PT_ALL_ADM_PCT  0.32505437
+## COVID_DISCHARGE_CNT                   COVID_DISCHARGE_CNT  0.32031917
+## INDX_POS_PT_NEW_ADM_PCT           INDX_POS_PT_NEW_ADM_PCT  0.31225111
+## TESTED_PT_CNT_STD                       TESTED_PT_CNT_STD  0.29910087
+## POSITIVITY_RATE_STD                   POSITIVITY_RATE_STD  0.28425817
+## INDX_POS_PT_NEW_ADM_CNT           INDX_POS_PT_NEW_ADM_CNT  0.27607528
+## COVID_DISCHARGE_SLOPE               COVID_DISCHARGE_SLOPE  0.26998993
+## COVID_DISCHARGE_PCT                   COVID_DISCHARGE_PCT  0.25148475
+## INDX_POS_PT_IN_HOUSE_D6_CNT   INDX_POS_PT_IN_HOUSE_D6_CNT  0.24820349
+## OUTREACH_TEST_CNT                       OUTREACH_TEST_CNT  0.24039423
+## INDX_POS_PT_ALL_ADM_CNT           INDX_POS_PT_ALL_ADM_CNT  0.22543487
+## COVID_NEW_ADM_SLOPE                   COVID_NEW_ADM_SLOPE  0.20798090
+## OUTREACH_TEST_CNT_STD               OUTREACH_TEST_CNT_STD  0.18292958
+## COVID_RULE_OUT_PT_CNT_M           COVID_RULE_OUT_PT_CNT_M  0.17851018
+## INDX_POS_PT_IN_HOUSE_D7_PCT   INDX_POS_PT_IN_HOUSE_D7_PCT  0.16370110
+## DISCH_MED_SURG_HFNC_CNT           DISCH_MED_SURG_HFNC_CNT  0.15038246
+## INDX_POS_PT_IN_HOUSE_D6_PCT   INDX_POS_PT_IN_HOUSE_D6_PCT  0.13339931
+## DISCH_ICU_VENT_CNT                     DISCH_ICU_VENT_CNT  0.12530976
+## DISCH_MED_SURG_NO_HFNC_CNT     DISCH_MED_SURG_NO_HFNC_CNT  0.11078148
+## DISCH_ICU_NO_VENT_CNT               DISCH_ICU_NO_VENT_CNT  0.10247327
+## INDX_POS_PT_IN_HOUSE_D7_CNT   INDX_POS_PT_IN_HOUSE_D7_CNT  0.05787682
+## COVID_NEW_ADM_FLAG                     COVID_NEW_ADM_FLAG  0.02298892</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="validating-the-models-functional-form.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the top twenty variables from the screening model</span></span>
+<span id="cb31-2"><a href="validating-the-models-functional-form.html#cb31-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;D1_admissions ~ &quot;</span>, <span class="fu">paste</span>( my_summary<span class="sc">$</span>var[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>], <span class="at">collapse=</span><span class="st">&quot; + &quot;</span>))</span>
 <span id="cb31-3"><a href="validating-the-models-functional-form.html#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="validating-the-models-functional-form.html#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-5"><a href="validating-the-models-functional-form.html#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co"># use those variables in CV to make a model:</span></span>
-<span id="cb31-6"><a href="validating-the-models-functional-form.html#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nfold ) {</span>
-<span id="cb31-7"><a href="validating-the-models-functional-form.html#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Estimate a model for the covid admissions data</span></span>
-<span id="cb31-8"><a href="validating-the-models-functional-form.html#cb31-8" aria-hidden="true" tabindex="-1"></a>  boost <span class="ot">=</span> <span class="fu">gbm</span>( <span class="fu">formula</span>(f), <span class="at">data=</span>covid[ fold <span class="sc">&lt;</span> i, ], <span class="at">n.trees=</span><span class="dv">3000</span>, <span class="at">distribution=</span><span class="st">&quot;poisson&quot;</span>, <span class="at">interaction.depth=</span><span class="dv">5</span>, <span class="at">n.minobsinnode=</span><span class="dv">3</span>, <span class="at">shrinkage=</span><span class="fl">0.0025</span>, <span class="at">cv.folds=</span><span class="dv">5</span> )</span>
-<span id="cb31-9"><a href="validating-the-models-functional-form.html#cb31-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb31-10"><a href="validating-the-models-functional-form.html#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># make predictions from the covid admissions model</span></span>
-<span id="cb31-11"><a href="validating-the-models-functional-form.html#cb31-11" aria-hidden="true" tabindex="-1"></a>  pred_covid[ fold <span class="sc">==</span> i ] <span class="ot">=</span> <span class="fu">predict</span>(boost, covid, <span class="at">type=</span><span class="st">&#39;response&#39;</span>)[ fold <span class="sc">==</span> i ]</span>
-<span id="cb31-12"><a href="validating-the-models-functional-form.html#cb31-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<pre><code>## Using 421 trees...</code></pre>
-<pre><code>## Using 990 trees...</code></pre>
-<pre><code>## Using 1248 trees...</code></pre>
-<pre><code>## Using 1211 trees...</code></pre>
-<pre><code>## Using 1235 trees...</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="validating-the-models-functional-form.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred_covid, covid<span class="sc">$</span>D1_admissions, <span class="at">xlab=</span><span class="st">&quot;prediction&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;actual future admissions&quot;</span>)</span>
-<span id="cb37-2"><a href="validating-the-models-functional-form.html#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span><span class="dv">0</span>, <span class="at">b=</span><span class="dv">1</span>)</span></code></pre></div>
+<span id="cb31-4"><a href="validating-the-models-functional-form.html#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimate a model for the covid admissions data</span></span>
+<span id="cb31-5"><a href="validating-the-models-functional-form.html#cb31-5" aria-hidden="true" tabindex="-1"></a>boost <span class="ot">=</span> <span class="fu">gbm</span>( <span class="fu">formula</span>(f),</span>
+<span id="cb31-6"><a href="validating-the-models-functional-form.html#cb31-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">data=</span>covid[ train, ],</span>
+<span id="cb31-7"><a href="validating-the-models-functional-form.html#cb31-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">n.trees=</span><span class="dv">3000</span>,</span>
+<span id="cb31-8"><a href="validating-the-models-functional-form.html#cb31-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">distribution=</span><span class="st">&quot;poisson&quot;</span>,</span>
+<span id="cb31-9"><a href="validating-the-models-functional-form.html#cb31-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">interaction.depth=</span><span class="dv">5</span>,</span>
+<span id="cb31-10"><a href="validating-the-models-functional-form.html#cb31-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">n.minobsinnode=</span><span class="dv">3</span>,</span>
+<span id="cb31-11"><a href="validating-the-models-functional-form.html#cb31-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">shrinkage=</span><span class="fl">0.0025</span>,</span>
+<span id="cb31-12"><a href="validating-the-models-functional-form.html#cb31-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">cv.folds=</span><span class="dv">5</span> )</span>
+<span id="cb31-13"><a href="validating-the-models-functional-form.html#cb31-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-14"><a href="validating-the-models-functional-form.html#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="co"># make predictions from the covid admissions model</span></span>
+<span id="cb31-15"><a href="validating-the-models-functional-form.html#cb31-15" aria-hidden="true" tabindex="-1"></a>pred_covid <span class="ot">=</span> <span class="fu">predict</span>(boost, covid, <span class="at">type=</span><span class="st">&#39;response&#39;</span>)[ <span class="sc">!</span>train ]</span></code></pre></div>
+<pre><code>## Using 1527 trees...</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="validating-the-models-functional-form.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the predicted vs. observed</span></span>
+<span id="cb33-2"><a href="validating-the-models-functional-form.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred_covid, covid<span class="sc">$</span>D1_admissions[<span class="sc">!</span>train], <span class="at">xlab=</span><span class="st">&quot;prediction&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;actual future admissions&quot;</span>)</span>
+<span id="cb33-3"><a href="validating-the-models-functional-form.html#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span><span class="dv">0</span>, <span class="at">b=</span><span class="dv">1</span>)</span></code></pre></div>
 <p><img src="04_comparing-means_files/figure-html/mean-validation-covid-1.png" width="672" /></p>
 <p>The predictions are clearly somewhat muted relative to the actual future admissions, but they do capture the trend and when we look at the admissions from the perspective of the assumed Poisson distribution, we will see that the wider errors toward the right of the plot are expected.</p>
 

@@ -87,48 +87,59 @@ var( (pred_gbsg - gbsg$fys) / sqrt(pred_gbsg * (1-pred_gbsg)), na.rm=TRUE )
 
 #### COVID-19 admissions example
 
-Recall that one of our first validation tasks for the COVID-19 admissions data was to check whether the time series was autocorrelated. We concluded that there was not an important amount of autocorrelation, and so we will use modeling methods that treat the data as independent. Despite that, when the data are a time series, it is good practice to do cross-validation by a walkforward approach. That means that the folds should be contiguous time blocks of data, and each iteration of the cross-valdation should be trained only on past data, and used to predict future data.
+Recall that one of our first validation tasks for the COVID-19 admissions data was to check whether the time series was autocorrelated. We concluded that there was not an important amount of autocorrelation, and so we will use modeling methods that treat the data as independent. 
 
-Here, we use walkforward six-fold cross-validation to assess whether the fitted model generates predictions that are on average accurate to the observed future values.
+Despite that, when the data are a time series, it is good practice for validation splits to respect the time ordering of the observations. After all, you need to be concerned about independence of the predictors as well as the response, and it is simply more realistic to validate the model with a known past and unknown future. That means setting a split date, then training over past data and predicting future observations.
+
+You can still use cross-validation for time-series data - it is called walkforward validation, where each fold is a contiguous temporal block. Here, though, we use a single  train/test split: train a model using all data prior to July, 2021 and then use it to predict COVID admissions since then.
 
 ```{r mean-validation-covid, cache=TRUE}
 set.seed(20211108)
 
+# create a variable for the one-day ahead admissions:
 covid$D1_admissions = lead(covid$COVID_NEW_ADM_CNT, 1)
+
+# remove any rows that have NA values
 covid = covid[ rowSums( is.na(covid)) == 0, ]
 
-# how many CV folds
-nfold = 5
+# establish the split date and use it to define a training set:
+split = "2021-07-01"
+train = covid$date < split
 
-# create walkforward CV folds
-fold = rep( 0:nfold, each=nrow(covid) %/% (nfold+1) )
-fold = c( rep( 0, nrow(covid)-length(fold) ), fold )
-
-# prepare an object to hold the predictions
-pred_covid = rep( NA, nrow(covid) )
-
-# decide which variables to use in the models (involves seeing he future, but we'll ignore that for now.)
-screen = gbm( D1_admissions ~ ., data=covid[, -1], n.trees=3000, distribution="poisson", interaction.depth=5, n.minobsinnode=3, shrinkage=0.0025, cv.folds=5 )
+# use CV on the training data to decide which variables to use in the models
+screen = gbm( D1_admissions ~ .,
+              data=covid[ train, -1],
+              n.trees=3000,
+              distribution="poisson",
+              interaction.depth=5,
+              n.minobsinnode=3,
+              shrinkage=0.0025,
+              cv.folds=5 )
 
 # show the most influential variables for predicting COVID admissions:
-my_summary = summary(screen, plotit=FALSE,
+my_summary = summary(screen,
+                     plotit=FALSE,
                      n.trees = gbm.perf(screen, plot.it=FALSE) )
 print(my_summary)
 
-# use the top ten variables from the screening model
-f = paste0("D1_admissions ~ ", paste( my_summary$var[1:10], collapse=" + "))
+# use the top twenty variables from the screening model
+f = paste0("D1_admissions ~ ", paste( my_summary$var[1:20], collapse=" + "))
 
+# Estimate a model for the covid admissions data
+boost = gbm( formula(f),
+             data=covid[ train, ],
+             n.trees=3000,
+             distribution="poisson",
+             interaction.depth=5,
+             n.minobsinnode=3,
+             shrinkage=0.0025,
+             cv.folds=5 )
 
-# use those variables in CV to make a model:
-for ( i in 1:nfold ) {
-  # Estimate a model for the covid admissions data
-  boost = gbm( formula(f), data=covid[ fold < i, ], n.trees=3000, distribution="poisson", interaction.depth=5, n.minobsinnode=3, shrinkage=0.0025, cv.folds=5 )
-  
-  # make predictions from the covid admissions model
-  pred_covid[ fold == i ] = predict(boost, covid, type='response')[ fold == i ]
-}
+# make predictions from the covid admissions model
+pred_covid = predict(boost, covid, type='response')[ !train ]
 
-plot(pred_covid, covid$D1_admissions, xlab="prediction", ylab="actual future admissions")
+# plot the predicted vs. observed
+plot(pred_covid, covid$D1_admissions[!train], xlab="prediction", ylab="actual future admissions")
 abline(a=0, b=1)
 ```
 
