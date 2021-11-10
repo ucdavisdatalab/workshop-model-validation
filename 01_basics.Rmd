@@ -22,7 +22,7 @@ data_path = "https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-val
 ```
 
 ### Stopping distance
-This data set has fifty measurements of stopping distance for cars travelling at different speeds. Here's a plot of the data:
+The dataset `cars` is built into R and can be loaded by the command `data(cars)`. It is a record of fifty measurements from 1930 of stopping distances for cars travelling at different speeds. We are going to select the functional form of a model that relates the stopping distance to the speed. Here's a plot of the data:
 
 ```{r import-plot-cars}
 # load the data
@@ -36,7 +36,7 @@ We have some relevant prior knowledge: speed and distance are both positive, zer
 
 
 ### Breast cancer survival
-We will also use the built-in data set `gbsg` for an analysis of which factors affected the five-year survival of women in the German Breast Cancer Study Group (GBSG). Let's import the data and generate the five year survival variable:
+We will also use the data set `gbsg` (which is built into R's `survival` package) for an analysis of the factors affecting the five-year survival of women in the German Breast Cancer Study Group (GBSG). Our goal will be to create a model of how the available variables influence the five year recurrence free survival of women who met the study criteria. Let's import the data and generate the five year survival variable:
 
 ```{r import-gbsg, message=FALSE}
 # import the gbsg data
@@ -72,7 +72,7 @@ with( gbsg, plot( data.frame(sqrt(er), sqrt(pgr), sqrt(nodes), rfstime)))
 Note how the outliers have been brought back toward the mass of data, and the detail at the low end has been expanded. A bit of work on the front end can avoid really difficult problems in the analysis and validation later.
 
 ### COVID-19 hospital admissions
-The third data set that we'll use for illustration is a time series of daily hospital  admissions for COVID-19. I like to begin with a pair plot of all the data, but here we have 81 columns, which is too many to fit on a pair plot. Instead, we'll look at the time series.
+The third data set that we'll use for illustration is a time series of daily hospital  admissions for COVID-19. Our goal will be to create a model that can predict the number of people who will be admitted to the hospital for COVID-19 in the next day. I like to begin with a pair plot of all the data, but here we have 81 columns, which is too many to fit on a pair plot. Instead, we'll look at the time series.
 
 ```{r import-covid, message=FALSE}
 # import the covid dataset
@@ -91,7 +91,7 @@ There is another type of independence to consider here: is the number of daily a
 acf( diff(covid$COVID_NEW_ADM_CNT, 1) )
 ```
 
-The salient feature of this plot is that the second line points downward, and crosses the dashed blue line. There is apparently a tendency for the count to decrease the day after it increases, and vice versa. This may or may not be due to some trend in the covariates - we'll check again after accounting for the explanatory variables.
+You can ignore the first line of the chart - it is there to show how long a line is drawn to show perfect correlation at zero time lag. The salient feature of this plot is that the third line points downward, and crosses the dashed blue line. There is apparently a tendency for the count to decrease the day after it increases, and vice versa. This may or may not be due to some trend in the covariates - we'll check again after accounting for the explanatory variables.
 
 
 
@@ -109,16 +109,22 @@ Validating these assumptions also requires that the function $f(\cdot)$ and the 
 
 
 
-So, how can we test (validate) these assumptions? A key problem is that they can't be tested from within a fitted model. The way statistical estimation works is that you assume the form of a model, and then find the parameters that best match the data and the assumption. Testing requires applying the model to new data in order to see if the predictions match the truth.
+So, how can we test (validate) these assumptions? A key problem is that they generally can't be tested from within a fitted model. The way statistical estimation works is that you assume the form of a model, and then find the parameters that best match the data and the assumption. There is a circularity to the logic of estimating a model that requires some assumption about the data and then using that same data to check whether the assumptions are violated. Testing requires applying the model to new data in order to see if the predictions match the truth.
 
 
 
 
 # Model types
 
-We are going to use a couple of example models throughout this workshop. First, a logistic regression model and second, a random forest regression model.
+The data examples each require a different kind of model, which will allow us to demonstrate several different instances of model validation.
 
 
+## Linear regression
+We will use linear regression to create a model that relates a car's speed to the distance required for stopping the car. Linear regression can use transformed versions of the inputs and outputs, and we will test various combinations of transformations to decide which one is the best. The functional form of a linear regression model looks like 
+$$ y = X \beta + \varepsilon $$
+where $X$ are the (possibly transformed) covariates, $\beta$ are the regression coefficients, $\varepsilon$ are residual errors, and $y$ is the (possibly transformed) response variable.
+
+Linear regression assumes that the observations are independent, that the functional form accurately describes the relationship between inputs and response, and that the residual errors are follow a normal distribution with mean zero and constant variance.
 
 ## Logistic regression
 Logistic regression is a method of estimating the probability of an event occurring. An event is a discrete occurrence that either happens or does not. For example, a subject surviving for at least five years after enrollment in a clinical trial is one example of an event - it either happens or does not.

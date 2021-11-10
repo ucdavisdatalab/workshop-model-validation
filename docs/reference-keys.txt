@@ -5,6 +5,7 @@ breast-cancer-survival
 covid-19-hospital-admissions
 typical-modeling-assumptions
 model-types
+linear-regression
 logistic-regression
 random-forest-regression
 data-splitting-systems

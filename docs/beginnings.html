@@ -152,8 +152,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2" data-path="model-types.html"><a href="model-types.html"><i class="fa fa-check"></i><b>2</b> Model types</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="model-types.html"><a href="model-types.html#logistic-regression"><i class="fa fa-check"></i><b>2.1</b> Logistic regression</a></li>
-<li class="chapter" data-level="2.2" data-path="model-types.html"><a href="model-types.html#random-forest-regression"><i class="fa fa-check"></i><b>2.2</b> Random forest regression</a></li>
+<li class="chapter" data-level="2.1" data-path="model-types.html"><a href="model-types.html#linear-regression"><i class="fa fa-check"></i><b>2.1</b> Linear regression</a></li>
+<li class="chapter" data-level="2.2" data-path="model-types.html"><a href="model-types.html#logistic-regression"><i class="fa fa-check"></i><b>2.2</b> Logistic regression</a></li>
+<li class="chapter" data-level="2.3" data-path="model-types.html"><a href="model-types.html#random-forest-regression"><i class="fa fa-check"></i><b>2.3</b> Random forest regression</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html"><i class="fa fa-check"></i><b>3</b> Data splitting systems</a>
 <ul>
@@ -223,7 +224,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-7"><a href="beginnings.html#cb1-7" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">=</span> <span class="st">&quot;https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-validation/master/data/&quot;</span></span></code></pre></div>
 <div id="stopping-distance" class="section level3" number="1.1.1">
 <h3><span class="header-section-number">1.1.1</span> Stopping distance</h3>
-<p>This data set has fifty measurements of stopping distance for cars travelling at different speeds. Here’s a plot of the data:</p>
+<p>The dataset <code>cars</code> is built into R and can be loaded by the command <code>data(cars)</code>. It is a record of fifty measurements from 1930 of stopping distances for cars travelling at different speeds. We are going to select the functional form of a model that relates the stopping distance to the speed. Here’s a plot of the data:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="beginnings.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the data</span></span>
 <span id="cb2-2"><a href="beginnings.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>( cars )</span>
 <span id="cb2-3"><a href="beginnings.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -234,7 +235,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="breast-cancer-survival" class="section level3" number="1.1.2">
 <h3><span class="header-section-number">1.1.2</span> Breast cancer survival</h3>
-<p>We will also use the built-in data set <code>gbsg</code> for an analysis of which factors affected the five-year survival of women in the German Breast Cancer Study Group (GBSG). Let’s import the data and generate the five year survival variable:</p>
+<p>We will also use the data set <code>gbsg</code> (which is built into R’s <code>survival</code> package) for an analysis of the factors affecting the five-year survival of women in the German Breast Cancer Study Group (GBSG). Our goal will be to create a model of how the available variables influence the five year recurrence free survival of women who met the study criteria. Let’s import the data and generate the five year survival variable:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="beginnings.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the gbsg data</span></span>
 <span id="cb3-2"><a href="beginnings.html#cb3-2" aria-hidden="true" tabindex="-1"></a>gbsg <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="fu">url</span>(<span class="fu">paste0</span>(data_path, <span class="st">&quot;gbsg.csv&quot;</span>)) )</span>
 <span id="cb3-3"><a href="beginnings.html#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -260,7 +261,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="covid-19-hospital-admissions" class="section level3" number="1.1.3">
 <h3><span class="header-section-number">1.1.3</span> COVID-19 hospital admissions</h3>
-<p>The third data set that we’ll use for illustration is a time series of daily hospital admissions for COVID-19. I like to begin with a pair plot of all the data, but here we have 81 columns, which is too many to fit on a pair plot. Instead, we’ll look at the time series.</p>
+<p>The third data set that we’ll use for illustration is a time series of daily hospital admissions for COVID-19. Our goal will be to create a model that can predict the number of people who will be admitted to the hospital for COVID-19 in the next day. I like to begin with a pair plot of all the data, but here we have 81 columns, which is too many to fit on a pair plot. Instead, we’ll look at the time series.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="beginnings.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the covid dataset</span></span>
 <span id="cb6-2"><a href="beginnings.html#cb6-2" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="fu">url</span>( <span class="fu">paste0</span>(data_path, <span class="st">&quot;covid.csv&quot;</span>)) )</span>
 <span id="cb6-3"><a href="beginnings.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -272,7 +273,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="beginnings.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the autocorelation function of the diff-1 covid admissions</span></span>
 <span id="cb7-2"><a href="beginnings.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>( <span class="fu">diff</span>(covid<span class="sc">$</span>COVID_NEW_ADM_CNT, <span class="dv">1</span>) )</span></code></pre></div>
 <p><img src="01_basics_files/figure-html/test-autocorrelation-1.png" width="672" /></p>
-<p>The salient feature of this plot is that the second line points downward, and crosses the dashed blue line. There is apparently a tendency for the count to decrease the day after it increases, and vice versa. This may or may not be due to some trend in the covariates - we’ll check again after accounting for the explanatory variables.</p>
+<p>You can ignore the first line of the chart - it is there to show how long a line is drawn to show perfect correlation at zero time lag. The salient feature of this plot is that the third line points downward, and crosses the dashed blue line. There is apparently a tendency for the count to decrease the day after it increases, and vice versa. This may or may not be due to some trend in the covariates - we’ll check again after accounting for the explanatory variables.</p>
 </div>
 </div>
 <div id="typical-modeling-assumptions" class="section level2" number="1.2">
@@ -284,7 +285,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>The response variable has some distribution, like <span class="math inline">\(Y\)</span> is Normal, or binomial, or Poisson.</li>
 </ul>
 <p>Validating these assumptions also requires that the function <span class="math inline">\(f(\cdot)\)</span> and the response distribution can be learned from the data.</p>
-<p>So, how can we test (validate) these assumptions? A key problem is that they can’t be tested from within a fitted model. The way statistical estimation works is that you assume the form of a model, and then find the parameters that best match the data and the assumption. Testing requires applying the model to new data in order to see if the predictions match the truth.</p>
+<p>So, how can we test (validate) these assumptions? A key problem is that they generally can’t be tested from within a fitted model. The way statistical estimation works is that you assume the form of a model, and then find the parameters that best match the data and the assumption. There is a circularity to the logic of estimating a model that requires some assumption about the data and then using that same data to check whether the assumptions are violated. Testing requires applying the model to new data in order to see if the predictions match the truth.</p>
 </div>
 </div>
             </section>
