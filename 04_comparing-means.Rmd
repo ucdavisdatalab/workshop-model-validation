@@ -43,11 +43,17 @@ One way to do that is to reserve some *validation data* that is not used until t
 I'm going to demonstrate creating a bunch of candidate models with different functional relationships between the speed and stopping distance. This kind of exploration is something you'll often do when creating a regression model, but it can lead to picking a model that best matches the available training data, rather than one that works well when applied to new observations. That's why it is important to have some validation data that was never used in the selection and estimation process.
 
 ```{r mean-validation-cars, cache=TRUE}
+# set the random seed (so that the results are consistent)
 set.seed( 20211109 )
+
+# set up six CV folds
 nfold = 6
 folds = sample( 1:nfold, size=nrow(cars), replace=TRUE )
+
+# set the training set to only use the first four CV folds
 train = folds <= 4
 
+# create a list of six to hold results from each candidate model
 preds = list( rep( NA, nrow(cars)),
               rep( NA, nrow(cars)),
               rep( NA, nrow(cars)),
@@ -56,10 +62,13 @@ preds = list( rep( NA, nrow(cars)),
               rep( NA, nrow(cars))
               )
 
+# loop through folds 1-4
 for ( i in 1:4 ) {
+  
+  # create a flag that indicates training data for this fold
   indx = folds!= i & train
   
-  # Estimate a model for the stopping distance data
+  # Estimate six models for the stopping distance data
   lm1 = lm( dist ~ speed, data=cars[ indx, ] )
   lm2 = lm( dist ~ speed + I(speed^2), data=cars[ indx, ] )
   lm3 = lm( dist ~ speed + I(speed^2) + I(speed^3), data=cars[ indx, ] )
@@ -67,6 +76,7 @@ for ( i in 1:4 ) {
   lm5 = lm( dist ~ 0 + speed + I(speed^2), data=cars[ indx, ] )
   lm6 = lm( dist ~ 0 + speed + I(speed^2) + I(speed^3), data=cars[ indx, ] )
   
+  # get the fitted values for this fold from each of the candidate models
   preds[[1]][ folds == i ] = predict( lm1, cars[ folds==i, ] )
   preds[[2]][ folds == i ] = predict( lm2, cars[ folds==i, ] )
   preds[[3]][ folds == i ] = predict( lm3, cars[ folds==i, ] )
@@ -75,13 +85,15 @@ for ( i in 1:4 ) {
   preds[[6]][ folds == i ] = predict( lm6, cars[ folds==i, ] )
 }
 
-# calculate the mean squared error of the models
-mean( (preds[[1]] - cars$dist)**2, na.rm=TRUE )
-mean( (preds[[2]] - cars$dist)**2, na.rm=TRUE )
-mean( (preds[[3]] - cars$dist)**2, na.rm=TRUE )
-mean( (preds[[4]] - cars$dist)**2, na.rm=TRUE )
-mean( (preds[[5]] - cars$dist)**2, na.rm=TRUE )
-mean( (preds[[6]] - cars$dist)**2, na.rm=TRUE )
+# calculate the mean squared error for each candidate model
+paste( mean( (preds[[1]] - cars$dist)**2, na.rm=TRUE ), 
+  mean( (preds[[2]] - cars$dist)**2, na.rm=TRUE ), 
+  mean( (preds[[3]] - cars$dist)**2, na.rm=TRUE ), 
+  mean( (preds[[4]] - cars$dist)**2, na.rm=TRUE ), 
+  mean( (preds[[5]] - cars$dist)**2, na.rm=TRUE ), 
+  mean( (preds[[6]] - cars$dist)**2, na.rm=TRUE ),
+  sep="\n"
+)
 ```
 
 Now I'll compare the three candidate models that had the lowest cross-validation error over the training data, to see which is most accurate on the validation data.
@@ -96,9 +108,12 @@ lm4 =  lm(dist ~ 0 + speed, data=cars[ folds <= 4, ])
 lm5 =  lm(dist ~ 0 + speed + I(speed^2), data=cars[ folds <= 4, ])
 
 # now calculate the mean squared error in predictions on folds 5-6
-mean( (predict(lm1, cars)[ folds > 4 ] - cars$dist[ folds > 4 ])**2 )
-mean( (predict(lm4, cars)[ folds > 4 ] - cars$dist[ folds > 4 ])**2 )
-mean( (predict(lm5, cars)[ folds > 4 ] - cars$dist[ folds > 4 ])**2 )
+paste(
+  mean( (predict(lm1, cars)[ folds > 4 ] - cars$dist[ folds > 4 ])**2 ),
+  mean( (predict(lm4, cars)[ folds > 4 ] - cars$dist[ folds > 4 ])**2 ),
+  mean( (predict(lm5, cars)[ folds > 4 ] - cars$dist[ folds > 4 ])**2 ),
+  sep="\n"
+)
 ```
 
 We will prefer model `lm5`, the one with the formula `dist ~ 0 + speed + I(speed^2)`.
@@ -108,13 +123,16 @@ We will prefer model `lm5`, the one with the formula `dist ~ 0 + speed + I(speed
 No model selection this time. We have a model formula and must check whether the predicted probabilities accurately describe the observed events. To begin, we need to use cross-validation to get predicted probabilities of five year survival for each subject in the study.
 
 ```{r mean-validation-gbsg, cache=TRUE}
+# set up five CV folds
 nfold = 5
 fold = sample( 1:nfold, size=nrow(gbsg), replace=TRUE )
 
+# create a vector to hold the results
 pred_gbsg = numeric( nrow(gbsg) )
 
+# loop over the CV folds
 for ( i in 1:nfold ) {
-  # Estimate a model for the stopping distance data
+  # Estimate a model for the gbsg data
   glm1 = glm( fys ~ age + meno + size + grade + log(nodes) + sqrt(pgr) + sqrt(er) + hormon, data=gbsg[ fold != i, ], family='binomial' )
   
   # get predictions for the left-out CV fold
@@ -223,6 +241,19 @@ pred_covid = predict(boost, covid, type='response')[ !train ]
 # plot the predicted vs. observed
 plot(pred_covid, covid$D1_admissions[!train], xlab="prediction", ylab="actual future admissions")
 abline(a=0, b=1)
+
+# plot the time series of data over the validation period
+with(covid[!train, ], plot(date, D1_admissions, type='l'))
+
+# plot the predictions over the validation period
+lines( covid$date[ !train ], pred_covid, col='red')
+
+# calculate the mean absolute error over the validation period:
+cat( "model MAE=", mean( abs( pred_covid - covid$D1_admissions[ !train ])))
+
+# compare to the MAE of carrying forward the most recent observation:
+cat( "lag MAE=",
+       mean( abs( with(covid, COVID_NEW_ADM_CNT - D1_admissions)[ !train ])))
 ```
 
 The predictions are clearly somewhat muted relative to the actual future admissions, but they do capture the trend and when we look at the admissions from the perspective of the assumed Poisson distribution, we will see that the wider errors toward the right of the plot are expected.
