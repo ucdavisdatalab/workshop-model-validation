@@ -1,0 +1,35 @@
+## In-sample vs. out-of-sample
+In-sample and out-of-sample describe data relative to some model. The data are in-sample to the model if the data were used in training that model, and are out-of-sample otherwise.
+
+
+## Fitting vs. prediction
+That leads to the key difference between fitting and prediction: fitting is done with in-sample data, and prediction is done with out-of-sample data. 
+
+```{r residual-types, echo=FALSE }
+data( cars )
+
+# indicate the training points
+indx = cars$speed >=15 & cars$speed <=17
+
+# fit a spline with too much wiggliness to the points
+xx = seq( min(cars$speed), max(cars$speed), length.out=200 )
+spl = smooth.spline(cars$speed[!indx], cars$dist[!indx], spar=0.02)
+
+# fit a second-order polynomial to the points
+lm1 = lm( dist ~ 0 + poly(speed, 2), data=cars )
+
+# plot the training points and the smoothing spline
+plot( cars[!indx, ], bty='n' )
+lines( xx, mean(cars$dist) + predict(lm1, list(speed=xx)), lty=2 )
+```
+
+
+```{r echo=FALSE }
+# plot the training points and the smoothing spline
+plot( cars[!indx, ], bty='n' )
+lines( predict(spl, xx) )
+lines( x=xx, y=mean(cars$dist[!indx]) + predict(lm1, data.frame(speed = xx)) )
+
+# add the held-out points to the plot, highlighting the predictive residuals
+points( cars[indx, ], col='red' )
+```

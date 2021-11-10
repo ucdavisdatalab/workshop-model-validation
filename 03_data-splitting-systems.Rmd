@@ -10,7 +10,9 @@ One solution is to reserve some data for validation, and use what is left for tr
 
 
 ## Cross-validation
-Cross validation is a kind of repeated training/validation split, which is iterated until all of the data has been used for testing. Each training/validation split may be random or may take data that are grouped according to some meaningful value (often that means resolving one year's data at a time as validation data).
+Cross validation is a kind of repeated training/validation split, which is iterated until all of the data has been used for testing. Each training/validation split may be random or may take data that are grouped according to some meaningful value. For instance, time-series data may be best analyzed by holding out contiguous blocks of observations.
+
+Here, I'll demonstrate doing thre-fold cross-validation on the car stopping distance data. I'll split the data into three folds and use those divisions to estimate three models. Each model uses two folds as training data and one as validation data.
 
 ```{r three-fold-cv, echo=FALSE, cache=TRUE}
 # standard plotting parameters
@@ -21,39 +23,36 @@ xx = seq( min(cars$speed), max(cars$speed), length.out=200 )
 fold = sample(c("black", "purple", "darkorange"), size=nrow(cars), replace=TRUE)
 plot( cars, col=fold, bty='n', pch=16, ylim=ylim )
 
-# plot a held-out model and the predictions
-cv3fm1 = lm( dist ~ poly(speed, 2), data=cars[fold != "purple", ])
+# divide the plotting window into two panels
 layout( matrix(1:2, 1, 2) )
-plot(cars[ fold != 'purple', ], bty='n', col=fold[ fold != 'purple'], pch=16, ylim=ylim )
-lines( x=xx, y=predict(cv3fm1, data.frame(speed=xx)))
 
-plot( cars[fold == 'purple', ], bty='n', col=fold[ fold == 'purple'], pch=16, ylim=ylim )
-lines( x=xx, y=predict(cv3fm1, data.frame(speed=xx)), lty=2)
-
-
-# plot a held-out model and the predictions
-cv3fm2 = lm( dist ~ poly(speed, 2), data=cars[fold != "darkorange", ])
-layout( matrix(1:2, 1, 2) )
-plot(cars[ fold != 'darkorange', ], bty='n', col=fold[ fold != 'darkorange'], pch=16, ylim=ylim )
-lines( x=xx, y=predict(cv3fm2, data.frame(speed=xx)))
-
-plot( cars[fold == 'darkorange', ], bty='n', col=fold[ fold == 'darkorange'], pch=16, ylim=ylim )
-lines( x=xx, y=predict(cv3fm2, data.frame(speed=xx)), lty=3)
-
-
-# plot a held-out model and the predictions
-cv3fm3 = lm( dist ~ poly(speed, 2), data=cars[fold != "black", ])
-layout( matrix(1:2, 1, 2) )
-plot(cars[ fold != 'black', ], bty='n', col=fold[ fold != 'black'], pch=16, ylim=ylim )
-lines( x=xx, y=predict(cv3fm3, data.frame(speed=xx)))
-
-plot( cars[fold == 'black', ], bty='n', col=fold[ fold == 'black'], pch=16, ylim=ylim )
-lines( x=xx, y=predict(cv3fm3, data.frame(speed=xx)), lty=4)
-
+for (holdout in c("black", "purple", "darkorange")) {
+  # create a regression model on the training folds
+  cv3 = lm( dist ~ poly(speed, 2), data=cars[fold != holdout, ])
+  
+  # plot the training data with the estimated model
+  plot(cars[ fold != holdout, ],
+       bty='n',
+       col=fold[ fold != holdout],
+       pch=16,
+       ylim=ylim )
+  lines( x=xx, y=predict(cv3, data.frame(speed=xx)))
+  
+  # plot the held out data with the estimated model
+  plot( cars[fold == holdout, ],
+        bty='n',
+        col=holdout,
+        pch=16,
+        ylim=ylim )
+  lines( x=xx, y=predict(cv3, data.frame(speed=xx)), lty=2)
+}
 ```
 
+Some things to note are that the estimated line of best fits are different for each iteration of the CV, and that the predictions (in the right hand panels) are generally less accurate than the fitted values (in the left hand panels).
+
+
 ### Combining the two
-There are times when cross-validation and training/testing validation should be used together. For instance, when cross-validation is used to select model parameters for the best predictive performance, there should also be a validation set that was never used in the cross-validation. That's so that there are independent data to validate the selection that was based on the CV.
+There are times when cross-validation and training/testing validation should be used together. For instance, when cross-validation is used for exploratory analysis and model selection, then validation should be done using new data that was never previously part of the estimation.
 
 
 

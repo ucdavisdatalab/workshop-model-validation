@@ -212,11 +212,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="cross-validation" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Cross-validation</h2>
-<p>Cross validation is a kind of repeated training/validation split, which is iterated until all of the data has been used for testing. Each training/validation split may be random or may take data that are grouped according to some meaningful value (often that means resolving one year’s data at a time as validation data).</p>
+<p>Cross validation is a kind of repeated training/validation split, which is iterated until all of the data has been used for testing. Each training/validation split may be random or may take data that are grouped according to some meaningful value. For instance, time-series data may be best analyzed by holding out contiguous blocks of observations.</p>
+<p>Here, I’ll demonstrate doing thre-fold cross-validation on the car stopping distance data. I’ll split the data into three folds and use those divisions to estimate three models. Each model uses two folds as training data and one as validation data.</p>
 <p><img src="03_data-splitting-systems_files/figure-html/three-fold-cv-1.png" width="672" /><img src="03_data-splitting-systems_files/figure-html/three-fold-cv-2.png" width="672" /><img src="03_data-splitting-systems_files/figure-html/three-fold-cv-3.png" width="672" /><img src="03_data-splitting-systems_files/figure-html/three-fold-cv-4.png" width="672" /></p>
+<p>Some things to note are that the estimated line of best fits are different for each iteration of the CV, and that the predictions (in the right hand panels) are generally less accurate than the fitted values (in the left hand panels).</p>
 <div id="combining-the-two" class="section level3" number="3.2.1">
 <h3><span class="header-section-number">3.2.1</span> Combining the two</h3>
-<p>There are times when cross-validation and training/testing validation should be used together. For instance, when cross-validation is used to select model parameters for the best predictive performance, there should also be a validation set that was never used in the cross-validation. That’s so that there are independent data to validate the selection that was based on the CV.</p>
+<p>There are times when cross-validation and training/testing validation should be used together. For instance, when cross-validation is used for exploratory analysis and model selection, then validation should be done using new data that was never previously part of the estimation.</p>
 
 </div>
 </div>
