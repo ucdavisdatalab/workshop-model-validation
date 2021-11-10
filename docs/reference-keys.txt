@@ -22,6 +22,8 @@ posit-a-model
 model-form
 model-distribution
 validate-the-assumptions
+stopping-distamce-example
+breast-cancer-survival-example
 covid-19-admissions-example
 validating-the-models-distributional-form
 posit-a-distribution

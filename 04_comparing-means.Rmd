@@ -31,40 +31,81 @@ Knowing the allowable range of the response will help you to decide what distrib
 ## Validate the assumptions
 Having posited a model, we may check whether the model generates fits and predictions that agree with the assumptions. Let's do this for our examples.
 
+
+### Stopping distamce example
+
+One common task in statistical modeling is model selection. Adding more predictors to a regression model will always improve the fit to the training data, but it often doesn't help the accuracy of prediction (and can even cause predictions to be less accurate.) Since a statistical model is all about identifying **consistent** or **reliable** trends in the data, we want to be sure that the relationships we observe in the training data are still there in new data.
+
+In the context of model selection, that means picking the model that does best at predicting left out data
+
+One way to do that is to reserve some *validation data* that is not used until the very end of a data analysis, when it may be used to confirm which model does best on the training data. Here, we'll do that by using six-fold cross validation but leaving out two folds (1/3 of the data) for validation.
+
+I'm going to demonstrate creating a bunch of candidate models with different functional relationships between the speed and stopping distance. This kind of exploration is something you'll often do when creating a regression model, but it can lead to picking a model that best matches the available training data, rather than one that works well when applied to new observations. That's why it is important to have some validation data that was never used in the selection and estimation process.
+
 ```{r mean-validation-cars, cache=TRUE}
-nfold = 5
+set.seed( 20211109 )
+nfold = 6
 folds = sample( 1:nfold, size=nrow(cars), replace=TRUE )
+train = folds <= 4
 
-preds = list( 'a' = numeric(nrow(cars)), 'b' = numeric(nrow(cars)), 'c' = numeric(nrow(cars)), 'd' = numeric(nrow(cars)), 'e' = numeric(nrow(cars)), 'f'= numeric(nrow(cars)))
+preds = list( rep( NA, nrow(cars)),
+              rep( NA, nrow(cars)),
+              rep( NA, nrow(cars)),
+              rep( NA, nrow(cars)),
+              rep( NA, nrow(cars)),
+              rep( NA, nrow(cars))
+              )
 
-for ( i in 1:nfold ) {
+for ( i in 1:4 ) {
+  indx = folds!= i & train
+  
   # Estimate a model for the stopping distance data
-  lm1 = lm( dist ~ speed, data=cars[ folds!= i, ] )
-  lm2 = lm( dist ~ I(speed^2), data=cars[ folds!= i, ] )
-  lm3 = lm( dist ~ I(speed^3), data=cars[ folds!= i, ] )
-  lm4 = lm( dist ~ I(speed^2) + 0, data=cars[ folds!= i, ] )
+  lm1 = lm( dist ~ speed, data=cars[ indx, ] )
+  lm2 = lm( dist ~ speed + I(speed^2), data=cars[ indx, ] )
+  lm3 = lm( dist ~ speed + I(speed^2) + I(speed^3), data=cars[ indx, ] )
+  lm4 = lm( dist ~ 0 + speed, data=cars[ indx, ] )
+  lm5 = lm( dist ~ 0 + speed + I(speed^2), data=cars[ indx, ] )
+  lm6 = lm( dist ~ 0 + speed + I(speed^2) + I(speed^3), data=cars[ indx, ] )
   
-  lm5 = lm( dist ~ I(speed^2) + speed, data=cars[ folds!= i, ] )
-  lm6 = lm( dist ~ I(speed^2) + speed+0, data=cars[ folds!= i, ] )
-    
-  
-  preds[['a']][ folds == i ] = predict( lm1, cars[ folds==i, ] )
-  preds[['b']][ folds == i ] = predict( lm2, cars[ folds==i, ] )
-  preds[['c']][ folds == i ] = predict( lm3, cars[ folds==i, ] )
-  preds[['d']][ folds == i ] = predict( lm4, cars[ folds==i, ] )
-  preds[['e']][ folds == i ] = predict( lm5, cars[ folds==i, ] )
-  preds[['f']][ folds == i ] = predict( lm6, cars[ folds==i, ] )
+  preds[[1]][ folds == i ] = predict( lm1, cars[ folds==i, ] )
+  preds[[2]][ folds == i ] = predict( lm2, cars[ folds==i, ] )
+  preds[[3]][ folds == i ] = predict( lm3, cars[ folds==i, ] )
+  preds[[4]][ folds == i ] = predict( lm4, cars[ folds==i, ] )
+  preds[[5]][ folds == i ] = predict( lm5, cars[ folds==i, ] )
+  preds[[6]][ folds == i ] = predict( lm6, cars[ folds==i, ] )
 }
 
 # calculate the mean squared error of the models
-var( preds[['a']] - cars$dist )
-var( preds[['b']] - cars$dist )
-var( preds[['c']] - cars$dist )
-var( preds[['d']] - cars$dist )
-var( preds[['e']] - cars$dist )
-var( preds[['f']] - cars$dist )
+mean( (preds[[1]] - cars$dist)**2, na.rm=TRUE )
+mean( (preds[[2]] - cars$dist)**2, na.rm=TRUE )
+mean( (preds[[3]] - cars$dist)**2, na.rm=TRUE )
+mean( (preds[[4]] - cars$dist)**2, na.rm=TRUE )
+mean( (preds[[5]] - cars$dist)**2, na.rm=TRUE )
+mean( (preds[[6]] - cars$dist)**2, na.rm=TRUE )
 ```
 
+Now I'll compare the three candidate models that had the lowest cross-validation error over the training data, to see which is most accurate on the validation data.
+
+```{r cars-validation-set}
+# The first, fourth, and fifth candidate models were the most accurate on the
+# training data. Let's see how they compare on the validation data.
+
+## first, estimate models over folds 1-4:
+lm1 =  lm(dist ~ speed, data=cars[ folds <= 4, ])
+lm4 =  lm(dist ~ 0 + speed, data=cars[ folds <= 4, ])
+lm5 =  lm(dist ~ 0 + speed + I(speed^2), data=cars[ folds <= 4, ])
+
+# now calculate the mean squared error in predictions on folds 5-6
+mean( (predict(lm1, cars)[ folds > 4 ] - cars$dist[ folds > 4 ])**2 )
+mean( (predict(lm4, cars)[ folds > 4 ] - cars$dist[ folds > 4 ])**2 )
+mean( (predict(lm5, cars)[ folds > 4 ] - cars$dist[ folds > 4 ])**2 )
+```
+
+We will prefer model `lm5`, the one with the formula `dist ~ 0 + speed + I(speed^2)`.
+
+### Breast cancer survival example
+
+No model selection this time. We have a model formula and must check whether the predicted probabilities accurately describe the observed events. To begin, we need to use cross-validation to get predicted probabilities of five year survival for each subject in the study.
 
 ```{r mean-validation-gbsg, cache=TRUE}
 nfold = 5
@@ -79,10 +120,51 @@ for ( i in 1:nfold ) {
   # get predictions for the left-out CV fold
   pred_gbsg[ fold == i ] = predict( glm1, gbsg[ fold == i, ], type='response' )
 }
-
-# calculate the mean squared error of the models
-var( (pred_gbsg - gbsg$fys) / sqrt(pred_gbsg * (1-pred_gbsg)), na.rm=TRUE )
 ```
+
+ Each person's outcome is binary - they achieve five years of recurrence free survival or not. It is difficult to discern whether a binary outcome is consistent with its predicted probability, because ther is very little information in a single binary outcome. So to compare the predicted probabilities to the observed frequencies, we will put each subject into one of twenty bins based on their predicted probability of five year survival. For this data, each of those bins contains about forty subjects. Then we can check whether the frequency of five year survival of people in a bin matches the predicted probability of five year survival for that bin.
+ 
+This requires a bit of coding, but we will get through it, I promise:
+
+
+```{r binomial-cv}
+# divide the predictions into twenty bins (nineteen breakpoints)
+q_gbsg = quantile( pred_gbsg, seq(0.05, 0.95, length.out=19) )
+
+# add 0 and 1 as the extremes of the probabilities
+q_gbsg = c(0, q_gbsg, 1)
+
+# create some variables to hold the observed, expected five-year survival
+p_gbsg = numeric(20)
+fys_gbsg = numeric(20)
+tot_gbsg = numeric(20)
+
+# calculate expected and observed five-year survival in each bin
+for (i in 1:20) {
+  # identify which predictions are within this interval
+  indx = pred_gbsg > q_gbsg[[i]] & pred_gbsg <= q_gbsg[[i+1]]
+  
+  # calculate the mean probability within this interval
+  p_gbsg[[i]] = mean(pred_gbsg[ indx ], na.rm=TRUE)
+  
+  # calculate the number of subects in this interval who survived five years
+  fys_gbsg[[i]] = sum( gbsg$fys[ indx ], na.rm=TRUE )
+  
+  # calculate the number of subjects in this interval
+  tot_gbsg[[i]] = sum( !is.na(gbsg$fys)[ indx ] )
+}
+
+# plot the predicted probability within each bin
+# vs. the observed frequency of five year survival
+plot( p_gbsg, fys_gbsg / tot_gbsg,
+      xlab = "predicted probability of FYS",
+      ylab = "observed frequency of FYS")
+
+# add the line that would show a perfect match between observed and expected.
+abline(0, 1)
+```
+
+The observed frequency of five year survival tends to increase with the predicted probability, but there is a pretty large amount of variation around the trend. We will see later how to decide if that variation is what we'd expect from a binomial distribution.
 
 
 #### COVID-19 admissions example
@@ -150,6 +232,9 @@ The predictions are clearly somewhat muted relative to the actual future admissi
 save( pred_gbsg, file="output/pred_gbsg.rda")
 save( gbsg, file="output/gbsg.rda")
 save( pred_covid, file="output/pred_covid.rda")
+save( p_gbsg, file="output/p_gbsg.rda" )
+save( fys_gbsg, file="output/fys_gbsg.rda" )
+save( tot_gbsg, file="output/tot_gbsg.rda" )
 ```
 
 
