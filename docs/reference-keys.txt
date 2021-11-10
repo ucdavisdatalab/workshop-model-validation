@@ -1,15 +1,9 @@
-basic-information
-what-is-a-model
-what-is-model-validation
-typical-modeling-assumptions
-how-to-begin
+beginnings
 examples
 stopping-distance
 breast-cancer-survival
 covid-19-hospital-admissions
-essential-concepts
-in-sample-vs.-out-of-sample
-fitting-vs.-prediction
+typical-modeling-assumptions
 model-types
 logistic-regression
 random-forest-regression

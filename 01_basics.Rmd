@@ -1,39 +1,25 @@
-# Basic information
+# Beginnings
+Validating a model is the process of testing it to decide whether the assumptions that are built into the model's construction are valid. Typically, any kind of statistical method entails some assumptions about the data. That usually means assumptions about the *population* from which the data were sampled. It is generally impossible to *confirm* an assumption like, "samples from the population are independent" or, "the population is normally distributed". Instead, we follow the scientific method of proposing some phenomenon that is bound to happen if the assumption is true, and then if that phenomenon does not occur we have evidence against the assumption. 
 
-## What is a model?
-
-```{r load-libraries, echo=FALSE, warning=FALSE, message=FALSE}
-library( "dplyr" )
-library( "lubridate" )
-library( "readr" )
-```
-
-## What is model validation?
-In most basic terms, model validation is to answer the question, "is this model good?" That can have different meanings in different contexts.
-
-Validation focuses on ensuring that the model description is accurate to its performance. Another way to think of it is checking model assumptions. So, what kind of assumptions are we talking about?
-
-
-### Typical modeling assumptions
-There are three general assumptions that underlie most statistical models
-
-- Observations are usualy assumed to be independent of each other (or assume some specific form of dependence).
-- The expectation of the response variable is a function of the input variables. $\mathbb{E}(Y) = f(X)$.
-- The response variable has some distribution, like $Y$ is Normal, or binomial, or Poisson.
-
-Validating these assumptions also requires that the function $f(\cdot)$ and the response distribution can be learned from the data.
-
-
-# How to begin?
-Validation begins when you first look at your data. This is when you can begin to ask questions like,
+Statistical modeling and model validation begin no later than your first look at your data. This is when you can begin to ask questions like,
 - "Are there limits to the range of the response variable?"
 - "What is the distribution of the response variable?"
 - "Based on my prior knowledge, am I able to anticipate the structure of the model?"
 
-If you have answers to these, then you are well on your way to creating a great model.
+If you have answers to these, then you are well on your way to creating a great model. With that in mind, I'm going to start this workshop by introducing examples of data.
 
 ## Examples
-Let's load the data for a few examples of the data we'll be looking at today.
+Let's load the data for a few examples of data that we'll be looking at today. First, though, we need to load some packages and set the path to use for loading data.
+
+```{r load-libraries, warning=FALSE, message=FALSE}
+library( "dplyr" )
+library( "lubridate" )
+library( "readr" )
+library( "gbm" )
+
+# set the root path for loading data.
+data_path = "https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-validation/master/data/"
+```
 
 ### Stopping distance
 This data set has fifty measurements of stopping distance for cars travelling at different speeds. Here's a plot of the data:
@@ -52,9 +38,9 @@ We have some relevant prior knowledge: speed and distance are both positive, zer
 ### Breast cancer survival
 We will also use the built-in data set `gbsg` for an analysis of which factors affected the five-year survival of women in the German Breast Cancer Study Group (GBSG). Let's import the data and generate the five year survival variable:
 
-```{r import-gbsg}
+```{r import-gbsg, message=FALSE}
 # import the gbsg data
-gbsg = read_csv( "data/gbsg.csv" )
+gbsg = read_csv( url(paste0(data_path, "gbsg.csv")) )
 
 # make a factor of the grade
 gbsg$grade = factor( gbsg$grade )
@@ -88,9 +74,9 @@ Note how the outliers have been brought back toward the mass of data, and the de
 ### COVID-19 hospital admissions
 The third data set that we'll use for illustration is a time series of daily hospital  admissions for COVID-19. I like to begin with a pair plot of all the data, but here we have 81 columns, which is too many to fit on a pair plot. Instead, we'll look at the time series.
 
-```{r import-covid}
+```{r import-covid, message=FALSE}
 # import the covid dataset
-covid = read_csv( "data/covid.csv" )
+covid = read_csv( url( paste0(data_path, "covid.csv")) )
 
 # plot the admissions time series
 with( covid, plot(date, COVID_NEW_ADM_CNT, type='l') )
@@ -107,46 +93,26 @@ acf( diff(covid$COVID_NEW_ADM_CNT, 1) )
 
 The salient feature of this plot is that the second line points downward, and crosses the dashed blue line. There is apparently a tendency for the count to decrease the day after it increases, and vice versa. This may or may not be due to some trend in the covariates - we'll check again after accounting for the explanatory variables.
 
-# Essential concepts
+
+
+## Typical modeling assumptions
+There are three general assumptions that underlie most statistical models
+
+- Observations are usually assumed to be independent of each other (or assume some specific form of dependence).
+- The expectation of the response variable is a function of the input variables. $\mathbb{E}(Y) = f(X)$.
+- The response variable has some distribution, like $Y$ is Normal, or binomial, or Poisson.
+
+Validating these assumptions also requires that the function $f(\cdot)$ and the response distribution can be learned from the data.
+
+
+
+
+
+
 So, how can we test (validate) these assumptions? A key problem is that they can't be tested from within a fitted model. The way statistical estimation works is that you assume the form of a model, and then find the parameters that best match the data and the assumption. Testing requires applying the model to new data in order to see if the predictions match the truth.
 
 
 
-## In-sample vs. out-of-sample
-In-sample and out-of-sample describe data relative to some model. The data are in-sample to the model if the data were used in training that model, and are out-of-sample otherwise.
-
-
-## Fitting vs. prediction
-That leads to the key difference between fitting and prediction: fitting is done with in-sample data, and prediction is done with out-of-sample data. 
-
-```{r residual-types, echo=FALSE }
-data( cars )
-
-# indicate the training points
-indx = cars$speed >=15 & cars$speed <=17
-
-# fit a spline with too much wiggliness to the points
-xx = seq( min(cars$speed), max(cars$speed), length.out=200 )
-spl = smooth.spline(cars$speed[!indx], cars$dist[!indx], spar=0.02)
-
-# fit a second-order polynomial to the points
-lm1 = lm( dist ~ 0 + poly(speed, 2), data=cars )
-
-# plot the training points and the smoothing spline
-plot( cars[!indx, ], bty='n' )
-lines( xx, mean(cars$dist) + predict(lm1, list(speed=xx)), lty=2 )
-```
-
-
-```{r echo=FALSE }
-# plot the training points and the smoothing spline
-plot( cars[!indx, ], bty='n' )
-lines( predict(spl, xx) )
-lines( x=xx, y=mean(cars$dist[!indx]) + predict(lm1, data.frame(speed = xx)) )
-
-# add the held-out points to the plot, highlighting the predictive residuals
-points( cars[indx, ], col='red' )
-```
 
 # Model types
 
@@ -158,7 +124,7 @@ We are going to use a couple of example models throughout this workshop. First, 
 Logistic regression is a method of estimating the probability of an event occurring. An event is a discrete occurrence that either happens or does not. For example, a subject surviving for at least five years after enrollment in a clinical trial is one example of an event - it either happens or does not.
 
 Logistic regression assumes that each event has a binomial distribution where the probabolity of occurrence is $p$, and 
-$$p = \exp{X \beta} / ( 1 + \exp{X \beta} ).$$
+$$p = \exp{(X \beta)} / \{ 1 + \exp{(X \beta)} \}.$$
 
 As hinted above, validating a logistic regression model would involve checking that the observations are independent from a binomial distribution, and that the probability of each event is as above.
 

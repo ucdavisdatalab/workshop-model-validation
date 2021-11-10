@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>7 Validating the model’s distributional form | Model validation for applied data science</title>
-  <meta name="description" content="7 Validating the model’s distributional form | Model validation for applied data science" />
+  <title>5 Validating the model’s distributional form | Model validation for applied data science</title>
+  <meta name="description" content="5 Validating the model’s distributional form | Model validation for applied data science" />
   <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="7 Validating the model’s distributional form | Model validation for applied data science" />
+  <meta property="og:title" content="5 Validating the model’s distributional form | Model validation for applied data science" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ucdavisdatalab.github.io/workshop_model_validation/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ucdavisdatalab/workshop_model_validation" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="7 Validating the model’s distributional form | Model validation for applied data science" />
+  <meta name="twitter:title" content="5 Validating the model’s distributional form | Model validation for applied data science" />
   
   
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Wesley Brooks" />
 
 
-<meta name="date" content="2021-11-09" />
+<meta name="date" content="2021-11-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -140,62 +140,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a></li>
-<li class="chapter" data-level="1" data-path="basic-information.html"><a href="basic-information.html"><i class="fa fa-check"></i><b>1</b> Basic information</a>
+<li class="chapter" data-level="1" data-path="beginnings.html"><a href="beginnings.html"><i class="fa fa-check"></i><b>1</b> Beginnings</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="basic-information.html"><a href="basic-information.html#what-is-a-model"><i class="fa fa-check"></i><b>1.1</b> What is a model?</a></li>
-<li class="chapter" data-level="1.2" data-path="basic-information.html"><a href="basic-information.html#what-is-model-validation"><i class="fa fa-check"></i><b>1.2</b> What is model validation?</a>
+<li class="chapter" data-level="1.1" data-path="beginnings.html"><a href="beginnings.html#examples"><i class="fa fa-check"></i><b>1.1</b> Examples</a>
 <ul>
-<li class="chapter" data-level="1.2.1" data-path="basic-information.html"><a href="basic-information.html#typical-modeling-assumptions"><i class="fa fa-check"></i><b>1.2.1</b> Typical modeling assumptions</a></li>
+<li class="chapter" data-level="1.1.1" data-path="beginnings.html"><a href="beginnings.html#stopping-distance"><i class="fa fa-check"></i><b>1.1.1</b> Stopping distance</a></li>
+<li class="chapter" data-level="1.1.2" data-path="beginnings.html"><a href="beginnings.html#breast-cancer-survival"><i class="fa fa-check"></i><b>1.1.2</b> Breast cancer survival</a></li>
+<li class="chapter" data-level="1.1.3" data-path="beginnings.html"><a href="beginnings.html#covid-19-hospital-admissions"><i class="fa fa-check"></i><b>1.1.3</b> COVID-19 hospital admissions</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="beginnings.html"><a href="beginnings.html#typical-modeling-assumptions"><i class="fa fa-check"></i><b>1.2</b> Typical modeling assumptions</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="model-types.html"><a href="model-types.html"><i class="fa fa-check"></i><b>2</b> Model types</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="model-types.html"><a href="model-types.html#logistic-regression"><i class="fa fa-check"></i><b>2.1</b> Logistic regression</a></li>
+<li class="chapter" data-level="2.2" data-path="model-types.html"><a href="model-types.html#random-forest-regression"><i class="fa fa-check"></i><b>2.2</b> Random forest regression</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html"><i class="fa fa-check"></i><b>3</b> Data splitting systems</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#trainvalidation-split"><i class="fa fa-check"></i><b>3.1</b> Train/validation split</a></li>
+<li class="chapter" data-level="3.2" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#cross-validation"><i class="fa fa-check"></i><b>3.2</b> Cross-validation</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#combining-the-two"><i class="fa fa-check"></i><b>3.2.1</b> Combining the two</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="how-to-begin.html"><a href="how-to-begin.html"><i class="fa fa-check"></i><b>2</b> How to begin?</a>
+<li class="chapter" data-level="4" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html"><i class="fa fa-check"></i><b>4</b> Validating the model’s functional form</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="how-to-begin.html"><a href="how-to-begin.html#examples"><i class="fa fa-check"></i><b>2.1</b> Examples</a>
+<li class="chapter" data-level="4.1" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#posit-a-model"><i class="fa fa-check"></i><b>4.1</b> Posit a model</a>
 <ul>
-<li class="chapter" data-level="2.1.1" data-path="how-to-begin.html"><a href="how-to-begin.html#stopping-distance"><i class="fa fa-check"></i><b>2.1.1</b> Stopping distance</a></li>
-<li class="chapter" data-level="2.1.2" data-path="how-to-begin.html"><a href="how-to-begin.html#breast-cancer-survival"><i class="fa fa-check"></i><b>2.1.2</b> Breast cancer survival</a></li>
-<li class="chapter" data-level="2.1.3" data-path="how-to-begin.html"><a href="how-to-begin.html#covid-19-hospital-admissions"><i class="fa fa-check"></i><b>2.1.3</b> COVID-19 hospital admissions</a></li>
+<li class="chapter" data-level="4.1.1" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#model-form"><i class="fa fa-check"></i><b>4.1.1</b> Model form</a></li>
+<li class="chapter" data-level="4.1.2" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#model-distribution"><i class="fa fa-check"></i><b>4.1.2</b> Model distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#validate-the-assumptions"><i class="fa fa-check"></i><b>4.2</b> Validate the assumptions</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#stopping-distamce-example"><i class="fa fa-check"></i><b>4.2.1</b> Stopping distamce example</a></li>
+<li class="chapter" data-level="4.2.2" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#breast-cancer-survival-example"><i class="fa fa-check"></i><b>4.2.2</b> Breast cancer survival example</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="essential-concepts.html"><a href="essential-concepts.html"><i class="fa fa-check"></i><b>3</b> Essential concepts</a>
+<li class="chapter" data-level="5" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html"><i class="fa fa-check"></i><b>5</b> Validating the model’s distributional form</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="essential-concepts.html"><a href="essential-concepts.html#in-sample-vs.-out-of-sample"><i class="fa fa-check"></i><b>3.1</b> In-sample vs. out-of-sample</a></li>
-<li class="chapter" data-level="3.2" data-path="essential-concepts.html"><a href="essential-concepts.html#fitting-vs.-prediction"><i class="fa fa-check"></i><b>3.2</b> Fitting vs. prediction</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="model-types.html"><a href="model-types.html"><i class="fa fa-check"></i><b>4</b> Model types</a>
+<li class="chapter" data-level="5.1" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#posit-a-distribution"><i class="fa fa-check"></i><b>5.1</b> Posit a distribution</a></li>
+<li class="chapter" data-level="5.2" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#validate-your-choice"><i class="fa fa-check"></i><b>5.2</b> Validate your choice</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="model-types.html"><a href="model-types.html#logistic-regression"><i class="fa fa-check"></i><b>4.1</b> Logistic regression</a></li>
-<li class="chapter" data-level="4.2" data-path="model-types.html"><a href="model-types.html#random-forest-regression"><i class="fa fa-check"></i><b>4.2</b> Random forest regression</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html"><i class="fa fa-check"></i><b>5</b> Data splitting systems</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#trainvalidation-split"><i class="fa fa-check"></i><b>5.1</b> Train/validation split</a></li>
-<li class="chapter" data-level="5.2" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#cross-validation"><i class="fa fa-check"></i><b>5.2</b> Cross-validation</a>
-<ul>
-<li class="chapter" data-level="5.2.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#combining-the-two"><i class="fa fa-check"></i><b>5.2.1</b> Combining the two</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="6" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html"><i class="fa fa-check"></i><b>6</b> Validating the model’s functional form</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#posit-a-model"><i class="fa fa-check"></i><b>6.1</b> Posit a model</a>
-<ul>
-<li class="chapter" data-level="6.1.1" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#model-form"><i class="fa fa-check"></i><b>6.1.1</b> Model form</a></li>
-<li class="chapter" data-level="6.1.2" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#model-distribution"><i class="fa fa-check"></i><b>6.1.2</b> Model distribution</a></li>
-</ul></li>
-<li class="chapter" data-level="6.2" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#validate-the-assumptions"><i class="fa fa-check"></i><b>6.2</b> Validate the assumptions</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#stopping-distamce-example"><i class="fa fa-check"></i><b>6.2.1</b> Stopping distamce example</a></li>
-<li class="chapter" data-level="6.2.2" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#breast-cancer-survival-example"><i class="fa fa-check"></i><b>6.2.2</b> Breast cancer survival example</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html"><i class="fa fa-check"></i><b>7</b> Validating the model’s distributional form</a>
-<ul>
-<li class="chapter" data-level="7.1" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#posit-a-distribution"><i class="fa fa-check"></i><b>7.1</b> Posit a distribution</a></li>
-<li class="chapter" data-level="7.2" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#validate-your-choice"><i class="fa fa-check"></i><b>7.2</b> Validate your choice</a>
-<ul>
-<li class="chapter" data-level="7.2.1" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#stopping-distance-1"><i class="fa fa-check"></i><b>7.2.1</b> Stopping distance</a></li>
-<li class="chapter" data-level="7.2.2" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#breast-cancer-example"><i class="fa fa-check"></i><b>7.2.2</b> Breast cancer example</a></li>
-<li class="chapter" data-level="7.2.3" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#covid-admissions-example"><i class="fa fa-check"></i><b>7.2.3</b> COVID admissions example</a></li>
+<li class="chapter" data-level="5.2.1" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#stopping-distance-1"><i class="fa fa-check"></i><b>5.2.1</b> Stopping distance</a></li>
+<li class="chapter" data-level="5.2.2" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#breast-cancer-example"><i class="fa fa-check"></i><b>5.2.2</b> Breast cancer example</a></li>
+<li class="chapter" data-level="5.2.3" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#covid-admissions-example"><i class="fa fa-check"></i><b>5.2.3</b> COVID admissions example</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -215,87 +203,87 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="validating-the-models-distributional-form" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Validating the model’s distributional form</h1>
+<div id="validating-the-models-distributional-form" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Validating the model’s distributional form</h1>
 <p>Assuming a form of distribution for the data is not only about allowing the model estimation software to run. It it also necessary before we can create confidence intervals for our predictions. First we will posit a particular distribution for the responses, and then we will validate it. The validation step means that we will reject the posited distribution if it doesn’t agree with the observed data.</p>
-<div id="posit-a-distribution" class="section level2" number="7.1">
-<h2><span class="header-section-number">7.1</span> Posit a distribution</h2>
+<div id="posit-a-distribution" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Posit a distribution</h2>
 <p>Recall that we already did this for the examples. This work proceeds by intuition gained through experience, but is often not particularly difficult. We already talked about the allowable range of the responses, and how to interpret those for the mean.</p>
 </div>
-<div id="validate-your-choice" class="section level2" number="7.2">
-<h2><span class="header-section-number">7.2</span> Validate your choice</h2>
+<div id="validate-your-choice" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Validate your choice</h2>
 <p>Compare the difference between the predicted and observed values to what you assume you would see, based on the posited distribution. Let’s look at the examples.</p>
-<div id="stopping-distance-1" class="section level3" number="7.2.1">
-<h3><span class="header-section-number">7.2.1</span> Stopping distance</h3>
+<div id="stopping-distance-1" class="section level3" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Stopping distance</h3>
 <p>I’ve said that the stopping distance example should use a normal distribution, so let’s look now to see how well the model matches that distribution. Now we can look at the in-sample error distribution, since unlike the mean, estimating the linear model doesn’t enforce the response distribution.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="validating-the-models-distributional-form.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># estimate a model for stopping distance</span></span>
-<span id="cb40-2"><a href="validating-the-models-distributional-form.html#cb40-2" aria-hidden="true" tabindex="-1"></a>stop <span class="ot">=</span> <span class="fu">lm</span>( dist <span class="sc">~</span> speed <span class="sc">+</span> <span class="fu">I</span>(speed<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="dv">0</span>, <span class="at">data=</span>cars )</span>
-<span id="cb40-3"><a href="validating-the-models-distributional-form.html#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-4"><a href="validating-the-models-distributional-form.html#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the four diagnostic plots on a 2x2 grid:</span></span>
-<span id="cb40-5"><a href="validating-the-models-distributional-form.html#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(<span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb40-6"><a href="validating-the-models-distributional-form.html#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(stop)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="validating-the-models-distributional-form.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># estimate a model for stopping distance</span></span>
+<span id="cb33-2"><a href="validating-the-models-distributional-form.html#cb33-2" aria-hidden="true" tabindex="-1"></a>stop <span class="ot">=</span> <span class="fu">lm</span>( dist <span class="sc">~</span> speed <span class="sc">+</span> <span class="fu">I</span>(speed<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="dv">0</span>, <span class="at">data=</span>cars )</span>
+<span id="cb33-3"><a href="validating-the-models-distributional-form.html#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="validating-the-models-distributional-form.html#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the four diagnostic plots on a 2x2 grid:</span></span>
+<span id="cb33-5"><a href="validating-the-models-distributional-form.html#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(<span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb33-6"><a href="validating-the-models-distributional-form.html#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(stop)</span></code></pre></div>
 <p><img src="05_comparing-variance_files/figure-html/cars-diagnostic-plots-1.png" width="672" /></p>
 <p>The diagnostic plots here are suggesting some errors of the linear regression modeling assumptions. The fan shape of the Residuals vs. Fitted plot, and the increasing trend in the Scale-Location plot indicate that the spread of residuals is greater when the fitted values are greater. The points lying above the diagonal of the Q-Q plot suggest that the residuals don’t follow a normal distribution. The model fails validation -let’s look at why.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="validating-the-models-distributional-form.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the best fit line and confidence/predictive intervals</span></span>
-<span id="cb41-2"><a href="validating-the-models-distributional-form.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="do">## to begin, define the inputs for the annotations</span></span>
-<span id="cb41-3"><a href="validating-the-models-distributional-form.html#cb41-3" aria-hidden="true" tabindex="-1"></a>xx <span class="ot">=</span> <span class="fu">data.frame</span>( <span class="at">speed=</span><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="at">length.out=</span><span class="dv">200</span>) )</span>
-<span id="cb41-4"><a href="validating-the-models-distributional-form.html#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-5"><a href="validating-the-models-distributional-form.html#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="do">## now plot the data points</span></span>
-<span id="cb41-6"><a href="validating-the-models-distributional-form.html#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
-<span id="cb41-7"><a href="validating-the-models-distributional-form.html#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-8"><a href="validating-the-models-distributional-form.html#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="do">## add the best-fit line</span></span>
-<span id="cb41-9"><a href="validating-the-models-distributional-form.html#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx))</span>
-<span id="cb41-10"><a href="validating-the-models-distributional-form.html#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-11"><a href="validating-the-models-distributional-form.html#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="do">## add lines to show the confidence interval for the best-fit line</span></span>
-<span id="cb41-12"><a href="validating-the-models-distributional-form.html#cb41-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx, <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)[, <span class="dv">2</span>], <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
-<span id="cb41-13"><a href="validating-the-models-distributional-form.html#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx, <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)[, <span class="dv">3</span>], <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
-<span id="cb41-14"><a href="validating-the-models-distributional-form.html#cb41-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-15"><a href="validating-the-models-distributional-form.html#cb41-15" aria-hidden="true" tabindex="-1"></a><span class="do">## add lines to show a prediction interval for new data points</span></span>
-<span id="cb41-16"><a href="validating-the-models-distributional-form.html#cb41-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx, <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)[, <span class="dv">2</span>], <span class="at">lty=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&#39;darkorange&#39;</span>)</span>
-<span id="cb41-17"><a href="validating-the-models-distributional-form.html#cb41-17" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx, <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)[, <span class="dv">3</span>], <span class="at">lty=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&#39;darkorange&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="validating-the-models-distributional-form.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the best fit line and confidence/predictive intervals</span></span>
+<span id="cb34-2"><a href="validating-the-models-distributional-form.html#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="do">## to begin, define the inputs for the annotations</span></span>
+<span id="cb34-3"><a href="validating-the-models-distributional-form.html#cb34-3" aria-hidden="true" tabindex="-1"></a>xx <span class="ot">=</span> <span class="fu">data.frame</span>( <span class="at">speed=</span><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="at">length.out=</span><span class="dv">200</span>) )</span>
+<span id="cb34-4"><a href="validating-the-models-distributional-form.html#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="validating-the-models-distributional-form.html#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="do">## now plot the data points</span></span>
+<span id="cb34-6"><a href="validating-the-models-distributional-form.html#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb34-7"><a href="validating-the-models-distributional-form.html#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-8"><a href="validating-the-models-distributional-form.html#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="do">## add the best-fit line</span></span>
+<span id="cb34-9"><a href="validating-the-models-distributional-form.html#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx))</span>
+<span id="cb34-10"><a href="validating-the-models-distributional-form.html#cb34-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-11"><a href="validating-the-models-distributional-form.html#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="do">## add lines to show the confidence interval for the best-fit line</span></span>
+<span id="cb34-12"><a href="validating-the-models-distributional-form.html#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx, <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)[, <span class="dv">2</span>], <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
+<span id="cb34-13"><a href="validating-the-models-distributional-form.html#cb34-13" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx, <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)[, <span class="dv">3</span>], <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
+<span id="cb34-14"><a href="validating-the-models-distributional-form.html#cb34-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-15"><a href="validating-the-models-distributional-form.html#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="do">## add lines to show a prediction interval for new data points</span></span>
+<span id="cb34-16"><a href="validating-the-models-distributional-form.html#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx, <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)[, <span class="dv">2</span>], <span class="at">lty=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&#39;darkorange&#39;</span>)</span>
+<span id="cb34-17"><a href="validating-the-models-distributional-form.html#cb34-17" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(stop, xx, <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)[, <span class="dv">3</span>], <span class="at">lty=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&#39;darkorange&#39;</span>)</span></code></pre></div>
 <p><img src="05_comparing-variance_files/figure-html/cars-intervals-1.png" width="672" /></p>
 <p>The plot reveals obvious problems: the prediction intervals include negative distances, and the model doesn’t account for the pattern where the stopping distances are more variable at greater speeds. So, the distribution assumed by the model doesn’t match the distribution of the data.</p>
 <p>One way of addressing these problems is to implement a transformation that will make the relationship linear. Either a log or a square root transformation could work here, and the square root fits better with the model form that we’ve assumed. So let’s implement it:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="validating-the-models-distributional-form.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take the square root of both sides of the model formula</span></span>
-<span id="cb42-2"><a href="validating-the-models-distributional-form.html#cb42-2" aria-hidden="true" tabindex="-1"></a>cars_xfrm <span class="ot">=</span> <span class="fu">lm</span>( <span class="fu">sqrt</span>(dist) <span class="sc">~</span> <span class="fu">sqrt</span>(speed) <span class="sc">+</span> speed <span class="sc">+</span> <span class="dv">0</span>, <span class="at">data=</span>cars )</span>
-<span id="cb42-3"><a href="validating-the-models-distributional-form.html#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-4"><a href="validating-the-models-distributional-form.html#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the diagnostic plots on a 2x2 grid</span></span>
-<span id="cb42-5"><a href="validating-the-models-distributional-form.html#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>( <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb42-6"><a href="validating-the-models-distributional-form.html#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars_xfrm)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="validating-the-models-distributional-form.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take the square root of both sides of the model formula</span></span>
+<span id="cb35-2"><a href="validating-the-models-distributional-form.html#cb35-2" aria-hidden="true" tabindex="-1"></a>cars_xfrm <span class="ot">=</span> <span class="fu">lm</span>( <span class="fu">sqrt</span>(dist) <span class="sc">~</span> <span class="fu">sqrt</span>(speed) <span class="sc">+</span> speed <span class="sc">+</span> <span class="dv">0</span>, <span class="at">data=</span>cars )</span>
+<span id="cb35-3"><a href="validating-the-models-distributional-form.html#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="validating-the-models-distributional-form.html#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the diagnostic plots on a 2x2 grid</span></span>
+<span id="cb35-5"><a href="validating-the-models-distributional-form.html#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>( <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb35-6"><a href="validating-the-models-distributional-form.html#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars_xfrm)</span></code></pre></div>
 <p><img src="05_comparing-variance_files/figure-html/cars-diagnostic-plots-transformed-1.png" width="672" /></p>
 <p>The Q-Q plot is greatly improved over the first version, which says that the residuals more closely match the assumption of normality.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="validating-the-models-distributional-form.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the dat points</span></span>
-<span id="cb43-2"><a href="validating-the-models-distributional-form.html#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
-<span id="cb43-3"><a href="validating-the-models-distributional-form.html#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-4"><a href="validating-the-models-distributional-form.html#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="do">## add the best-fit line</span></span>
-<span id="cb43-5"><a href="validating-the-models-distributional-form.html#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(cars_xfrm, xx)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb43-6"><a href="validating-the-models-distributional-form.html#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-7"><a href="validating-the-models-distributional-form.html#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="do">## add lines to show the confidence interval for the best-fit line</span></span>
-<span id="cb43-8"><a href="validating-the-models-distributional-form.html#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(cars_xfrm, xx, <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)[, <span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
-<span id="cb43-9"><a href="validating-the-models-distributional-form.html#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(cars_xfrm, xx, <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)[, <span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
-<span id="cb43-10"><a href="validating-the-models-distributional-form.html#cb43-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-11"><a href="validating-the-models-distributional-form.html#cb43-11" aria-hidden="true" tabindex="-1"></a><span class="do">## add lines to show a prediction interval for new data points</span></span>
-<span id="cb43-12"><a href="validating-the-models-distributional-form.html#cb43-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(cars_xfrm, xx, <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)[, <span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&#39;darkorange&#39;</span>)</span>
-<span id="cb43-13"><a href="validating-the-models-distributional-form.html#cb43-13" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(cars_xfrm, xx, <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)[, <span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&#39;darkorange&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="validating-the-models-distributional-form.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the dat points</span></span>
+<span id="cb36-2"><a href="validating-the-models-distributional-form.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
+<span id="cb36-3"><a href="validating-the-models-distributional-form.html#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="validating-the-models-distributional-form.html#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="do">## add the best-fit line</span></span>
+<span id="cb36-5"><a href="validating-the-models-distributional-form.html#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(cars_xfrm, xx)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb36-6"><a href="validating-the-models-distributional-form.html#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="validating-the-models-distributional-form.html#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="do">## add lines to show the confidence interval for the best-fit line</span></span>
+<span id="cb36-8"><a href="validating-the-models-distributional-form.html#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(cars_xfrm, xx, <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)[, <span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
+<span id="cb36-9"><a href="validating-the-models-distributional-form.html#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(cars_xfrm, xx, <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)[, <span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&#39;red&#39;</span>)</span>
+<span id="cb36-10"><a href="validating-the-models-distributional-form.html#cb36-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-11"><a href="validating-the-models-distributional-form.html#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="do">## add lines to show a prediction interval for new data points</span></span>
+<span id="cb36-12"><a href="validating-the-models-distributional-form.html#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(cars_xfrm, xx, <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)[, <span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&#39;darkorange&#39;</span>)</span>
+<span id="cb36-13"><a href="validating-the-models-distributional-form.html#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xx<span class="sc">$</span>speed, <span class="fu">predict</span>(cars_xfrm, xx, <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)[, <span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&#39;darkorange&#39;</span>)</span></code></pre></div>
 <p><img src="05_comparing-variance_files/figure-html/cars-intervals-transformed-1.png" width="672" /></p>
 <p>The happy result is a model where the mean predictions are about the same as before, but the predictive interval is a better match to the data.</p>
 </div>
-<div id="breast-cancer-example" class="section level3" number="7.2.2">
-<h3><span class="header-section-number">7.2.2</span> Breast cancer example</h3>
+<div id="breast-cancer-example" class="section level3" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Breast cancer example</h3>
 <p>We used logistic regression to create a model for five year survival among women in the German Breast Cancer Study Group. To validate the assumption of a binomial distribution with a logistic link, we will bin predictions into groups that have similar predicted probability of survival, and then check that the observed frequency of survival in each bin follows the assumed binomial distribution.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="validating-the-models-distributional-form.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate likelihoods of the observed five-year survival</span></span>
-<span id="cb44-2"><a href="validating-the-models-distributional-form.html#cb44-2" aria-hidden="true" tabindex="-1"></a>bins <span class="ot">=</span> <span class="fu">sapply</span>( <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="cf">function</span>(k) <span class="fu">pbinom</span>( fys_gbsg[[k]], tot_gbsg[[k]], p_gbsg[[k]] ) )</span>
-<span id="cb44-3"><a href="validating-the-models-distributional-form.html#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-4"><a href="validating-the-models-distributional-form.html#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># histogram of the bin likelihoods</span></span>
-<span id="cb44-5"><a href="validating-the-models-distributional-form.html#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( bins, <span class="at">breaks=</span><span class="dv">10</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="validating-the-models-distributional-form.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate likelihoods of the observed five-year survival</span></span>
+<span id="cb37-2"><a href="validating-the-models-distributional-form.html#cb37-2" aria-hidden="true" tabindex="-1"></a>bins <span class="ot">=</span> <span class="fu">sapply</span>( <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="cf">function</span>(k) <span class="fu">pbinom</span>( fys_gbsg[[k]], tot_gbsg[[k]], p_gbsg[[k]] ) )</span>
+<span id="cb37-3"><a href="validating-the-models-distributional-form.html#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="validating-the-models-distributional-form.html#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># histogram of the bin likelihoods</span></span>
+<span id="cb37-5"><a href="validating-the-models-distributional-form.html#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( bins, <span class="at">breaks=</span><span class="dv">10</span> )</span></code></pre></div>
 <p><img src="05_comparing-variance_files/figure-html/binomial-cv-1.png" width="672" /></p>
 <p>The histogram shows that the likelihoods of the observed data are clustered near the extremes (0 and 1). If the observations match the assumed binomial distribution, then we would expect likelihoods to be uniformly distributed between zero and one (no clustering). So this model for the five year survival probability should not pass validation - it needs more work.</p>
 </div>
-<div id="covid-admissions-example" class="section level3" number="7.2.3">
-<h3><span class="header-section-number">7.2.3</span> COVID admissions example</h3>
+<div id="covid-admissions-example" class="section level3" number="5.2.3">
+<h3><span class="header-section-number">5.2.3</span> COVID admissions example</h3>
 <p>Since each day’s prediction is assumed to come from a Poisson distribution, that assumption defines an expected range for the observed data. The <code>qpois()</code>, <code>dpois()</code>, <code>ppois()</code> family of functions is used for this purpose.</p>
 <p>Here, we will validate the assumed Poisson distribution by calculating the frequency that the observed data is within the predicted 80% confidence interval. If the nominal coverage is correct, the frequency should be about 80%.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="validating-the-models-distributional-form.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="validating-the-models-distributional-form.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span></code></pre></div>
 
 </div>
 </div>
