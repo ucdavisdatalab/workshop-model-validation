@@ -1,7 +1,5 @@
 # Data splitting systems
-To train and validate a model requires that we have in-sample and out-of-sample data, but typically we have just "the data". There are a couple of approaches to separating that data in in-sample and out-of-sample sets: training/validation splits or cross-validation. Theyare often used together.
-
-
+To train and validate a model requires that we have in-sample and out-of-sample data, but typically we have just "the data". There are a couple of approaches to separating that data in in-sample and out-of-sample sets: training/validation splits or cross-validation. They are often used together.
 
 
 ## Train/validation split
@@ -11,9 +9,6 @@ One solution is to reserve some data for validation, and use what is left for tr
 ## Cross-validation
 Cross validation is a kind of repeated training/validation split, which is iterated until all of the data has been used for testing. Each training/validation split may be random or may take data that are grouped according to some meaningful value. For instance, time-series data may be best analyzed by holding out contiguous blocks of observations.
 
-Here, I'll demonstrate doing three-fold cross-validation on the car stopping distance data. I'll split the data into three folds and use those divisions to estimate three models. Each model uses two folds as training data and one as validation data.
-
-
 
 Some things to note are that the estimated line of best fits are different for each iteration of the CV, and that the predictions (in the right hand panels) are generally less accurate than the fitted values (in the left hand panels).
 
@@ -21,7 +16,7 @@ Some things to note are that the estimated line of best fits are different for e
 ### Time series data
 When the data are a time series, it is good practice for validation splits to respect the time ordering of the observations. That's because the results of validation are more realistic when they work from a known past to an unknown future. That means setting a split date, then training over past data and predicting future observations. You can still use cross-validation for time-series data - it is called walkforward validation, where each fold is a contiguous temporal block, and only past blocks are used in predicting the next block in the sequence.
 
-### Combining the two
+## Combiniations
 There are times when cross-validation and training/testing validation should be used together. For instance, when cross-validation is used for exploratory analysis and model selection, then validation should be done using new data that was never previously part of the estimation.
 
 

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4 Data splitting systems | Model validation for applied data science</title>
-  <meta name="description" content="4 Data splitting systems | Model validation for applied data science" />
+  <title>2 Example data: COVID-19 counts | Model validation for applied data science</title>
+  <meta name="description" content="2 Example data: COVID-19 counts | Model validation for applied data science" />
   <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4 Data splitting systems | Model validation for applied data science" />
+  <meta property="og:title" content="2 Example data: COVID-19 counts | Model validation for applied data science" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ucdavisdatalab.github.io/workshop_model_validation/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ucdavisdatalab/workshop_model_validation" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4 Data splitting systems | Model validation for applied data science" />
+  <meta name="twitter:title" content="2 Example data: COVID-19 counts | Model validation for applied data science" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="model-types.html"/>
-<link rel="next" href="example-overnight-bed-occupancy.html"/>
+<link rel="prev" href="beginnings.html"/>
+<link rel="next" href="model-types.html"/>
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -202,35 +202,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="data-splitting-systems" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Data splitting systems</h1>
-<p>To train and validate a model requires that we have in-sample and out-of-sample data, but typically we have just “the data”. There are a couple of approaches to separating that data in in-sample and out-of-sample sets: training/validation splits or cross-validation. They are often used together.</p>
-<div id="trainvalidation-split" class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> Train/validation split</h2>
-<p>One solution is to reserve some data for validation, and use what is left for training the model. The split can be random or not - for instance, you may hold back the most recent year of data for validation, or you may randomly sample some proportion (e.g., 30%) of the observations to reserve for validation.</p>
-</div>
-<div id="cross-validation" class="section level2" number="4.2">
-<h2><span class="header-section-number">4.2</span> Cross-validation</h2>
-<p>Cross validation is a kind of repeated training/validation split, which is iterated until all of the data has been used for testing. Each training/validation split may be random or may take data that are grouped according to some meaningful value. For instance, time-series data may be best analyzed by holding out contiguous blocks of observations.</p>
-<p>Some things to note are that the estimated line of best fits are different for each iteration of the CV, and that the predictions (in the right hand panels) are generally less accurate than the fitted values (in the left hand panels).</p>
-<div id="time-series-data" class="section level3" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> Time series data</h3>
-<p>When the data are a time series, it is good practice for validation splits to respect the time ordering of the observations. That’s because the results of validation are more realistic when they work from a known past to an unknown future. That means setting a split date, then training over past data and predicting future observations. You can still use cross-validation for time-series data - it is called walkforward validation, where each fold is a contiguous temporal block, and only past blocks are used in predicting the next block in the sequence.</p>
-</div>
-</div>
-<div id="combiniations" class="section level2" number="4.3">
-<h2><span class="header-section-number">4.3</span> Combiniations</h2>
-<p>There are times when cross-validation and training/testing validation should be used together. For instance, when cross-validation is used for exploratory analysis and model selection, then validation should be done using new data that was never previously part of the estimation.</p>
-
-</div>
+<div id="example-data-covid-19-counts" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Example data: COVID-19 counts</h1>
+<p>Let’s load the data for the examples that we’ll be working through today. First, though, we need to load some packages and set the path to use for loading data.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="example-data-covid-19-counts.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;dplyr&quot;</span> )</span>
+<span id="cb2-2"><a href="example-data-covid-19-counts.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;lubridate&quot;</span> )</span>
+<span id="cb2-3"><a href="example-data-covid-19-counts.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;readr&quot;</span> )</span>
+<span id="cb2-4"><a href="example-data-covid-19-counts.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;gbm&quot;</span> )</span>
+<span id="cb2-5"><a href="example-data-covid-19-counts.html#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="example-data-covid-19-counts.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># set the root path for loading data.</span></span>
+<span id="cb2-7"><a href="example-data-covid-19-counts.html#cb2-7" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">=</span> <span class="st">&quot;https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-validation/master/data&quot;</span></span></code></pre></div>
+<p>The data sets that we’ll use for illustration are a time series of daily hospital admissions for COVID-19, and a time series of the number of beds occupied overnight by COVID-19 patients. Our goal is to create models that can predict the future values of these time series. Lwt’s take a look at the time series.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="example-data-covid-19-counts.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the covid dataset</span></span>
+<span id="cb3-2"><a href="example-data-covid-19-counts.html#cb3-2" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="fu">file.path</span>(data_path, <span class="st">&quot;covid.csv&quot;</span>) )</span>
+<span id="cb3-3"><a href="example-data-covid-19-counts.html#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="example-data-covid-19-counts.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># layout the plot window for side-by-side figures</span></span>
+<span id="cb3-5"><a href="example-data-covid-19-counts.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>( <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb3-6"><a href="example-data-covid-19-counts.html#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="example-data-covid-19-counts.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the admissions time series</span></span>
+<span id="cb3-8"><a href="example-data-covid-19-counts.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>( covid, <span class="fu">plot</span>(date, COVID_NEW_ADM_CNT, <span class="at">type=</span><span class="st">&#39;l&#39;</span>) )</span>
+<span id="cb3-9"><a href="example-data-covid-19-counts.html#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="example-data-covid-19-counts.html#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the overnight census time series</span></span>
+<span id="cb3-11"><a href="example-data-covid-19-counts.html#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>( covid, <span class="fu">plot</span>(date, COVID_PT_CNT_M, <span class="at">type=</span><span class="st">&#39;l&#39;</span>) )</span></code></pre></div>
+<p><img src="02_basics_files/figure-html/import-covid-1.png" width="672" /></p>
+<p>That’s the daily number of new admissions on the left (the variable comes out of the hospital’s records system as <code>COVID_NEW_ADM_CNT</code>), and the number of beds occupied overnight by COVID-19 patients on the right (this variable is coded in the hospital records as <code>COVID_PT_CNT_M</code>, and the hospital refers to the overnight count as the midnight census). The two follow a similar pattern, with cases arriving in waves that rise and fall quickly against a baseline of low counts. There is more noise in the time series of new admissions, while the midnight census is more stable from one day to the next.</p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="model-types.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="example-overnight-bed-occupancy.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="beginnings.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="model-types.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -251,7 +254,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ucdavisdatalab/workshop_model_validation/edit/master/03_data-splitting-systems.Rmd",
+"link": "https://github.com/ucdavisdatalab/workshop_model_validation/edit/master/02_basics.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -259,7 +262,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/ucdavisdatalab/workshop_model_validation/blob/master/03_data-splitting-systems.Rmd",
+"link": "https://github.com/ucdavisdatalab/workshop_model_validation/blob/master/02_basics.Rmd",
 "text": null
 },
 "download": null,

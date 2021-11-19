@@ -53,14 +53,15 @@ Take note, again, of the time series of daily admissions:
 with( admits_train, plot( date, COVID_NEW_ADM_CNT, type='l') )
 ```
 
-Some salient features: the data are integer counts, non negative. And if you imagine a smooth curve running through the noisy data, you'll see that when this imagined line is at its peaks, there is a lot of noise in the observations. On the other hand, when the smoothed curve is at its lowest, then the amount of noise in the counts is also at its lowest. These are all features of data that match the Poisson distribution. The other requirement is that the patients are admitted to the hospital independently of each other (we can't validate this assumption from the data). We will proceed under the assumption that the data are from a Poisson distribution.
+Some salient features: the data are integer counts, non negative. And if you imagine a smooth curve running through the noisy data, you'll see that when this imagined line is at its peaks, there is a lot of noise in the observations. On the other hand, when the smoothed curve is at its lowest, then the amount of noise in the counts is also at its lowest. These are all features of data that match a Poisson distribution. The other requirement is that the patients are admitted to the hospital independently of each other (we can't validate this assumption from the data). We will proceed under the assumption that the data are from a Poisson distribution.
 
 
 
 ## Boosted forest model
-A boosted forest model is a very flexible form of machine learning model that uses an ensemble of trees (hence the forest term) for predicting the outcome. An individual tree is a collection of binary decisions like, "If there were five people admitted to the hospital for COVID yesterday, and if the rate of positive COVID tests is less than the day before, then predict four admissions today". A boosted forest often has thousands of trees at a minimum.
+Recall that we are planning to use a boosted forest model to predict the number of new admissions. The model type was chosen for its flexibility, but that flexibility can come with complexity as there are several tuning parameters to set for a boosted forest model. I've provided a simple wrapper function called `gbm_wrapper()` in the `gbmwrap` package, which sets tuning parameters to useful default values, and automates the feature selection process, which we don't have time to talk about today.
 
-The main advantage of boosted forest models is that they are very flexible - meaning that can adapt to nonlinear relationships without difficulty. That flexibility means that there are relatively few assumptions for this kind of model. We need the data to be (conditionally) independent, and have validated that. We also assume that the modeled relationship between the predictors and the response is accurate, and we assume that the distribution of the response is as specified in the model. For our example the assumed response distribution is Poisson.
+For a boosted forest model, we have already validated the assumption that the data are (conditionally) independent. It remains to test that the model's relationship between the predictors and the response is accurate, and that the distribution of the response is as specified in the model (in this case, Poisson).
+
 
 ## Validating the model
 In order to validate the last two assumptions, we will use the same test/validation split as in the prior example.

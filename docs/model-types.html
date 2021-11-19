@@ -31,7 +31,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="example-covid-19-hospital-admissions.html"/>
+<link rel="prev" href="example-data-covid-19-counts.html"/>
 <link rel="next" href="data-splitting-systems.html"/>
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -150,11 +150,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.1" data-path="beginnings.html"><a href="beginnings.html#why-model-validation"><i class="fa fa-check"></i><b>1.1</b> Why model validation?</a></li>
 <li class="chapter" data-level="1.2" data-path="beginnings.html"><a href="beginnings.html#what-is-model-validation"><i class="fa fa-check"></i><b>1.2</b> What is model validation?</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="example-covid-19-hospital-admissions.html"><a href="example-covid-19-hospital-admissions.html"><i class="fa fa-check"></i><b>2</b> Example: COVID-19 hospital admissions</a></li>
+<li class="chapter" data-level="2" data-path="example-data-covid-19-counts.html"><a href="example-data-covid-19-counts.html"><i class="fa fa-check"></i><b>2</b> Example data: COVID-19 counts</a></li>
 <li class="chapter" data-level="3" data-path="model-types.html"><a href="model-types.html"><i class="fa fa-check"></i><b>3</b> Model types</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="model-types.html"><a href="model-types.html#linear-regression"><i class="fa fa-check"></i><b>3.1</b> Linear regression</a></li>
-<li class="chapter" data-level="3.2" data-path="model-types.html"><a href="model-types.html#boosted-forest-regression"><i class="fa fa-check"></i><b>3.2</b> Boosted forest regression</a></li>
+<li class="chapter" data-level="3.2" data-path="model-types.html"><a href="model-types.html#boosted-forest-model"><i class="fa fa-check"></i><b>3.2</b> Boosted forest model</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html"><i class="fa fa-check"></i><b>4</b> Data splitting systems</a>
 <ul>
@@ -162,8 +162,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#cross-validation"><i class="fa fa-check"></i><b>4.2</b> Cross-validation</a>
 <ul>
 <li class="chapter" data-level="4.2.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#time-series-data"><i class="fa fa-check"></i><b>4.2.1</b> Time series data</a></li>
-<li class="chapter" data-level="4.2.2" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#combining-the-two"><i class="fa fa-check"></i><b>4.2.2</b> Combining the two</a></li>
 </ul></li>
+<li class="chapter" data-level="4.3" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#combiniations"><i class="fa fa-check"></i><b>4.3</b> Combiniations</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="example-overnight-bed-occupancy.html"><a href="example-overnight-bed-occupancy.html"><i class="fa fa-check"></i><b>5</b> Example: Overnight bed occupancy</a>
 <ul>
@@ -182,7 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="6.1" data-path="example-covid-19-admissions.html"><a href="example-covid-19-admissions.html#checking-whether-observations-are-independent-1"><i class="fa fa-check"></i><b>6.1</b> Checking whether observations are independent</a></li>
 <li class="chapter" data-level="6.2" data-path="example-covid-19-admissions.html"><a href="example-covid-19-admissions.html#distribution-of-the-response"><i class="fa fa-check"></i><b>6.2</b> Distribution of the response</a></li>
-<li class="chapter" data-level="6.3" data-path="example-covid-19-admissions.html"><a href="example-covid-19-admissions.html#boosted-forest-model"><i class="fa fa-check"></i><b>6.3</b> Boosted forest model</a></li>
+<li class="chapter" data-level="6.3" data-path="example-covid-19-admissions.html"><a href="example-covid-19-admissions.html#boosted-forest-model-1"><i class="fa fa-check"></i><b>6.3</b> Boosted forest model</a></li>
 <li class="chapter" data-level="6.4" data-path="example-covid-19-admissions.html"><a href="example-covid-19-admissions.html#validating-the-model"><i class="fa fa-check"></i><b>6.4</b> Validating the model</a></li>
 </ul></li>
 </ul>
@@ -207,16 +207,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The data examples each require a different kind of model, which will allow us to demonstrate several different instances of model validation.</p>
 <div id="linear-regression" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Linear regression</h2>
-<p>We will use linear regression to create a model that relates a car’s speed to the distance required for stopping the car. Linear regression can use transformed versions of the inputs and outputs, and we will test various combinations of transformations to decide which one is the best. The functional form of a linear regression model looks like
+<p>We will use linear regression to create a model for predicting the midnight census. Linear regression works well for that data because the midnight census is very similar to the count from the night prior, and the amount of noise in the time series looks about the same between waves of high counts and the times of low cases. The functional form of a linear regression model looks like
 <span class="math display">\[ y = X \beta + \varepsilon \]</span>
-where <span class="math inline">\(X\)</span> are the (possibly transformed) covariates, <span class="math inline">\(\beta\)</span> are the regression coefficients, <span class="math inline">\(\varepsilon\)</span> are residual errors, and <span class="math inline">\(y\)</span> is the (possibly transformed) response variable.</p>
-<p>Linear regression assumes that the observations are independent, that the functional form accurately describes the relationship between inputs and response, and that the residual errors are follow a normal distribution with mean zero and constant variance.</p>
+where <span class="math inline">\(X\)</span> are the predictors, <span class="math inline">\(\beta\)</span> are the regression coefficients, <span class="math inline">\(\varepsilon\)</span> are residual errors, and <span class="math inline">\(y\)</span> is the response. In our example, the response is the midnight census count, and the predictors are a set of variables that were extracted from the hospital’s database. Both the midnight census and the predictors have one observation per day in the data set.</p>
+<p>Linear regression assumes that the observations are independent, that the linea form accurately describes the relationship between predictors and response, and that the residual errors are follow a normal distribution with mean zero and constant variance. We will be testing those assumptions in a coming chapter.</p>
 </div>
-<div id="boosted-forest-regression" class="section level2" number="3.2">
-<h2><span class="header-section-number">3.2</span> Boosted forest regression</h2>
-<p>Random forest regression models are an entirely different class of model. There is no linear function like the <span class="math inline">\(X \beta\)</span> of logistic regression (or, indeed, linear regression). Instead, the <span class="math inline">\(f( X )\)</span> part of the model is constructed from an ensemble of regression trees. Each regression tree is a collection of discrete branches that ultimately lead to conclusions at the end of the chain. Consider the stopping distance example again. One regression tree might include logic like, IF speed &gt; 8 AND speed &lt;= 12 THEN stoping distance is 20 feet. As a forest is made of many trees, a random forest model is made of many regression trees, each of which uses a random portion of the total training data.</p>
-<p>In fact, the GBM models I’ll use here include some additional “gradient boosting” logic that takes them beyond a basic random forest model, but that I’m going to mostly ignore for our purposes today.</p>
-<p>The response variable for the random forest model is the number of new COVID-19 admissions on a given day. I’m treating this count as if it follows a Poisson distribution. Thus, the assumptions that must be validated for this model are the relationship <span class="math inline">\(\mathbb{E}(Y) = f( X )\)</span>, and the independence and Poisson distribution of the counts.</p>
+<div id="boosted-forest-model" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Boosted forest model</h2>
+<p>A boosted forest model is a very flexible form of machine learning model that uses an ensemble of trees (hence the forest term) for predicting the outcome. An individual tree is a collection of binary decisions like, “If there were five people admitted to the hospital for COVID yesterday, and if the rate of positive COVID tests is less than the day before, then predict four admissions today”. A boosted forest often has thousands of trees at a minimum.</p>
+<p>The main advantage of boosted forest models is that they are very flexible - meaning that they can adapt to nonlinear relationships without difficulty. That flexibility means that there are relatively few assumptions for this kind of model. In a later chapter, we will validate assumptions that the data are independent, that the model’s relationship between the predictors and the response is accurate, and that the distribution of the response is as specified in the model. For our example the assumed response distribution is Poisson.</p>
 
 </div>
 </div>
@@ -225,7 +224,7 @@ where <span class="math inline">\(X\)</span> are the (possibly transformed) cova
           </div>
         </div>
       </div>
-<a href="example-covid-19-hospital-admissions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="example-data-covid-19-counts.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="data-splitting-systems.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

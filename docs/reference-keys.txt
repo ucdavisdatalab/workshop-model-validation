@@ -4,15 +4,15 @@ software
 beginnings
 why-model-validation
 what-is-model-validation
-example-covid-19-hospital-admissions
+example-data-covid-19-counts
 model-types
 linear-regression
-boosted-forest-regression
+boosted-forest-model
 data-splitting-systems
 trainvalidation-split
 cross-validation
 time-series-data
-combining-the-two
+combiniations
 example-overnight-bed-occupancy
 checking-whether-observations-are-independent
 validating-the-distribution-for-a-linear-model
@@ -28,5 +28,5 @@ final-validation-selection
 example-covid-19-admissions
 checking-whether-observations-are-independent-1
 distribution-of-the-response
-boosted-forest-model
+boosted-forest-model-1
 validating-the-model
