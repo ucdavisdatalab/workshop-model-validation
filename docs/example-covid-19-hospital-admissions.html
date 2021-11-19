@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>1 Beginnings | Model validation for applied data science</title>
-  <meta name="description" content="1 Beginnings | Model validation for applied data science" />
+  <title>2 Example: COVID-19 hospital admissions | Model validation for applied data science</title>
+  <meta name="description" content="2 Example: COVID-19 hospital admissions | Model validation for applied data science" />
   <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="1 Beginnings | Model validation for applied data science" />
+  <meta property="og:title" content="2 Example: COVID-19 hospital admissions | Model validation for applied data science" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ucdavisdatalab.github.io/workshop_model_validation/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ucdavisdatalab/workshop_model_validation" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1 Beginnings | Model validation for applied data science" />
+  <meta name="twitter:title" content="2 Example: COVID-19 hospital admissions | Model validation for applied data science" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="example-covid-19-hospital-admissions.html"/>
+<link rel="prev" href="beginnings.html"/>
+<link rel="next" href="model-types.html"/>
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -197,39 +197,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="beginnings" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Beginnings</h1>
-<p>Validating a model is the process of testing it to decide whether the assumptions that are built into the model’s construction are valid. Typically, any kind of statistical method entails some assumptions about the data. That usually means assumptions about the <em>population</em> from which the data were sampled. It is generally impossible to <em>confirm</em> an assumption like, “samples from the population are independent” or, “the population is normally distributed”. Instead, we follow the scientific method of proposing some phenomenon that is bound to happen if the assumption is true, and then if that phenomenon does not occur we have evidence against the assumption.</p>
-<p>Statistical modeling and model validation begin no later than your first look at your data. This is when you can begin to ask questions like,
-- “Are there limits to the range of the response variable?”
-- “What is the distribution of the response variable?”
-- “Based on my prior knowledge, am I able to anticipate the structure of the model?”</p>
-<p>If you have answers to these, then you are well on your way to creating a great model. With that in mind, I’m going to start this workshop by introducing examples of data.</p>
-<div id="why-model-validation" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Why model validation?</h2>
-<p>You can do a lot with exploratory data analysis and descriptive statistics. But not everything! There are some very common scientific tasks that require not just description of the data, but statistical models that use the observed data to illuminate some hidden truth about the world. For instance, you may want to know about the relationship between some variables or you may want to predict what will be the value of the next sample. If the conditions are right, we can answer those kinds of questions with a model. What does it mean for the conditions to be right? It means that the model is suited to the task and to the data. Confirming these is the tasks of model validation.</p>
-</div>
-<div id="what-is-model-validation" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> What is model validation?</h2>
-<p>Statistical models rely on assumptions, and model validation means testing those assumptions. There are three general assumptions that underlie most statistical models:</p>
-<ul>
-<li>Observations are usually assumed to be independent of each other (or assume some specific form of dependence).</li>
-<li>The expectation of the response variable is a function of the input variables. <span class="math inline">\(\mathbb{E}(Y) = f(X)\)</span>.</li>
-<li>The response variable has some distribution, like <span class="math inline">\(Y\)</span> is Normal, or binomial, or Poisson.</li>
-</ul>
-<p>Validating these assumptions also requires that the function <span class="math inline">\(f(\cdot)\)</span> and the response distribution can be learned from the data.</p>
-<p>So, how can we test (validate) these assumptions? A key problem is that they generally can’t be tested from within a fitted model. The way statistical estimation works is that you assume the form of a model, and then find the parameters that best match the data and the assumption. There is a circularity to the logic of estimating a model that requires some assumption about the data and then using that same data to check whether the assumptions are violated. Testing requires applying the model to new data in order to see if the predictions match the truth.</p>
-<p>This is a two-part process, and data science involves a lot of trial and error. On the way to creating a well-functioning model, you’ll typically do a lot of exploratory analysis. You’ll follow dead ends, try out ideas, make mistakes, and have to start all over when your collaborators completely renovate the data set. It is only natural to learn to prefer the process that performs best over this process. But as the proof of the pudding is in the eating, the real value of your modeling effort is what happens after it leaves your office and goes out into the big world, where it won’t have a kind and caring data scientist to hold its hand. Thus, the second part of the model-making process is the validation portion, and it is extremely important that you have some held-out validation data that can be used as a test of what will happen when your model encounters data that it hasn’t been coached on.</p>
-
-</div>
+<div id="example-covid-19-hospital-admissions" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Example: COVID-19 hospital admissions</h1>
+<p>Let’s load the data for the examples that we’ll be working through today. First, though, we need to load some packages and set the path to use for loading data.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="example-covid-19-hospital-admissions.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;dplyr&quot;</span> )</span>
+<span id="cb1-2"><a href="example-covid-19-hospital-admissions.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;lubridate&quot;</span> )</span>
+<span id="cb1-3"><a href="example-covid-19-hospital-admissions.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;readr&quot;</span> )</span>
+<span id="cb1-4"><a href="example-covid-19-hospital-admissions.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;gbm&quot;</span> )</span>
+<span id="cb1-5"><a href="example-covid-19-hospital-admissions.html#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="example-covid-19-hospital-admissions.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># set the root path for loading data.</span></span>
+<span id="cb1-7"><a href="example-covid-19-hospital-admissions.html#cb1-7" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">=</span> <span class="st">&quot;https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-validation/master/data&quot;</span></span></code></pre></div>
+<p>The data sets that we’ll use for illustration are a time series of daily hospital admissions for COVID-19, and a time series of the number of beds occupied overnight by COVID-19 patients. Our goal will be to create models that can predict the future values of these time series. I like to begin with a pair plot of all the data, but here we have 81 columns, which is too many to fit on a pair plot. Instead, we’ll look at the time series.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="example-covid-19-hospital-admissions.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the covid dataset</span></span>
+<span id="cb2-2"><a href="example-covid-19-hospital-admissions.html#cb2-2" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="fu">file.path</span>(data_path, <span class="st">&quot;covid.csv&quot;</span>) )</span>
+<span id="cb2-3"><a href="example-covid-19-hospital-admissions.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="example-covid-19-hospital-admissions.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the admissions time series</span></span>
+<span id="cb2-5"><a href="example-covid-19-hospital-admissions.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>( covid, <span class="fu">plot</span>(date, COVID_NEW_ADM_CNT, <span class="at">type=</span><span class="st">&#39;l&#39;</span>) )</span></code></pre></div>
+<p><img src="02_basics_files/figure-html/import-covid-1.png" width="672" /></p>
+<p>The count of daily admissions is a nonnegative integer. It appears that there is a lot more variability in the admissions count when the recent rate of admissions is near its peaks than when it is near zero. There isn’t a theoretical maximum for daily admissions (though of course there would be a practical maximum, if the hospital became overwhelmed). And we can reasonably assume that each admission was an independent decision. To a statistician, those facts all point toward trying to assume that the counts follow a Poisson distribution.</p>
+<p>There is another type of independence to consider here: is the number of daily admissions independent from the number of admissions the day before? That kind of independence doesn’t mean you pretend that there’s no information in the most recent counts - instead, it means that the short-term fluctuations are as likely to be above the trend as below it. Without that independence, we would say that the data are autocorrelated. And we can test for autocorrelation:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="example-covid-19-hospital-admissions.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the autocorelation function of the diff-1 covid admissions</span></span>
+<span id="cb3-2"><a href="example-covid-19-hospital-admissions.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>( <span class="fu">diff</span>(covid<span class="sc">$</span>COVID_NEW_ADM_CNT, <span class="dv">1</span>) )</span></code></pre></div>
+<p><img src="02_basics_files/figure-html/test-autocorrelation-1.png" width="672" /></p>
+<p>You can ignore the first line of the chart - it is there to show how long a line is drawn to show perfect correlation at zero time lag. The salient feature of this plot is that the third line points downward, and crosses the dashed blue line. There is apparently a tendency for the count to decrease the day after it increases, and vice versa. This may or may not be due to some trend in the covariates - we’ll check again after accounting for the explanatory variables.</p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="example-covid-19-hospital-admissions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="beginnings.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="model-types.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -250,7 +248,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ucdavisdatalab/workshop-model-validation/edit/master/01_Intro.Rmd",
+"link": "https://github.com/ucdavisdatalab/workshop-model-validation/edit/master/02_basics.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -258,7 +256,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/ucdavisdatalab/workshop-model-validation/blob/master/01_Intro.Rmd",
+"link": "https://github.com/ucdavisdatalab/workshop-model-validation/blob/master/02_basics.Rmd",
 "text": null
 },
 "download": null,

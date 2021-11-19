@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>2 Model types | Model validation for applied data science</title>
-  <meta name="description" content="2 Model types | Model validation for applied data science" />
+  <title>3 Model types | Model validation for applied data science</title>
+  <meta name="description" content="3 Model types | Model validation for applied data science" />
   <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="2 Model types | Model validation for applied data science" />
+  <meta property="og:title" content="3 Model types | Model validation for applied data science" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ucdavisdatalab.github.io/workshop_model_validation/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ucdavisdatalab/workshop_model_validation" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="2 Model types | Model validation for applied data science" />
+  <meta name="twitter:title" content="3 Model types | Model validation for applied data science" />
   
   
   
@@ -24,14 +24,14 @@
 <meta name="author" content="Wesley Brooks" />
 
 
-<meta name="date" content="2021-11-10" />
+<meta name="date" content="2021-11-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="beginnings.html"/>
+<link rel="prev" href="example-covid-19-hospital-admissions.html"/>
 <link rel="next" href="data-splitting-systems.html"/>
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -142,50 +142,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a></li>
 <li class="chapter" data-level="1" data-path="beginnings.html"><a href="beginnings.html"><i class="fa fa-check"></i><b>1</b> Beginnings</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="beginnings.html"><a href="beginnings.html#examples"><i class="fa fa-check"></i><b>1.1</b> Examples</a>
-<ul>
-<li class="chapter" data-level="1.1.1" data-path="beginnings.html"><a href="beginnings.html#stopping-distance"><i class="fa fa-check"></i><b>1.1.1</b> Stopping distance</a></li>
-<li class="chapter" data-level="1.1.2" data-path="beginnings.html"><a href="beginnings.html#breast-cancer-survival"><i class="fa fa-check"></i><b>1.1.2</b> Breast cancer survival</a></li>
-<li class="chapter" data-level="1.1.3" data-path="beginnings.html"><a href="beginnings.html#covid-19-hospital-admissions"><i class="fa fa-check"></i><b>1.1.3</b> COVID-19 hospital admissions</a></li>
+<li class="chapter" data-level="1.1" data-path="beginnings.html"><a href="beginnings.html#why-model-validation"><i class="fa fa-check"></i><b>1.1</b> Why model validation?</a></li>
+<li class="chapter" data-level="1.2" data-path="beginnings.html"><a href="beginnings.html#what-is-model-validation"><i class="fa fa-check"></i><b>1.2</b> What is model validation?</a></li>
 </ul></li>
-<li class="chapter" data-level="1.2" data-path="beginnings.html"><a href="beginnings.html#typical-modeling-assumptions"><i class="fa fa-check"></i><b>1.2</b> Typical modeling assumptions</a></li>
+<li class="chapter" data-level="2" data-path="example-covid-19-hospital-admissions.html"><a href="example-covid-19-hospital-admissions.html"><i class="fa fa-check"></i><b>2</b> Example: COVID-19 hospital admissions</a></li>
+<li class="chapter" data-level="3" data-path="model-types.html"><a href="model-types.html"><i class="fa fa-check"></i><b>3</b> Model types</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="model-types.html"><a href="model-types.html#linear-regression"><i class="fa fa-check"></i><b>3.1</b> Linear regression</a></li>
+<li class="chapter" data-level="3.2" data-path="model-types.html"><a href="model-types.html#boosted-forest-regression"><i class="fa fa-check"></i><b>3.2</b> Boosted forest regression</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="model-types.html"><a href="model-types.html"><i class="fa fa-check"></i><b>2</b> Model types</a>
+<li class="chapter" data-level="4" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html"><i class="fa fa-check"></i><b>4</b> Data splitting systems</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="model-types.html"><a href="model-types.html#linear-regression"><i class="fa fa-check"></i><b>2.1</b> Linear regression</a></li>
-<li class="chapter" data-level="2.2" data-path="model-types.html"><a href="model-types.html#logistic-regression"><i class="fa fa-check"></i><b>2.2</b> Logistic regression</a></li>
-<li class="chapter" data-level="2.3" data-path="model-types.html"><a href="model-types.html#random-forest-regression"><i class="fa fa-check"></i><b>2.3</b> Random forest regression</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html"><i class="fa fa-check"></i><b>3</b> Data splitting systems</a>
+<li class="chapter" data-level="4.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#trainvalidation-split"><i class="fa fa-check"></i><b>4.1</b> Train/validation split</a></li>
+<li class="chapter" data-level="4.2" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#cross-validation"><i class="fa fa-check"></i><b>4.2</b> Cross-validation</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#trainvalidation-split"><i class="fa fa-check"></i><b>3.1</b> Train/validation split</a></li>
-<li class="chapter" data-level="3.2" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#cross-validation"><i class="fa fa-check"></i><b>3.2</b> Cross-validation</a>
-<ul>
-<li class="chapter" data-level="3.2.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#combining-the-two"><i class="fa fa-check"></i><b>3.2.1</b> Combining the two</a></li>
+<li class="chapter" data-level="4.2.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#time-series-data"><i class="fa fa-check"></i><b>4.2.1</b> Time series data</a></li>
+<li class="chapter" data-level="4.2.2" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#combining-the-two"><i class="fa fa-check"></i><b>4.2.2</b> Combining the two</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html"><i class="fa fa-check"></i><b>4</b> Validating the model’s functional form</a>
+<li class="chapter" data-level="5" data-path="example-overnight-bed-occupancy.html"><a href="example-overnight-bed-occupancy.html"><i class="fa fa-check"></i><b>5</b> Example: Overnight bed occupancy</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#posit-a-model"><i class="fa fa-check"></i><b>4.1</b> Posit a model</a>
+<li class="chapter" data-level="5.1" data-path="example-overnight-bed-occupancy.html"><a href="example-overnight-bed-occupancy.html#checking-whether-observations-are-independent"><i class="fa fa-check"></i><b>5.1</b> Checking whether observations are independent</a></li>
+<li class="chapter" data-level="5.2" data-path="example-overnight-bed-occupancy.html"><a href="example-overnight-bed-occupancy.html#validating-the-distribution-for-a-linear-model"><i class="fa fa-check"></i><b>5.2</b> Validating the distribution for a linear model</a>
 <ul>
-<li class="chapter" data-level="4.1.1" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#model-form"><i class="fa fa-check"></i><b>4.1.1</b> Model form</a></li>
-<li class="chapter" data-level="4.1.2" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#model-distribution"><i class="fa fa-check"></i><b>4.1.2</b> Model distribution</a></li>
+<li class="chapter" data-level="5.2.1" data-path="example-overnight-bed-occupancy.html"><a href="example-overnight-bed-occupancy.html#examiune-diagnostic-plots"><i class="fa fa-check"></i><b>5.2.1</b> Examiune diagnostic plots</a></li>
+<li class="chapter" data-level="5.2.2" data-path="example-overnight-bed-occupancy.html"><a href="example-overnight-bed-occupancy.html#what-to-do-about-the-diagnostic-plots"><i class="fa fa-check"></i><b>5.2.2</b> What to do about the diagnostic plots</a></li>
+<li class="chapter" data-level="5.2.3" data-path="example-overnight-bed-occupancy.html"><a href="example-overnight-bed-occupancy.html#try-a-log-transform"><i class="fa fa-check"></i><b>5.2.3</b> Try a log transform</a></li>
+<li class="chapter" data-level="5.2.4" data-path="example-overnight-bed-occupancy.html"><a href="example-overnight-bed-occupancy.html#try-square-root-transform"><i class="fa fa-check"></i><b>5.2.4</b> Try square root transform</a></li>
 </ul></li>
-<li class="chapter" data-level="4.2" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#validate-the-assumptions"><i class="fa fa-check"></i><b>4.2</b> Validate the assumptions</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#stopping-distamce-example"><i class="fa fa-check"></i><b>4.2.1</b> Stopping distamce example</a></li>
-<li class="chapter" data-level="4.2.2" data-path="validating-the-models-functional-form.html"><a href="validating-the-models-functional-form.html#breast-cancer-survival-example"><i class="fa fa-check"></i><b>4.2.2</b> Breast cancer survival example</a></li>
+<li class="chapter" data-level="5.3" data-path="example-overnight-bed-occupancy.html"><a href="example-overnight-bed-occupancy.html#filter-candidates-by-cross-validation"><i class="fa fa-check"></i><b>5.3</b> Filter candidates by cross-validation</a></li>
+<li class="chapter" data-level="5.4" data-path="example-overnight-bed-occupancy.html"><a href="example-overnight-bed-occupancy.html#final-validation-selection"><i class="fa fa-check"></i><b>5.4</b> Final validation / selection</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html"><i class="fa fa-check"></i><b>5</b> Validating the model’s distributional form</a>
+<li class="chapter" data-level="6" data-path="example-covid-19-admissions.html"><a href="example-covid-19-admissions.html"><i class="fa fa-check"></i><b>6</b> Example: COVID-19 admissions</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#posit-a-distribution"><i class="fa fa-check"></i><b>5.1</b> Posit a distribution</a></li>
-<li class="chapter" data-level="5.2" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#validate-your-choice"><i class="fa fa-check"></i><b>5.2</b> Validate your choice</a>
-<ul>
-<li class="chapter" data-level="5.2.1" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#stopping-distance-1"><i class="fa fa-check"></i><b>5.2.1</b> Stopping distance</a></li>
-<li class="chapter" data-level="5.2.2" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#breast-cancer-example"><i class="fa fa-check"></i><b>5.2.2</b> Breast cancer example</a></li>
-<li class="chapter" data-level="5.2.3" data-path="validating-the-models-distributional-form.html"><a href="validating-the-models-distributional-form.html#covid-admissions-example"><i class="fa fa-check"></i><b>5.2.3</b> COVID admissions example</a></li>
-</ul></li>
+<li class="chapter" data-level="6.1" data-path="example-covid-19-admissions.html"><a href="example-covid-19-admissions.html#checking-whether-observations-are-independent-1"><i class="fa fa-check"></i><b>6.1</b> Checking whether observations are independent</a></li>
+<li class="chapter" data-level="6.2" data-path="example-covid-19-admissions.html"><a href="example-covid-19-admissions.html#distribution-of-the-response"><i class="fa fa-check"></i><b>6.2</b> Distribution of the response</a></li>
+<li class="chapter" data-level="6.3" data-path="example-covid-19-admissions.html"><a href="example-covid-19-admissions.html#boosted-forest-model"><i class="fa fa-check"></i><b>6.3</b> Boosted forest model</a></li>
+<li class="chapter" data-level="6.4" data-path="example-covid-19-admissions.html"><a href="example-covid-19-admissions.html#validating-the-model"><i class="fa fa-check"></i><b>6.4</b> Validating the model</a></li>
 </ul></li>
 </ul>
 
@@ -204,25 +197,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="model-types" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Model types</h1>
+<div id="model-types" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Model types</h1>
 <p>The data examples each require a different kind of model, which will allow us to demonstrate several different instances of model validation.</p>
-<div id="linear-regression" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Linear regression</h2>
+<div id="linear-regression" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Linear regression</h2>
 <p>We will use linear regression to create a model that relates a car’s speed to the distance required for stopping the car. Linear regression can use transformed versions of the inputs and outputs, and we will test various combinations of transformations to decide which one is the best. The functional form of a linear regression model looks like
 <span class="math display">\[ y = X \beta + \varepsilon \]</span>
 where <span class="math inline">\(X\)</span> are the (possibly transformed) covariates, <span class="math inline">\(\beta\)</span> are the regression coefficients, <span class="math inline">\(\varepsilon\)</span> are residual errors, and <span class="math inline">\(y\)</span> is the (possibly transformed) response variable.</p>
 <p>Linear regression assumes that the observations are independent, that the functional form accurately describes the relationship between inputs and response, and that the residual errors are follow a normal distribution with mean zero and constant variance.</p>
 </div>
-<div id="logistic-regression" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> Logistic regression</h2>
-<p>Logistic regression is a method of estimating the probability of an event occurring. An event is a discrete occurrence that either happens or does not. For example, a subject surviving for at least five years after enrollment in a clinical trial is one example of an event - it either happens or does not.</p>
-<p>Logistic regression assumes that each event has a binomial distribution where the probabolity of occurrence is <span class="math inline">\(p\)</span>, and
-<span class="math display">\[p = \exp{(X \beta)} / \{ 1 + \exp{(X \beta)} \}.\]</span></p>
-<p>As hinted above, validating a logistic regression model would involve checking that the observations are independent from a binomial distribution, and that the probability of each event is as above.</p>
-</div>
-<div id="random-forest-regression" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> Random forest regression</h2>
+<div id="boosted-forest-regression" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Boosted forest regression</h2>
 <p>Random forest regression models are an entirely different class of model. There is no linear function like the <span class="math inline">\(X \beta\)</span> of logistic regression (or, indeed, linear regression). Instead, the <span class="math inline">\(f( X )\)</span> part of the model is constructed from an ensemble of regression trees. Each regression tree is a collection of discrete branches that ultimately lead to conclusions at the end of the chain. Consider the stopping distance example again. One regression tree might include logic like, IF speed &gt; 8 AND speed &lt;= 12 THEN stoping distance is 20 feet. As a forest is made of many trees, a random forest model is made of many regression trees, each of which uses a random portion of the total training data.</p>
 <p>In fact, the GBM models I’ll use here include some additional “gradient boosting” logic that takes them beyond a basic random forest model, but that I’m going to mostly ignore for our purposes today.</p>
 <p>The response variable for the random forest model is the number of new COVID-19 admissions on a given day. I’m treating this count as if it follows a Poisson distribution. Thus, the assumptions that must be validated for this model are the relationship <span class="math inline">\(\mathbb{E}(Y) = f( X )\)</span>, and the independence and Poisson distribution of the counts.</p>
@@ -234,7 +220,7 @@ where <span class="math inline">\(X\)</span> are the (possibly transformed) cova
           </div>
         </div>
       </div>
-<a href="beginnings.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="example-covid-19-hospital-admissions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="data-splitting-systems.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
@@ -256,7 +242,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ucdavisdatalab/workshop-model-validation/edit/master/01_basics.Rmd",
+"link": "https://github.com/ucdavisdatalab/workshop-model-validation/edit/master/02_basics.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -264,7 +250,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/ucdavisdatalab/workshop-model-validation/blob/master/01_basics.Rmd",
+"link": "https://github.com/ucdavisdatalab/workshop-model-validation/blob/master/02_basics.Rmd",
 "text": null
 },
 "download": null,

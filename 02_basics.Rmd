@@ -1,0 +1,64 @@
+# Example: COVID-19 hospital admissions
+Let's load the data for the examples that we'll be working through today. First, though, we need to load some packages and set the path to use for loading data.
+
+```{r load-libraries, warning=FALSE, message=FALSE}
+library( "dplyr" )
+library( "lubridate" )
+library( "readr" )
+library( "gbm" )
+
+# set the root path for loading data.
+data_path = "https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-validation/master/data"
+```
+
+The data sets that we'll use for illustration are a time series of daily hospital  admissions for COVID-19, and a time series of the number of beds occupied overnight by COVID-19 patients. Our goal will be to create models that can predict the future values of these time series. I like to begin with a pair plot of all the data, but here we have 81 columns, which is too many to fit on a pair plot. Instead, we'll look at the time series.
+
+```{r import-covid, message=FALSE}
+# import the covid dataset
+covid = read_csv( file.path(data_path, "covid.csv") )
+
+# plot the admissions time series
+with( covid, plot(date, COVID_NEW_ADM_CNT, type='l') )
+```
+
+The count of daily admissions is a nonnegative integer. It appears that there is a lot more variability in the admissions count when the recent rate of admissions is near its peaks than when it is near zero. There isn't a theoretical maximum for daily admissions (though of course there would be a practical maximum, if the hospital became overwhelmed). And we can reasonably assume that each admission was an independent decision. To a statistician, those facts all point toward trying to assume that the counts follow a Poisson distribution.
+
+There is another type of independence to consider here: is the number of daily admissions independent from the number of admissions the day before? That kind of independence doesn't mean you pretend that there's no information in the most recent counts - instead, it means that the short-term fluctuations are as likely to be above the trend as below it. Without that independence, we would say that the data are autocorrelated. And we can test for autocorrelation:
+
+```{r test-autocorrelation}
+# plot the autocorelation function of the diff-1 covid admissions
+acf( diff(covid$COVID_NEW_ADM_CNT, 1) )
+```
+
+You can ignore the first line of the chart - it is there to show how long a line is drawn to show perfect correlation at zero time lag. The salient feature of this plot is that the third line points downward, and crosses the dashed blue line. There is apparently a tendency for the count to decrease the day after it increases, and vice versa. This may or may not be due to some trend in the covariates - we'll check again after accounting for the explanatory variables.
+
+
+
+
+
+
+
+
+# Model types
+
+The data examples each require a different kind of model, which will allow us to demonstrate several different instances of model validation.
+
+
+## Linear regression
+We will use linear regression to create a model that relates a car's speed to the distance required for stopping the car. Linear regression can use transformed versions of the inputs and outputs, and we will test various combinations of transformations to decide which one is the best. The functional form of a linear regression model looks like 
+$$ y = X \beta + \varepsilon $$
+where $X$ are the (possibly transformed) covariates, $\beta$ are the regression coefficients, $\varepsilon$ are residual errors, and $y$ is the (possibly transformed) response variable.
+
+Linear regression assumes that the observations are independent, that the functional form accurately describes the relationship between inputs and response, and that the residual errors are follow a normal distribution with mean zero and constant variance.
+
+
+
+## Boosted forest regression
+Random forest regression models are an entirely different class of model. There is no linear function like the $X \beta$ of logistic regression (or, indeed, linear regression). Instead, the $f( X )$ part of the model is constructed from an ensemble of regression trees. Each regression tree is a collection of discrete branches that ultimately lead to conclusions at the end of the chain. Consider the stopping distance example again. One regression tree might include logic like, IF speed > 8 AND speed <= 12 THEN stoping distance is 20 feet. As a forest is made of many trees, a random forest model is made of many regression trees, each of which uses a random portion of the total training data.
+
+In fact, the GBM models I'll use here include some additional "gradient boosting" logic that takes them beyond a basic random forest model, but that I'm going to mostly ignore for our purposes today.
+
+The response variable for the random forest model is the number of new COVID-19 admissions on a given day. I'm treating this count as if it follows a Poisson distribution. Thus, the assumptions that must be validated for this model are the relationship $\mathbb{E}(Y) = f( X )$, and the independence and Poisson distribution of the counts.
+
+
+
