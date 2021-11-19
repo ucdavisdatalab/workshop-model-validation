@@ -26,6 +26,15 @@ covid_split = validation_time_split( covid, prop=0.5 )
 covid_train = training( covid_split$splits[[1]] )
 ```
 
+
+## Linear regression
+This example uses linear regression to create a model for predicting the midnight census. Linear regression works well for that data because the midnight census is very similar to the count from the night prior, and the amount of noise in the time series looks about the same between waves of high counts and the times of low cases. The functional form of a linear regression model looks like 
+$$ y = X \beta + \varepsilon $$
+where $X$ are the predictors, $\beta$ are the regression coefficients, $\varepsilon$ are residual errors, and $y$ is the response. In our example, the response is the midnight census count, and the predictors are a set of variables that were extracted from the hospital's database. Both the midnight census and the predictors have one observation per day in the data set.
+
+Linear regression assumes that the observations are independent, that the linea form accurately describes the relationship between predictors and response, and that the residual errors are follow a normal distribution with mean zero and constant variance. The rest of this chapter covers testing those assumptions.
+
+
 ## Checking whether observations are independent
 That's count data, but we may suspect that the nightly counts are not independent, because it is common for a person to spend consecutive nights in the hospital. Let's check the autocorrelation of the counts to see if our hunch is correct.
 

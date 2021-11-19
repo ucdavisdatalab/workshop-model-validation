@@ -1,11 +1,12 @@
 # Example data: COVID-19 counts
-Let's load the data for the examples that we'll be working through today. First, though, we need to load some packages and set the path to use for loading data.
+Before getting into how to split the data into training and validation parts, let's get to know the examples that we'll be working through today. First, though, we need to load some packages and set the path to use for loading data.
 
 ```{r load-libraries, warning=FALSE, message=FALSE}
 library( "dplyr" )
 library( "lubridate" )
 library( "readr" )
 library( "gbm" )
+library( "tidymodels")
 
 # set the root path for loading data.
 data_path = "https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-validation/master/data"
@@ -28,25 +29,3 @@ with( covid, plot(date, COVID_PT_CNT_M, type='l') )
 ```
 
 That's the daily number of new admissions on the left (the variable comes out of the hospital's records system as `COVID_NEW_ADM_CNT`), and the number of beds occupied overnight by COVID-19 patients on the right (this variable is coded in the hospital records as `COVID_PT_CNT_M`, and the hospital refers to the overnight count as the midnight census). The two follow a similar pattern, with cases arriving in waves that rise and fall quickly against a baseline of low counts. There is more noise in the time series of new admissions, while the midnight census is more stable from one day to the next.
-
-
-# Model types
-
-The data examples each require a different kind of model, which will allow us to demonstrate several different instances of model validation.
-
-
-## Linear regression
-We will use linear regression to create a model for predicting the midnight census. Linear regression works well for that data because the midnight census is very similar to the count from the night prior, and the amount of noise in the time series looks about the same between waves of high counts and the times of low cases. The functional form of a linear regression model looks like 
-$$ y = X \beta + \varepsilon $$
-where $X$ are the predictors, $\beta$ are the regression coefficients, $\varepsilon$ are residual errors, and $y$ is the response. In our example, the response is the midnight census count, and the predictors are a set of variables that were extracted from the hospital's database. Both the midnight census and the predictors have one observation per day in the data set.
-
-Linear regression assumes that the observations are independent, that the linea form accurately describes the relationship between predictors and response, and that the residual errors are follow a normal distribution with mean zero and constant variance. We will be testing those assumptions in a coming chapter.
-
-
-
-## Boosted forest model
-A boosted forest model is a very flexible form of machine learning model that uses an ensemble of trees (hence the forest term) for predicting the outcome. An individual tree is a collection of binary decisions like, "If there were five people admitted to the hospital for COVID yesterday, and if the rate of positive COVID tests is less than the day before, then predict four admissions today". A boosted forest often has thousands of trees at a minimum.
-
-The main advantage of boosted forest models is that they are very flexible - meaning that they can adapt to nonlinear relationships without difficulty. That flexibility means that there are relatively few assumptions for this kind of model. In a later chapter, we will validate assumptions that the data are independent, that the model's relationship between the predictors and the response is accurate, and that the distribution of the response is as specified in the model. For our example the assumed response distribution is Poisson.
-
-

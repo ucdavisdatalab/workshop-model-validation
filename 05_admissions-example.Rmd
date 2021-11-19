@@ -26,6 +26,13 @@ covid_split = validation_time_split( covid, prop=0.5 )
 admits_train = training( covid_split$splits[[1]] )
 ```
 
+
+## Boosted forest model
+This example will use a booseted forest model for prediction. A boosted forest model is a very flexible form of machine learning model that uses an ensemble of trees (hence the forest term) for predicting the outcome. An individual tree is a collection of binary decisions like, "If there were five people admitted to the hospital for COVID yesterday, and if the rate of positive COVID tests is less than the day before, then predict four admissions today". A boosted forest often has thousands of trees at a minimum.
+
+The main advantage of boosted forest models is that they are very flexible - meaning that they can adapt to nonlinear relationships without difficulty. That flexibility means that there are relatively few assumptions for this kind of model. Here, we will validate assumptions that the data are independent, that the model's relationship between the predictors and the response is accurate, and that the distribution of the response is as specified in the model. For our example the assumed response distribution is Poisson.
+
+
 ## Checking whether observations are independent
 Let's again begin by validating the assumption that the observations are independent. In particular, this is another time series and the most common form of dependency in time series data is for an observation to be correlated with the observations that come before and after. Let's check this data's autocorrelation function:
 

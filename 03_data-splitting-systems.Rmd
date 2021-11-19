@@ -12,7 +12,7 @@ covid$DAY_OF_THE_WEEK = factor(covid$DAY_OF_THE_WEEK)
 ```
 
 # Data splitting systems
-To train and validate a model requires that we have in-sample and out-of-sample data, but typically we have just "the data". There are a couple of approaches to separating that data in in-sample and out-of-sample sets: training/validation splits or cross-validation. They are often used together.
+To train and validate a model requires that we have in-sample and out-of-sample data, but typically we have just "the data". There are a couple of approaches to separating that data in in-sample and out-of-sample sets: training/validation split or cross-validation. They are often used together.
 
 
 ## Time series data
@@ -40,7 +40,9 @@ covid_train
 
 
 ## Cross-validation
-Cross validation (often abbreviated CV) is a kind of repeated training/validation split, which is iterated until all of the data has been used for testing. Each training/validation split may be random or may take data that are grouped according to some meaningful value. For instance, time-series data may be best analyzed by holding out contiguous blocks of observations.
+Cross validation (often abbreviated CV) is a kind of repeated training/validation split. The data is broken into several chunks (called "folds"), and one is held out for validation. All of the others are used as a training set, then resulting model is used to predict the response over the held-out fold. The process is iterated until each fold has been held out once. The main benefit of cross validation is that by iterating over the folds, you end up with a prediction for every data point. This can be important when doing a single train/test split would leave too few observations in the test set to draw reliable conclusions for validation.
+
+Each training/validation split may be random or may take data that are grouped according to some meaningful value. For instance, time-series data may be best analyzed by holding out contiguous blocks of observations.
 
 We will use cross-validation on the training set to help build the models, before we validate them using the test set. As before, the `rsample` package provides convenient functions to create cross-validation splits that play nicely with other parts of the `tidymodels` system. Here, the CV folds aren't using contiguous time blocks, which is a shortcoming. We're doing it this way because the `tidymodels` tools for creating and using CV folds don't provide that functionality. To try to write the loops that would do the job properly is beyond the scope of this workshop.
 

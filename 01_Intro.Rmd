@@ -1,32 +1,17 @@
 # Beginnings
-Validating a model is the process of testing it to decide whether the assumptions that are built into the model's construction are valid. Typically, any kind of statistical method entails some assumptions about the data. That usually means assumptions about the *population* from which the data were sampled. It is generally impossible to *confirm* an assumption like, "samples from the population are independent" or, "the population is normally distributed". Instead, we follow the scientific method of proposing some phenomenon that is bound to happen if the assumption is true, and then if that phenomenon does not occur we have evidence against the assumption. 
-
-Statistical modeling and model validation begin no later than your first look at your data. This is when you can begin to ask questions like,
-- "Are there limits to the range of the response variable?"
-- "What is the distribution of the response variable?"
-- "Based on my prior knowledge, am I able to anticipate the structure of the model?"
-
-If you have answers to these, then you are well on your way to creating a great model. With that in mind, I'm going to start this workshop by introducing examples of data.
-
+Validating a model is the process of testing it to decide whether the assumptions that are built into the model's construction are valid. Typically, any kind of statistical method entails some assumptions about the data. That usually means assumptions about the *population* from which the data were sampled. It is generally impossible to *confirm* an assumption like, "samples from the population are independent" or, "the population is normally distributed". Instead, we validate a model by testing those assumptions - seeing if we can prove them wrong.
 
 ## Why model validation?
-You can do a lot with exploratory data analysis and descriptive statistics. But not everything! There are some very common scientific tasks that require not just description of the data, but statistical models that use the observed data to illuminate some hidden truth about the world. For instance, you may want to know about the relationship between some variables or you may want to predict what will be the value of the next sample. If the conditions are right, we can answer those kinds of questions with a model. What does it mean for the conditions to be right? It means that the model is suited to the task and to the data. Confirming these is the tasks of model validation.
+You can do a lot with exploratory data analysis and descriptive statistics. But not everything! There are some very common scientific tasks that require not just description of the data, but statistical models that use the observed data to illuminate some hidden truth about the world. For instance, you may want to know how some predictor is related to a response, or you may want to predict what will be the value of the next sample. If the conditions are right, we can answer those kinds of questions with a model. What does it mean for the conditions to be right? It means that the model is suited to the task and to the data. Confirming these is the tasks of model validation.
+
+Of course, a model also has to be trained, and training covers a lot of the same ground as validation. But validation is still necessary because it offers evidence that the training will apply beyond the training data. Data science involves a lot of trial and error. while training a model, you'll typically do a lot of exploratory analysis. You'll follow dead ends, try out ideas, make mistakes, or have to start all over when your collaborators completely renovate the data set. It is only natural to learn to prefer the process that performs best over this process. But as the proof of the pudding is in the eating, the real value of your modeling effort is what happens after it leaves your office and goes out into the big world, where it won't have a kind and caring data scientist to hold its hand. Thus, the second part of the model-making process is the validation portion, and it is extremely important that you have some held-out validation data that can be used as a test of what will happen when your model encounters data that it hasn't been coached on.
 
 
 ## What is model validation?
 Statistical models rely on assumptions, and model validation means testing those assumptions. There are three general assumptions that underlie most statistical models:
 
-- Observations are usually assumed to be independent of each other (or assume some specific form of dependence).
-- The expectation of the response variable is a function of the input variables. $\mathbb{E}(Y) = f(X)$.
-- The response variable has some distribution, like $Y$ is Normal, or binomial, or Poisson.
+- Observations are usually assumed to be independent of each other.
+- The expectation of the response variable is a function of the predictor variables. $\mathbb{E}(Y) = f(X)$.
+- The response variable has some distribution. For instance, $Y$ is Normal, or binomial, or Poisson.
 
-Validating these assumptions also requires that the function $f(\cdot)$ and the response distribution can be learned from the data.
-
-
-
-
-So, how can we test (validate) these assumptions? A key problem is that they generally can't be tested from within a fitted model. The way statistical estimation works is that you assume the form of a model, and then find the parameters that best match the data and the assumption. There is a circularity to the logic of estimating a model that requires some assumption about the data and then using that same data to check whether the assumptions are violated. Testing requires applying the model to new data in order to see if the predictions match the truth.
-
-
-
-This is a two-part process, and data science involves a lot of trial and error. On the way to creating a well-functioning model, you'll typically do a lot of exploratory analysis. You'll follow dead ends, try out ideas, make mistakes, and have to start all over when your collaborators completely renovate the data set. It is only natural to learn to prefer the process that performs best over this process. But as the proof of the pudding is in the eating, the real value of your modeling effort is what happens after it leaves your office and goes out into the big world, where it won't have a kind and caring data scientist to hold its hand. Thus, the second part of the model-making process is the validation portion, and it is extremely important that you have some held-out validation data that can be used as a test of what will happen when your model encounters data that it hasn't been coached on.
+So, how can we validate these assumptions? A key problem is that they generally can't be tested from within a fitted model. Model training requires making assumptions of the data, so it would be circular logic to then use the same training data to test the assumptions. Validation is the process of testing whether the assumptions are violated when the model is applied to new data. That means making predictions and confirming that they don't reveal violations of the assumptions.
