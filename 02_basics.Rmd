@@ -11,7 +11,7 @@ library( "gbm" )
 data_path = "https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-validation/master/data"
 ```
 
-The data sets that we'll use for illustration are a time series of daily hospital  admissions for COVID-19, and a time series of the number of beds occupied overnight by COVID-19 patients. Our goal is to create models that can predict the future values of these time series. Lwt's take a look at the time series.
+The data sets that we'll use for illustration are a time series of daily hospital  admissions for COVID-19, and a time series of the number of beds occupied overnight by COVID-19 patients. Our goal is to create models that can predict the future values of these time series. Let's take a look at the time series. In the code that follows, you'll see the `with()` function, which tells R where to check first when looking for data that are attached to a name. That makes the code cleaner to read and easier to write, as there are fewer repetitions of the prefix `covid$` to access data.
 
 ```{r import-covid, message=FALSE}
 # import the covid dataset

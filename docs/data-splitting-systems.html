@@ -158,12 +158,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html"><i class="fa fa-check"></i><b>4</b> Data splitting systems</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#trainvalidation-split"><i class="fa fa-check"></i><b>4.1</b> Train/validation split</a></li>
-<li class="chapter" data-level="4.2" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#cross-validation"><i class="fa fa-check"></i><b>4.2</b> Cross-validation</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#time-series-data"><i class="fa fa-check"></i><b>4.2.1</b> Time series data</a></li>
-</ul></li>
-<li class="chapter" data-level="4.3" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#combinations"><i class="fa fa-check"></i><b>4.3</b> Combinations</a></li>
+<li class="chapter" data-level="4.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#time-series-data"><i class="fa fa-check"></i><b>4.1</b> Time series data</a></li>
+<li class="chapter" data-level="4.2" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#traintesting-split"><i class="fa fa-check"></i><b>4.2</b> Train/testing split</a></li>
+<li class="chapter" data-level="4.3" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#cross-validation"><i class="fa fa-check"></i><b>4.3</b> Cross-validation</a></li>
+<li class="chapter" data-level="4.4" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#combinations"><i class="fa fa-check"></i><b>4.4</b> Combinations</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="example-overnight-bed-occupancy.html"><a href="example-overnight-bed-occupancy.html"><i class="fa fa-check"></i><b>5</b> Example: Overnight bed occupancy</a>
 <ul>
@@ -205,22 +203,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="data-splitting-systems" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Data splitting systems</h1>
 <p>To train and validate a model requires that we have in-sample and out-of-sample data, but typically we have just “the data”. There are a couple of approaches to separating that data in in-sample and out-of-sample sets: training/validation splits or cross-validation. They are often used together.</p>
-<div id="trainvalidation-split" class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> Train/validation split</h2>
-<p>One solution is to reserve some data for validation, and use what is left for training the model. The split can be random or not - for instance, you may hold back the most recent year of data for validation, or you may randomly sample some proportion (e.g., 30%) of the observations to reserve for validation.</p>
+<div id="time-series-data" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Time series data</h2>
+<p>Our example data are time series, so it is good practice for validation splits to respect the time ordering of the observations. That’s because the results of validation are more realistic when they work from a known past to an unknown future.</p>
 </div>
-<div id="cross-validation" class="section level2" number="4.2">
-<h2><span class="header-section-number">4.2</span> Cross-validation</h2>
-<p>Cross validation is a kind of repeated training/validation split, which is iterated until all of the data has been used for testing. Each training/validation split may be random or may take data that are grouped according to some meaningful value. For instance, time-series data may be best analyzed by holding out contiguous blocks of observations.</p>
-<p>Some things to note are that the estimated line of best fits are different for each iteration of the CV, and that the predictions (in the right hand panels) are generally less accurate than the fitted values (in the left hand panels).</p>
-<div id="time-series-data" class="section level3" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> Time series data</h3>
-<p>When the data are a time series, it is good practice for validation splits to respect the time ordering of the observations. That’s because the results of validation are more realistic when they work from a known past to an unknown future. That means setting a split date, then training over past data and predicting future observations. You can still use cross-validation for time-series data - it is called walkforward validation, where each fold is a contiguous temporal block, and only past blocks are used in predicting the next block in the sequence.</p>
+<div id="traintesting-split" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Train/testing split</h2>
+<p>One solution is to reserve some data for validation, and use what is left for training the model. The split can be random or not - for instance, you may hold back the most recent year of data for validation, or you may randomly sample some proportion (e.g., 50%) of the observations to reserve for validation. The <code>rsample</code> package provides a functions called <code>validation_split()</code> and <code>validation_time_split()</code> to split the data into training and testing sets. The difference between the two is that <code>validation_split()</code> does a random split and <code>validation_time_split()</code> does its splitting by keeping the first part of the data for training and the latter part for testing. The same package provides the functions <code>testing()</code> and <code>training()</code> to extract the testing set and the training set, respectively, from the split.</p>
+<p>For the examples, we will train using the first 50% of the observations and validate using the last 50%.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data-splitting-systems.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># do a time split on the covid data</span></span>
+<span id="cb4-2"><a href="data-splitting-systems.html#cb4-2" aria-hidden="true" tabindex="-1"></a>covid_split <span class="ot">=</span> <span class="fu">validation_time_split</span>( covid, <span class="at">prop=</span><span class="fl">0.5</span> )</span>
+<span id="cb4-3"><a href="data-splitting-systems.html#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="data-splitting-systems.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect the split object</span></span>
+<span id="cb4-5"><a href="data-splitting-systems.html#cb4-5" aria-hidden="true" tabindex="-1"></a>covid_split</span></code></pre></div>
+<pre><code>## # Validation Set Split (0.5/0.5)  
+## # A tibble: 1 × 2
+##   splits            id        
+##   &lt;list&gt;            &lt;chr&gt;     
+## 1 &lt;split [259/259]&gt; validation</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data-splitting-systems.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the training set from the split</span></span>
+<span id="cb6-2"><a href="data-splitting-systems.html#cb6-2" aria-hidden="true" tabindex="-1"></a>covid_train <span class="ot">=</span> <span class="fu">training</span>( covid_split<span class="sc">$</span>splits[[<span class="dv">1</span>]] )</span>
+<span id="cb6-3"><a href="data-splitting-systems.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="data-splitting-systems.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect the training data</span></span>
+<span id="cb6-5"><a href="data-splitting-systems.html#cb6-5" aria-hidden="true" tabindex="-1"></a>covid_train</span></code></pre></div>
+<pre><code>## # A tibble: 259 × 67
+##    date       DAY_OF_THE_WEEK HOSPITAL_CENSUS… INDX_UCDH_TEST_… INDX_UCDH_POS_P…
+##    &lt;date&gt;     &lt;fct&gt;                      &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+##  1 2020-06-01 1                            547              328                1
+##  2 2020-06-02 2                            529              290                3
+##  3 2020-06-03 3                            529              236                3
+##  4 2020-06-04 4                            554              207                1
+##  5 2020-06-05 5                            547              317                4
+##  6 2020-06-06 6                            521              144                0
+##  7 2020-06-07 0                            519              167                1
+##  8 2020-06-08 1                            532              364                1
+##  9 2020-06-09 2                            540              290                0
+## 10 2020-06-10 3                            541              267                3
+## # … with 249 more rows, and 62 more variables: INDX_UCDH_POSITIVITY_RATE &lt;dbl&gt;,
+## #   INDX_POS_PT_NEW_ADM_CNT &lt;dbl&gt;, INDX_POS_PT_NEW_ADM_PCT &lt;dbl&gt;,
+## #   INDX_POS_PT_IN_HOUSE_D6_CNT &lt;dbl&gt;, INDX_POS_PT_IN_HOUSE_D6_PCT &lt;dbl&gt;,
+## #   INDX_POS_PT_IN_HOUSE_D7_CNT &lt;dbl&gt;, INDX_POS_PT_IN_HOUSE_D7_PCT &lt;dbl&gt;,
+## #   INDX_POS_PT_ALL_ADM_CNT &lt;dbl&gt;, INDX_POS_PT_ALL_ADM_PCT &lt;dbl&gt;,
+## #   OUTREACH_TEST_CNT &lt;dbl&gt;, OUTREACH_POS_TEST_CNT &lt;dbl&gt;,
+## #   OUTREACH_POSITIVITY_RATE &lt;dbl&gt;, COVID_RULE_OUT_PT_CNT_M &lt;dbl&gt;, …</code></pre>
 </div>
+<div id="cross-validation" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Cross-validation</h2>
+<p>Cross validation (often abbreviated CV) is a kind of repeated training/validation split, which is iterated until all of the data has been used for testing. Each training/validation split may be random or may take data that are grouped according to some meaningful value. For instance, time-series data may be best analyzed by holding out contiguous blocks of observations.</p>
+<p>We will use cross-validation on the training set to help build the models, before we validate them using the test set. As before, the <code>rsample</code> package provides convenient functions to create cross-validation splits that play nicely with other parts of the <code>tidymodels</code> system. Here, the CV folds aren’t using contiguous time blocks, which is a shortcoming. We’re doing it this way because the <code>tidymodels</code> tools for creating and using CV folds don’t provide that functionality. To try to write the loops that would do the job properly is beyond the scope of this workshop.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data-splitting-systems.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create ten cross-validation folds on the training set</span></span>
+<span id="cb8-2"><a href="data-splitting-systems.html#cb8-2" aria-hidden="true" tabindex="-1"></a>covid_cv <span class="ot">=</span> <span class="fu">vfold_cv</span>( covid_train, <span class="at">v=</span><span class="dv">10</span> )</span>
+<span id="cb8-3"><a href="data-splitting-systems.html#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="data-splitting-systems.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect the CV folds</span></span>
+<span id="cb8-5"><a href="data-splitting-systems.html#cb8-5" aria-hidden="true" tabindex="-1"></a>covid_cv</span></code></pre></div>
+<pre><code>## #  10-fold cross-validation 
+## # A tibble: 10 × 2
+##    splits           id    
+##    &lt;list&gt;           &lt;chr&gt; 
+##  1 &lt;split [233/26]&gt; Fold01
+##  2 &lt;split [233/26]&gt; Fold02
+##  3 &lt;split [233/26]&gt; Fold03
+##  4 &lt;split [233/26]&gt; Fold04
+##  5 &lt;split [233/26]&gt; Fold05
+##  6 &lt;split [233/26]&gt; Fold06
+##  7 &lt;split [233/26]&gt; Fold07
+##  8 &lt;split [233/26]&gt; Fold08
+##  9 &lt;split [233/26]&gt; Fold09
+## 10 &lt;split [234/25]&gt; Fold10</code></pre>
 </div>
-<div id="combinations" class="section level2" number="4.3">
-<h2><span class="header-section-number">4.3</span> Combinations</h2>
-<p>There are times when cross-validation and training/testing validation should be used together. For instance, when cross-validation is used for exploratory analysis and model selection, then validation should be done using new data that was never previously part of the estimation.</p>
+<div id="combinations" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Combinations</h2>
+<p>There are times when cross-validation and training/testing validation should be used together. For instance, when cross-validation is used for exploratory analysis and model selection, then validation should be done using new data that was never previously part of the estimation. That’s how we are handling the examples in this workshop.</p>
 
 </div>
 </div>

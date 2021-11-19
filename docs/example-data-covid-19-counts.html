@@ -158,12 +158,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html"><i class="fa fa-check"></i><b>4</b> Data splitting systems</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#trainvalidation-split"><i class="fa fa-check"></i><b>4.1</b> Train/validation split</a></li>
-<li class="chapter" data-level="4.2" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#cross-validation"><i class="fa fa-check"></i><b>4.2</b> Cross-validation</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#time-series-data"><i class="fa fa-check"></i><b>4.2.1</b> Time series data</a></li>
-</ul></li>
-<li class="chapter" data-level="4.3" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#combinations"><i class="fa fa-check"></i><b>4.3</b> Combinations</a></li>
+<li class="chapter" data-level="4.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#time-series-data"><i class="fa fa-check"></i><b>4.1</b> Time series data</a></li>
+<li class="chapter" data-level="4.2" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#traintesting-split"><i class="fa fa-check"></i><b>4.2</b> Train/testing split</a></li>
+<li class="chapter" data-level="4.3" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#cross-validation"><i class="fa fa-check"></i><b>4.3</b> Cross-validation</a></li>
+<li class="chapter" data-level="4.4" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#combinations"><i class="fa fa-check"></i><b>4.4</b> Combinations</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="example-overnight-bed-occupancy.html"><a href="example-overnight-bed-occupancy.html"><i class="fa fa-check"></i><b>5</b> Example: Overnight bed occupancy</a>
 <ul>
@@ -212,7 +210,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-5"><a href="example-data-covid-19-counts.html#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="example-data-covid-19-counts.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># set the root path for loading data.</span></span>
 <span id="cb2-7"><a href="example-data-covid-19-counts.html#cb2-7" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">=</span> <span class="st">&quot;https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-validation/master/data&quot;</span></span></code></pre></div>
-<p>The data sets that we’ll use for illustration are a time series of daily hospital admissions for COVID-19, and a time series of the number of beds occupied overnight by COVID-19 patients. Our goal is to create models that can predict the future values of these time series. Lwt’s take a look at the time series.</p>
+<p>The data sets that we’ll use for illustration are a time series of daily hospital admissions for COVID-19, and a time series of the number of beds occupied overnight by COVID-19 patients. Our goal is to create models that can predict the future values of these time series. Let’s take a look at the time series. In the code that follows, you’ll see the <code>with()</code> function, which tells R where to check first when looking for data that are attached to a name. That makes the code cleaner to read and easier to write, as there are fewer repetitions of the prefix <code>covid$</code> to access data.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="example-data-covid-19-counts.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the covid dataset</span></span>
 <span id="cb3-2"><a href="example-data-covid-19-counts.html#cb3-2" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="fu">file.path</span>(data_path, <span class="st">&quot;covid.csv&quot;</span>) )</span>
 <span id="cb3-3"><a href="example-data-covid-19-counts.html#cb3-3" aria-hidden="true" tabindex="-1"></a></span>

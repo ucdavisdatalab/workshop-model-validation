@@ -9,9 +9,9 @@ model-types
 linear-regression
 boosted-forest-model
 data-splitting-systems
-trainvalidation-split
-cross-validation
 time-series-data
+traintesting-split
+cross-validation
 combinations
 example-overnight-bed-occupancy
 checking-whether-observations-are-independent
