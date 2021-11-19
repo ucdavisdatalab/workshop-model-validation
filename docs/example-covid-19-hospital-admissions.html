@@ -24,7 +24,7 @@
 <meta name="author" content="Wesley Brooks" />
 
 
-<meta name="date" content="2021-11-18" />
+<meta name="date" content="2021-11-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -139,7 +139,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./" style="font-size: 18px">Model validation for applied data science</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#learning-goals"><i class="fa fa-check"></i><b>0.1</b> Learning goals</a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>0.2</b> Prerequisites</a></li>
+<li class="chapter" data-level="0.3" data-path="index.html"><a href="index.html#software"><i class="fa fa-check"></i><b>0.3</b> Software</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="beginnings.html"><a href="beginnings.html"><i class="fa fa-check"></i><b>1</b> Beginnings</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="beginnings.html"><a href="beginnings.html#why-model-validation"><i class="fa fa-check"></i><b>1.1</b> Why model validation?</a></li>
@@ -200,24 +205,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="example-covid-19-hospital-admissions" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Example: COVID-19 hospital admissions</h1>
 <p>Let’s load the data for the examples that we’ll be working through today. First, though, we need to load some packages and set the path to use for loading data.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="example-covid-19-hospital-admissions.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;dplyr&quot;</span> )</span>
-<span id="cb1-2"><a href="example-covid-19-hospital-admissions.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;lubridate&quot;</span> )</span>
-<span id="cb1-3"><a href="example-covid-19-hospital-admissions.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;readr&quot;</span> )</span>
-<span id="cb1-4"><a href="example-covid-19-hospital-admissions.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;gbm&quot;</span> )</span>
-<span id="cb1-5"><a href="example-covid-19-hospital-admissions.html#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="example-covid-19-hospital-admissions.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># set the root path for loading data.</span></span>
-<span id="cb1-7"><a href="example-covid-19-hospital-admissions.html#cb1-7" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">=</span> <span class="st">&quot;https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-validation/master/data&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="example-covid-19-hospital-admissions.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;dplyr&quot;</span> )</span>
+<span id="cb2-2"><a href="example-covid-19-hospital-admissions.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;lubridate&quot;</span> )</span>
+<span id="cb2-3"><a href="example-covid-19-hospital-admissions.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;readr&quot;</span> )</span>
+<span id="cb2-4"><a href="example-covid-19-hospital-admissions.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;gbm&quot;</span> )</span>
+<span id="cb2-5"><a href="example-covid-19-hospital-admissions.html#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="example-covid-19-hospital-admissions.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># set the root path for loading data.</span></span>
+<span id="cb2-7"><a href="example-covid-19-hospital-admissions.html#cb2-7" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">=</span> <span class="st">&quot;https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-validation/master/data&quot;</span></span></code></pre></div>
 <p>The data sets that we’ll use for illustration are a time series of daily hospital admissions for COVID-19, and a time series of the number of beds occupied overnight by COVID-19 patients. Our goal will be to create models that can predict the future values of these time series. I like to begin with a pair plot of all the data, but here we have 81 columns, which is too many to fit on a pair plot. Instead, we’ll look at the time series.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="example-covid-19-hospital-admissions.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the covid dataset</span></span>
-<span id="cb2-2"><a href="example-covid-19-hospital-admissions.html#cb2-2" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="fu">file.path</span>(data_path, <span class="st">&quot;covid.csv&quot;</span>) )</span>
-<span id="cb2-3"><a href="example-covid-19-hospital-admissions.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="example-covid-19-hospital-admissions.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the admissions time series</span></span>
-<span id="cb2-5"><a href="example-covid-19-hospital-admissions.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>( covid, <span class="fu">plot</span>(date, COVID_NEW_ADM_CNT, <span class="at">type=</span><span class="st">&#39;l&#39;</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="example-covid-19-hospital-admissions.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the covid dataset</span></span>
+<span id="cb3-2"><a href="example-covid-19-hospital-admissions.html#cb3-2" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="fu">file.path</span>(data_path, <span class="st">&quot;covid.csv&quot;</span>) )</span>
+<span id="cb3-3"><a href="example-covid-19-hospital-admissions.html#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="example-covid-19-hospital-admissions.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the admissions time series</span></span>
+<span id="cb3-5"><a href="example-covid-19-hospital-admissions.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>( covid, <span class="fu">plot</span>(date, COVID_NEW_ADM_CNT, <span class="at">type=</span><span class="st">&#39;l&#39;</span>) )</span></code></pre></div>
 <p><img src="02_basics_files/figure-html/import-covid-1.png" width="672" /></p>
 <p>The count of daily admissions is a nonnegative integer. It appears that there is a lot more variability in the admissions count when the recent rate of admissions is near its peaks than when it is near zero. There isn’t a theoretical maximum for daily admissions (though of course there would be a practical maximum, if the hospital became overwhelmed). And we can reasonably assume that each admission was an independent decision. To a statistician, those facts all point toward trying to assume that the counts follow a Poisson distribution.</p>
 <p>There is another type of independence to consider here: is the number of daily admissions independent from the number of admissions the day before? That kind of independence doesn’t mean you pretend that there’s no information in the most recent counts - instead, it means that the short-term fluctuations are as likely to be above the trend as below it. Without that independence, we would say that the data are autocorrelated. And we can test for autocorrelation:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="example-covid-19-hospital-admissions.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the autocorelation function of the diff-1 covid admissions</span></span>
-<span id="cb3-2"><a href="example-covid-19-hospital-admissions.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>( <span class="fu">diff</span>(covid<span class="sc">$</span>COVID_NEW_ADM_CNT, <span class="dv">1</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="example-covid-19-hospital-admissions.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the autocorelation function of the diff-1 covid admissions</span></span>
+<span id="cb4-2"><a href="example-covid-19-hospital-admissions.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>( <span class="fu">diff</span>(covid<span class="sc">$</span>COVID_NEW_ADM_CNT, <span class="dv">1</span>) )</span></code></pre></div>
 <p><img src="02_basics_files/figure-html/test-autocorrelation-1.png" width="672" /></p>
 <p>You can ignore the first line of the chart - it is there to show how long a line is drawn to show perfect correlation at zero time lag. The salient feature of this plot is that the third line points downward, and crosses the dashed blue line. There is apparently a tendency for the count to decrease the day after it increases, and vice versa. This may or may not be due to some trend in the covariates - we’ll check again after accounting for the explanatory variables.</p>
 </div>
@@ -248,7 +253,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ucdavisdatalab/workshop-model-validation/edit/master/02_basics.Rmd",
+"link": "https://github.com/ucdavisdatalab/workshop_model_validation/edit/master/02_basics.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -256,7 +261,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/ucdavisdatalab/workshop-model-validation/blob/master/02_basics.Rmd",
+"link": "https://github.com/ucdavisdatalab/workshop_model_validation/blob/master/02_basics.Rmd",
 "text": null
 },
 "download": null,

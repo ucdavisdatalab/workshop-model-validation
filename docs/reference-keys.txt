@@ -1,3 +1,6 @@
+learning-goals
+prerequisites
+software
 beginnings
 why-model-validation
 what-is-model-validation
