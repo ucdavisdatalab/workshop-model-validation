@@ -12,7 +12,7 @@ data-splitting-systems
 trainvalidation-split
 cross-validation
 time-series-data
-combiniations
+combinations
 example-overnight-bed-occupancy
 checking-whether-observations-are-independent
 validating-the-distribution-for-a-linear-model

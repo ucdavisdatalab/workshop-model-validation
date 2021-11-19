@@ -10,7 +10,7 @@
 
   <meta property="og:title" content="4 Data splitting systems | Model validation for applied data science" />
   <meta property="og:type" content="book" />
-  <meta property="og:url" content="https://ucdavisdatalab.github.io/workshop_model_validation/" />
+  <meta property="og:url" content="https://ucdavisdatalab.github.io/workshop-model-validation/" />
   
   
   <meta name="github-repo" content="ucdavisdatalab/workshop_model_validation" />
@@ -163,7 +163,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="4.2.1" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#time-series-data"><i class="fa fa-check"></i><b>4.2.1</b> Time series data</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#combiniations"><i class="fa fa-check"></i><b>4.3</b> Combiniations</a></li>
+<li class="chapter" data-level="4.3" data-path="data-splitting-systems.html"><a href="data-splitting-systems.html#combinations"><i class="fa fa-check"></i><b>4.3</b> Combinations</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="example-overnight-bed-occupancy.html"><a href="example-overnight-bed-occupancy.html"><i class="fa fa-check"></i><b>5</b> Example: Overnight bed occupancy</a>
 <ul>
@@ -218,8 +218,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>When the data are a time series, it is good practice for validation splits to respect the time ordering of the observations. That’s because the results of validation are more realistic when they work from a known past to an unknown future. That means setting a split date, then training over past data and predicting future observations. You can still use cross-validation for time-series data - it is called walkforward validation, where each fold is a contiguous temporal block, and only past blocks are used in predicting the next block in the sequence.</p>
 </div>
 </div>
-<div id="combiniations" class="section level2" number="4.3">
-<h2><span class="header-section-number">4.3</span> Combiniations</h2>
+<div id="combinations" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Combinations</h2>
 <p>There are times when cross-validation and training/testing validation should be used together. For instance, when cross-validation is used for exploratory analysis and model selection, then validation should be done using new data that was never previously part of the estimation.</p>
 
 </div>
@@ -251,7 +251,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ucdavisdatalab/workshop_model_validation/edit/master/03_data-splitting-systems.Rmd",
+"link": "https://github.com/ucdavisdatalab/workshop-model-validation/edit/master/03_data-splitting-systems.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -259,7 +259,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/ucdavisdatalab/workshop_model_validation/blob/master/03_data-splitting-systems.Rmd",
+"link": "https://github.com/ucdavisdatalab/workshop-model-validation/blob/master/03_data-splitting-systems.Rmd",
 "text": null
 },
 "download": null,

@@ -16,7 +16,7 @@ Some things to note are that the estimated line of best fits are different for e
 ### Time series data
 When the data are a time series, it is good practice for validation splits to respect the time ordering of the observations. That's because the results of validation are more realistic when they work from a known past to an unknown future. That means setting a split date, then training over past data and predicting future observations. You can still use cross-validation for time-series data - it is called walkforward validation, where each fold is a contiguous temporal block, and only past blocks are used in predicting the next block in the sequence.
 
-## Combiniations
+## Combinations
 There are times when cross-validation and training/testing validation should be used together. For instance, when cross-validation is used for exploratory analysis and model selection, then validation should be done using new data that was never previously part of the estimation.
 
 
