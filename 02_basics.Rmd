@@ -9,6 +9,10 @@ library( "readr" )
 library( "gbm" )
 library( "tidymodels")
 
+# install and then load the remotes package
+install.packages( "remotes" )
+library( "remotes" )
+
 # import the covid data set
 covid = read_csv( "https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-validation/master/data/covid.csv" )
 ```
