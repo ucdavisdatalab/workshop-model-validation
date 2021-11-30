@@ -24,7 +24,7 @@
 <meta name="author" content="Wesley Brooks" />
 
 
-<meta name="date" content="2021-11-19" />
+<meta name="date" content="2021-11-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -206,9 +206,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-4"><a href="example-data-covid-19-counts.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;readr&quot;</span> )</span>
 <span id="cb2-5"><a href="example-data-covid-19-counts.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;gbm&quot;</span> )</span>
 <span id="cb2-6"><a href="example-data-covid-19-counts.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;tidymodels&quot;</span>)</span>
-<span id="cb2-7"><a href="example-data-covid-19-counts.html#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="example-data-covid-19-counts.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># import the covid data set</span></span>
-<span id="cb2-9"><a href="example-data-covid-19-counts.html#cb2-9" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="st">&quot;https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-validation/master/data/covid.csv&quot;</span> )</span></code></pre></div>
+<span id="cb2-7"><a href="example-data-covid-19-counts.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;remotes&quot;</span> )</span>
+<span id="cb2-8"><a href="example-data-covid-19-counts.html#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="example-data-covid-19-counts.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># import the covid data set</span></span>
+<span id="cb2-10"><a href="example-data-covid-19-counts.html#cb2-10" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">=</span> <span class="fu">read_csv</span>( <span class="st">&quot;https://raw.githubusercontent.com/ucdavisdatalab/workshop-model-validation/master/data/covid.csv&quot;</span> )</span></code></pre></div>
 <p>The data sets that we’ll use for illustration are a time series of daily hospital admissions for COVID-19, and a time series of the number of beds occupied overnight by COVID-19 patients. Our goal is to create models that can predict the future values of these time series. Let’s take a look at the time series. In the code that follows, you’ll see the <code>with()</code> function, which tells R where to check first for data when it encounters a variable name. That makes the code cleaner to read and write, as there are fewer repetitions of the prefix <code>covid$</code> to access data.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="example-data-covid-19-counts.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># layout the plot window for side-by-side figures</span></span>
 <span id="cb3-2"><a href="example-data-covid-19-counts.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>( <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>))</span>

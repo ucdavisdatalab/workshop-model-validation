@@ -8,9 +8,6 @@ library( "lubridate" )
 library( "readr" )
 library( "gbm" )
 library( "tidymodels")
-
-# install and then load the remotes package
-install.packages( "remotes" )
 library( "remotes" )
 
 # import the covid data set
